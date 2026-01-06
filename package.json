@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "mcnabventures",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "16.1.1",
+    "pocketbase": "^0.26.5",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
