@@ -1,14 +1,18 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Literata, Work_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Literata for headings (Light & Medium)
+const literata = Literata({
+  variable: "--font-literata",
   subsets: ["latin"],
+  weight: ["300", "500"], // Light (300), Medium (500)
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Work Sans for body/content (Medium & ExtraBold)
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
+  weight: ["500", "800"], // Medium (500), ExtraBold (800)
 });
 
 export const metadata = {
@@ -20,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${literata.variable} ${workSans.variable} antialiased`}
       >
         {children}
       </body>

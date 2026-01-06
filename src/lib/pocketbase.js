@@ -1,13 +1,15 @@
 /**
- * PocketBase Client Configuration
+ * PocketBase Server-Side Client Configuration
  * 
- * This module provides a configured PocketBase client instance that can be used
- * throughout the application. It follows the Singleton pattern to ensure
- * a single instance is shared across the app.
+ * This module provides a configured PocketBase client instance for SERVER-SIDE use only.
+ * It automatically authenticates as a super admin to access protected collections.
  * 
- * Usage:
- * - Import this client in your components or API routes
- * - Use it to interact with your PocketBase backend
+ * IMPORTANT: This client should ONLY be used in:
+ * - Server Components
+ * - API Routes
+ * - Server Actions
+ * 
+ * Never import this in Client Components as it contains sensitive credentials.
  * 
  * @see https://pocketbase.io/docs/
  */
@@ -16,65 +18,91 @@ import PocketBase from 'pocketbase';
 
 /**
  * Get the PocketBase URL from environment variables
- * Defaults to localhost if not set
  */
 const getPocketBaseUrl = () => {
-  const url = process.env.NEXT_PUBLIC_POCKETBASE_URL;
+  const url = process.env.POCKETBASE_URL;
   
   if (!url) {
-    console.warn('NEXT_PUBLIC_POCKETBASE_URL is not set. Using default localhost.');
-    return 'http://127.0.0.1:8090';
+    throw new Error('POCKETBASE_URL is not set in environment variables');
   }
   
   return url;
 };
 
 /**
- * Create a new PocketBase client instance
- * This client can be used for both server-side and client-side operations
+ * Authenticate as super admin
+ * This is required to access protected collections
  */
-const createPocketBaseClient = () => {
-  const client = new PocketBase(getPocketBaseUrl());
+const authenticateAdmin = async (client) => {
+  const email = process.env.POCKETBASE_ADMIN_EMAIL;
+  const password = process.env.POCKETBASE_ADMIN_PASSWORD;
   
-  // Enable auto-cancellation of pending requests on navigation (client-side only)
-  if (typeof window !== 'undefined') {
-    client.autoCancellation(false); // Set to true if you want automatic cancellation
+  if (!email || !password) {
+    throw new Error('POCKETBASE_ADMIN_EMAIL and POCKETBASE_ADMIN_PASSWORD must be set');
   }
   
+  try {
+    await client.admins.authWithPassword(email, password);
+    return true;
+  } catch (error) {
+    console.error('Failed to authenticate PocketBase admin:', error);
+    throw new Error('PocketBase admin authentication failed');
+  }
+};
+
+/**
+ * Create a new authenticated PocketBase client instance
+ * Automatically authenticates as super admin
+ */
+const createPocketBaseClient = async () => {
+  const client = new PocketBase(getPocketBaseUrl());
+  
+  // Disable auto-cancellation to prevent issues with duplicate requests
+  // (e.g., when both generateMetadata and page component fetch the same data)
+  client.autoCancellation(false);
+  
+  await authenticateAdmin(client);
   return client;
 };
 
 /**
- * Singleton PocketBase client instance
- * Use this for most operations in your application
+ * Singleton promise for the PocketBase client
+ * Ensures we only authenticate once
  */
-export const pb = createPocketBaseClient();
+let clientPromise = null;
 
 /**
- * Factory function to create a new PocketBase client
- * Use this when you need a fresh instance (e.g., for isolated authentication)
+ * Get authenticated PocketBase client instance
+ * Use this for all server-side operations
+ * 
+ * @returns {Promise<PocketBase>} Authenticated PocketBase client
  */
-export const createClient = () => createPocketBaseClient();
-
-/**
- * Check if the client is currently authenticated
- */
-export const isAuthenticated = () => {
-  return pb.authStore.isValid;
+export const getPocketBaseClient = async () => {
+  if (!clientPromise) {
+    clientPromise = createPocketBaseClient();
+  }
+  return clientPromise;
 };
 
 /**
- * Get the current authenticated user
+ * Get a fresh PocketBase client instance
+ * Use this if you need a new authenticated instance
+ * 
+ * @returns {Promise<PocketBase>} New authenticated PocketBase client
  */
-export const getCurrentUser = () => {
-  return pb.authStore.model;
+export const getFreshClient = async () => {
+  return createPocketBaseClient();
 };
 
 /**
- * Clear authentication state
+ * Check if admin authentication is configured
  */
-export const logout = () => {
-  pb.authStore.clear();
+export const isAdminConfigured = () => {
+  return !!(
+    process.env.POCKETBASE_URL &&
+    process.env.POCKETBASE_ADMIN_EMAIL &&
+    process.env.POCKETBASE_ADMIN_PASSWORD
+  );
 };
 
-export default pb;
+export default getPocketBaseClient;

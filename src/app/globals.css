@@ -3,13 +3,41 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* McNab Ventures Color Palette */
+  --navy: #005B7F;
+  --turquoise: #00BFB3;
+  --sand: #D6D2C4;
+  --gold: #CB9763;
+  
+  /* Gold Gradient Colors */
+  --gold-start: #C58427;
+  --gold-mid-1: #DDB154;
+  --gold-mid-2: #E8C568;
+  --gold-mid-3: #DDB154;
+  --gold-mid-4: #C68529;
+  --gold-end: #FAF3B2;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-literata);
+  --font-body: var(--font-work-sans);
+  
+  /* Custom McNab Ventures Colors */
+  --color-navy: #005B7F;
+  --color-turquoise: #00BFB3;
+  --color-sand: #D6D2C4;
+  --color-gold: #CB9763;
+  
+  /* Gold Gradient Stops */
+  --color-gold-start: #C58427;
+  --color-gold-mid-1: #DDB154;
+  --color-gold-mid-2: #E8C568;
+  --color-gold-mid-3: #DDB154;
+  --color-gold-mid-4: #C68529;
+  --color-gold-end: #FAF3B2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +50,51 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-work-sans), sans-serif;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-literata), serif;
+}
+
+.font-heading {
+  font-family: var(--font-literata), serif;
+}
+
+.font-body {
+  font-family: var(--font-work-sans), sans-serif;
+}
+
+.font-literata-light {
+  font-family: var(--font-literata), serif;
+  font-weight: 300;
+}
+
+.font-literata-medium {
+  font-family: var(--font-literata), serif;
+  font-weight: 500;
+}
+
+.font-work-sans-medium {
+  font-family: var(--font-work-sans), sans-serif;
+  font-weight: 500;
+}
+
+.font-work-sans-extrabold {
+  font-family: var(--font-work-sans), sans-serif;
+  font-weight: 800;
+}
+
+/* Gold Gradient Utility Class */
+.bg-gold-gradient {
+  background: linear-gradient(
+    180deg,
+    #C58427 0%,
+    #DDB154 25%,
+    #E8C568 50%,
+    #DDB154 75%,
+    #C68529 85%,
+    #FAF3B2 100%
+  );
 }

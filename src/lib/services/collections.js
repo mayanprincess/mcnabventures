@@ -1,14 +1,18 @@
 /**
- * Collections Service
+ * Collections Service (Server-Side Only)
  * 
  * This service provides methods to interact with PocketBase collections.
- * It implements common CRUD operations and follows best practices for
- * error handling and data fetching.
+ * All operations are read-only and require super admin authentication.
+ * 
+ * IMPORTANT: Only use these functions in:
+ * - Server Components
+ * - API Routes
+ * - Server Actions
  * 
  * @see https://pocketbase.io/docs/api-records/
  */
 
-import { pb } from '../pocketbase';
+import { getPocketBaseClient } from '../pocketbase';
 
 /**
  * Fetch all records from a collection with optional filtering and sorting
@@ -24,6 +28,8 @@ import { pb } from '../pocketbase';
  */
 export const getRecords = async (collectionName, options = {}) => {
   try {
+    const pb = await getPocketBaseClient();
+    
     const {
       page = 1,
       perPage = 50,
@@ -62,6 +68,8 @@ export const getRecords = async (collectionName, options = {}) => {
  */
 export const getFullList = async (collectionName, options = {}) => {
   try {
+    const pb = await getPocketBaseClient();
+    
     const {
       filter = '',
       sort = '',
@@ -99,6 +107,7 @@ export const getFullList = async (collectionName, options = {}) => {
  */
 export const getRecord = async (collectionName, recordId, options = {}) => {
   try {
+    const pb = await getPocketBaseClient();
     const { expand = '' } = options;
 
     const record = await pb.collection(collectionName).getOne(recordId, {
@@ -116,104 +125,5 @@ export const getRecord = async (collectionName, recordId, options = {}) => {
       error: error.message,
       data: null,
     };
-  }
-};
-
-/**
- * Create a new record in a collection
- * 
- * @param {string} collectionName - The name of the collection
- * @param {Object} data - The record data
- * @returns {Promise<Object>} - The created record
- */
-export const createRecord = async (collectionName, data) => {
-  try {
-    const record = await pb.collection(collectionName).create(data);
-
-    return {
-      success: true,
-      data: record,
-    };
-  } catch (error) {
-    console.error(`Error creating record in ${collectionName}:`, error);
-    return {
-      success: false,
-      error: error.message,
-      data: null,
-    };
-  }
-};
-
-/**
- * Update an existing record
- * 
- * @param {string} collectionName - The name of the collection
- * @param {string} recordId - The record ID
- * @param {Object} data - The updated data
- * @returns {Promise<Object>} - The updated record
- */
-export const updateRecord = async (collectionName, recordId, data) => {
-  try {
-    const record = await pb.collection(collectionName).update(recordId, data);
-
-    return {
-      success: true,
-      data: record,
-    };
-  } catch (error) {
-    console.error(`Error updating record ${recordId} in ${collectionName}:`, error);
-    return {
-      success: false,
-      error: error.message,
-      data: null,
-    };
-  }
-};
-
-/**
- * Delete a record
- * 
- * @param {string} collectionName - The name of the collection
- * @param {string} recordId - The record ID
- * @returns {Promise<Object>} - Success status
- */
-export const deleteRecord = async (collectionName, recordId) => {
-  try {
-    await pb.collection(collectionName).delete(recordId);
-
-    return {
-      success: true,
-      data: null,
-    };
-  } catch (error) {
-    console.error(`Error deleting record ${recordId} from ${collectionName}:`, error);
-    return {
-      success: false,
-      error: error.message,
-      data: null,
-    };
-  }
-};
-
-/**
- * Subscribe to real-time changes in a collection
- * 
- * @param {string} collectionName - The name of the collection
- * @param {Function} callback - Callback function to handle changes
- * @param {string} recordId - Optional specific record ID to watch
- * @returns {Function} - Unsubscribe function
- */
-export const subscribeToCollection = (collectionName, callback, recordId = '*') => {
-  try {
-    // Subscribe to collection changes
-    pb.collection(collectionName).subscribe(recordId, callback);
-
-    // Return unsubscribe function
-    return () => {
-      pb.collection(collectionName).unsubscribe(recordId);
-    };
-  } catch (error) {
-    console.error(`Error subscribing to ${collectionName}:`, error);
-    return () => {}; // Return empty function if subscription fails
   }
 };

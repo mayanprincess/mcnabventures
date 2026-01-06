@@ -1,8 +1,8 @@
 /**
- * Collections API Route
+ * Collections API Route (Server-Side with Admin Auth)
  * 
- * This API route demonstrates how to use PocketBase on the server-side
- * in Next.js API routes.
+ * This API route fetches data from PocketBase collections using admin authentication.
+ * All operations are read-only.
  * 
  * Example: GET /api/collections/posts?page=1&perPage=10
  */

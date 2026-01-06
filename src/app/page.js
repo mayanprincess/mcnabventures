@@ -1,30 +1,36 @@
 /**
- * Home Page - Example PocketBase Integration
+ * Home Page - PocketBase Server-Side Integration
  * 
  * This page demonstrates how to fetch data from PocketBase
- * using Server Components (Next.js 16 App Router)
+ * using Server Components with admin authentication.
+ * All API calls are made server-side only.
  */
 
-import { pb } from '@/lib/pocketbase';
-import CollectionsList from '@/components/CollectionsList';
+import { getPocketBaseClient, isAdminConfigured } from '@/lib/pocketbase';
 
 /**
- * Fetch collections data on the server
- * This is a Server Component, so data is fetched at build time or on request
+ * Test PocketBase connection with admin auth
+ * This is a Server Component, so data is fetched on the server
  */
-async function getCollections() {
+async function testConnection() {
   try {
-    // Example: Fetch data from a collection
-    // Replace 'your_collection_name' with your actual collection name
-    // For demo purposes, we'll try to get a list of available collections
-    
-    // Note: You'll need to replace this with your actual collection name
-    // For example: const records = await pb.collection('posts').getList(1, 10);
+    // Check if admin credentials are configured
+    if (!isAdminConfigured()) {
+      return {
+        success: false,
+        message: 'Admin credentials not configured',
+        error: 'Please set POCKETBASE_ADMIN_EMAIL and POCKETBASE_ADMIN_PASSWORD in .env.local',
+      };
+    }
+
+    // Get authenticated client
+    const pb = await getPocketBaseClient();
     
     return {
       success: true,
-      message: 'PocketBase is connected successfully!',
-      url: process.env.NEXT_PUBLIC_POCKETBASE_URL,
+      message: 'PocketBase connected successfully with admin authentication!',
+      url: process.env.POCKETBASE_URL,
+      adminEmail: process.env.POCKETBASE_ADMIN_EMAIL,
     };
   } catch (error) {
     console.error('Error connecting to PocketBase:', error);
@@ -37,7 +43,7 @@ async function getCollections() {
 }
 
 export default async function Home() {
-  const connectionStatus = await getCollections();
+  const connectionStatus = await testConnection();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
@@ -77,11 +83,17 @@ export default async function Home() {
               </p>
 
               {connectionStatus.url && (
-                <div className="rounded-lg bg-zinc-100 p-4 dark:bg-zinc-800">
+                <div className="rounded-lg bg-zinc-100 p-4 dark:bg-zinc-800 space-y-2">
                   <p className="text-sm font-mono text-zinc-700 dark:text-zinc-300">
                     <span className="font-semibold">API URL:</span>{' '}
                     {connectionStatus.url}
                   </p>
+                  {connectionStatus.adminEmail && (
+                    <p className="text-sm font-mono text-zinc-700 dark:text-zinc-300">
+                      <span className="font-semibold">Admin:</span>{' '}
+                      {connectionStatus.adminEmail}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -131,9 +143,30 @@ export default async function Home() {
           />
         </div>
 
-        {/* Client Component Example */}
-        <div className="w-full max-w-4xl">
-          <CollectionsList />
+        {/* Server-Side Note */}
+        <div className="w-full max-w-4xl rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+          <h2 className="mb-4 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+            📋 Important: Server-Side Only
+          </h2>
+          <div className="space-y-3 text-zinc-700 dark:text-zinc-300">
+            <p>
+              This application is configured to make all PocketBase API calls on the server using admin authentication.
+            </p>
+            <p>
+              To fetch data from your collections, create Server Components or API routes.
+            </p>
+            <div className="mt-4 rounded-lg bg-zinc-100 p-4 dark:bg-zinc-800">
+              <p className="text-sm font-semibold mb-2">Example Server Component:</p>
+              <pre className="text-xs overflow-x-auto">
+{`import { getRecords } from '@/lib/services/collections';
+
+export default async function MyPage() {
+  const result = await getRecords('your_collection');
+  return <div>{/* render data */}</div>;
+}`}
+              </pre>
+            </div>
+          </div>
         </div>
 
         {/* Quick Links */}

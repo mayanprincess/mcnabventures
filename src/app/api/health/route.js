@@ -1,19 +1,17 @@
 /**
- * Health Check API Route
+ * Health Check API Route (Server-Side with Admin Auth)
  * 
- * This route checks the connection to PocketBase
+ * This route checks the connection to PocketBase with admin authentication.
  * 
  * Example: GET /api/health
  */
 
 import { NextResponse } from 'next/server';
-import { pb } from '@/lib/pocketbase';
+import { getPocketBaseClient, isAdminConfigured } from '@/lib/pocketbase';
 
 export async function GET() {
   try {
-    // Try to get health status from PocketBase
-    // This is a simple connection check
-    const baseUrl = process.env.NEXT_PUBLIC_POCKETBASE_URL;
+    const baseUrl = process.env.POCKETBASE_URL;
     
     if (!baseUrl) {
       return NextResponse.json(
@@ -26,29 +24,29 @@ export async function GET() {
       );
     }
 
-    // Attempt a simple fetch to check if PocketBase is reachable
-    const response = await fetch(`${baseUrl}/api/health`, {
-      method: 'GET',
-    });
-
-    if (response.ok) {
-      return NextResponse.json({
-        status: 'healthy',
-        message: 'Connected to PocketBase successfully',
-        pocketbaseUrl: baseUrl,
-        timestamp: new Date().toISOString(),
-      });
+    // Check if admin credentials are configured
+    if (!isAdminConfigured()) {
+      return NextResponse.json(
+        {
+          status: 'error',
+          message: 'Admin credentials not configured',
+          details: 'Set POCKETBASE_ADMIN_EMAIL and POCKETBASE_ADMIN_PASSWORD',
+          timestamp: new Date().toISOString(),
+        },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json(
-      {
-        status: 'unhealthy',
-        message: 'PocketBase is not responding',
-        pocketbaseUrl: baseUrl,
-        timestamp: new Date().toISOString(),
-      },
-      { status: 503 }
-    );
+    // Try to authenticate and connect
+    const pb = await getPocketBaseClient();
+
+    return NextResponse.json({
+      status: 'healthy',
+      message: 'Connected to PocketBase successfully with admin authentication',
+      pocketbaseUrl: baseUrl,
+      authenticated: true,
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
     console.error('Health check error:', error);
     return NextResponse.json(
