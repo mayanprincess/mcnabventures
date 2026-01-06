@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
   const result = await getRecords('group', {
     filter: `slug = "${slug}"`,
     perPage: 1,
-    expand: 'hero',
+    expand: 'hero,information',
   });
 
   if (!result.success || result.data.items.length === 0) {
@@ -44,7 +44,7 @@ export default async function GroupPage({ params }) {
   const result = await getRecords('group', {
     filter: `slug = "${slug}"`,
     perPage: 1,
-    expand: 'hero',
+    expand: 'hero,information',
   });
 
   // Handle not found
@@ -89,16 +89,14 @@ export default async function GroupPage({ params }) {
         </div>
 
         {/* Information Section */}
-        {group.information && group.information !== 'N/A' && (
+        {group.expand?.information && (
           <div className="mb-12 rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="mb-4 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-              Information
+              Information Component
             </h2>
-            <div className="prose prose-zinc dark:prose-invert max-w-none">
-              <p className="text-lg text-zinc-700 dark:text-zinc-300">
-                {group.information}
-              </p>
-            </div>
+            <pre className="overflow-x-auto rounded-lg bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              {JSON.stringify(group.expand.information, null, 2)}
+            </pre>
           </div>
         )}
 
