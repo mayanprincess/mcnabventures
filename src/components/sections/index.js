@@ -5,3 +5,4 @@
  */
 
 export { default as SecondaryHero } from './SecondaryHero';
+export { default as UsefulLinks } from './UsefulLinks';

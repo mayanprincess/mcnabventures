@@ -9,6 +9,7 @@ import { getRecords } from '@/lib/services/collections';
 import { getPocketBaseClient } from '@/lib/pocketbase';
 import { notFound } from 'next/navigation';
 import SecondaryHero from '@/components/sections/SecondaryHero';
+import UsefulLinks from '@/components/sections/UsefulLinks';
 
 /**
  * Generate metadata for SEO
@@ -65,6 +66,9 @@ export default async function GroupPage({ params }) {
       {heroId && (
         <SecondaryHero id={heroId} />
       )}
+
+      {/* Useful Links Section */}
+      <UsefulLinks />
 
       {/* Main Content */}
       <main className="w-full">
