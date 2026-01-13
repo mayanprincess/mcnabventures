@@ -10,6 +10,7 @@ import { getPocketBaseClient } from '@/lib/pocketbase';
 import { notFound } from 'next/navigation';
 import SecondaryHero from '@/components/sections/SecondaryHero';
 import UsefulLinks from '@/components/sections/UsefulLinks';
+import StayInTheLoop from '@/components/sections/StayInTheLoop';
 
 /**
  * Generate metadata for SEO
@@ -69,6 +70,9 @@ export default async function GroupPage({ params }) {
 
       {/* Useful Links Section */}
       <UsefulLinks />
+
+      {/* Stay In The Loop Section */}
+      <StayInTheLoop />
 
       {/* Main Content */}
       <main className="w-full">
