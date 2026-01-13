@@ -14,6 +14,9 @@ import StayInTheLoop from '@/components/sections/StayInTheLoop';
 import Multimedia from '@/components/sections/Multimedia';
 import ContactCard from '@/components/sections/ContactCard';
 import JoinOurTeam from '@/components/sections/JoinOurTeam';
+import WhoWeAre from '@/components/sections/WhoWeAre';
+import GetHighlights from '@/components/sections/GetHighlights';
+import OurJourney from '@/components/sections/OurJourney';
 
 /**
  * Generate metadata for SEO
@@ -71,6 +74,15 @@ export default async function GroupPage({ params }) {
         <SecondaryHero id={heroId} />
       )}
 
+      {/* Who We Are Section */}
+      <WhoWeAre />
+
+      {/* Get Highlights Section */}
+      <GetHighlights />
+
+      {/* Our Journey Section */}
+      <OurJourney />
+            
       {/* Useful Links Section */}
       <UsefulLinks />
 
@@ -86,70 +98,6 @@ export default async function GroupPage({ params }) {
       {/* Join Our Team Section */}
       <JoinOurTeam />
 
-      {/* Main Content */}
-      <main className="w-full">
-        {/* Group Information Section */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-          <div className="max-w-4xl mx-auto">
-            {/* Group Title */}
-            <div className="mb-8 sm:mb-12">
-              <h1 className="font-literata-light text-navy text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-4">
-                {group.name || group.slug}
-              </h1>
-              {group.description && (
-                <p className="font-work-sans-medium text-navy/80 text-lg sm:text-xl md:text-2xl leading-relaxed max-w-3xl">
-                  {group.description}
-                </p>
-              )}
-            </div>
-
-            {/* Expanded Information Component */}
-            {group.expand?.information && (
-              <div className="mb-12 sm:mb-16">
-                <GroupInformation information={group.expand.information} />
-              </div>
-            )}
-
-            {/* Additional Group Data */}
-            {group.information && !group.expand?.information && (
-              <div className="mb-12 sm:mb-16">
-                <div className="prose prose-lg max-w-none">
-                  <div 
-                    className="font-work-sans-medium text-navy/90 text-base sm:text-lg leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: group.information }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Group Metadata */}
-            <div className="border-t border-sand pt-8 mt-12">
-              <div className="flex flex-wrap gap-4 sm:gap-6 text-sm sm:text-base">
-                {group.slug && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-work-sans-medium text-navy/60">Slug:</span>
-                    <span className="font-work-sans-medium text-navy bg-sand/30 px-3 py-1 rounded">
-                      {group.slug}
-                    </span>
-                  </div>
-                )}
-                {group.created && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-work-sans-medium text-navy/60">Created:</span>
-                    <span className="font-work-sans-medium text-navy">
-                      {new Date(group.created).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
     </div>
   );
 }
