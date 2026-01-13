@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation';
 import SecondaryHero from '@/components/sections/SecondaryHero';
 import UsefulLinks from '@/components/sections/UsefulLinks';
 import StayInTheLoop from '@/components/sections/StayInTheLoop';
+import Multimedia from '@/components/sections/Multimedia';
 
 /**
  * Generate metadata for SEO
@@ -73,6 +74,9 @@ export default async function GroupPage({ params }) {
 
       {/* Stay In The Loop Section */}
       <StayInTheLoop />
+
+      {/* Multimedia Section */}
+      <Multimedia />
 
       {/* Main Content */}
       <main className="w-full">
