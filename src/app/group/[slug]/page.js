@@ -12,6 +12,8 @@ import SecondaryHero from '@/components/sections/SecondaryHero';
 import UsefulLinks from '@/components/sections/UsefulLinks';
 import StayInTheLoop from '@/components/sections/StayInTheLoop';
 import Multimedia from '@/components/sections/Multimedia';
+import ContactCard from '@/components/sections/ContactCard';
+import JoinOurTeam from '@/components/sections/JoinOurTeam';
 
 /**
  * Generate metadata for SEO
@@ -77,6 +79,12 @@ export default async function GroupPage({ params }) {
 
       {/* Multimedia Section */}
       <Multimedia />
+
+      {/* Contact Card Section */}
+      <ContactCard />
+
+      {/* Join Our Team Section */}
+      <JoinOurTeam />
 
       {/* Main Content */}
       <main className="w-full">
