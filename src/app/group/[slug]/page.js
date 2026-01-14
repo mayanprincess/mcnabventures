@@ -1,12 +1,22 @@
 /**
  * Group Dynamic Route - /group/[slug]
  * 
+ * Modern frontend for group pages with SecondaryHero integration
  * Fetches and displays group data from PocketBase using the slug
  */
 
 import { getRecords } from '@/lib/services/collections';
+import { getPocketBaseClient } from '@/lib/pocketbase';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import SecondaryHero from '@/components/sections/SecondaryHero';
+import UsefulLinks from '@/components/sections/UsefulLinks';
+import StayInTheLoop from '@/components/sections/StayInTheLoop';
+import Multimedia from '@/components/sections/Multimedia';
+import ContactCard from '@/components/sections/ContactCard';
+import JoinOurTeam from '@/components/sections/JoinOurTeam';
+import WhoWeAre from '@/components/sections/WhoWeAre';
+import GetHighlights from '@/components/sections/GetHighlights';
+import OurJourney from '@/components/sections/OurJourney';
 
 /**
  * Generate metadata for SEO
@@ -22,15 +32,15 @@ export async function generateMetadata({ params }) {
 
   if (!result.success || result.data.items.length === 0) {
     return {
-      title: 'Group Not Found',
+      title: 'Group Not Found - McNab Ventures',
     };
   }
 
   const group = result.data.items[0];
 
   return {
-    title: `${group.hero || slug} - McNab Ventures`,
-    description: group.information || `Explore ${slug}`,
+    title: `${group.name || group.slug} - McNab Ventures`,
+    description: group.description || group.information || `Explore ${group.name || slug}`,
   };
 }
 
@@ -54,74 +64,109 @@ export default async function GroupPage({ params }) {
 
   const group = result.data.items[0];
 
+  // Get hero ID if hero relation exists
+  const heroId = group.hero || group.expand?.hero?.id || null;
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
-      {/* Header */}
-      <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <Link
-            href="/"
-            className="text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          >
-            ← Back to Home
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      {/* Secondary Hero Section */}
+      {heroId && (
+        <SecondaryHero id={heroId} />
+      )}
 
-      {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-6 py-12">
-        {/* Hero Section */}
-        <div className="mb-12">
-          <h1 className="mb-4 text-5xl font-bold text-zinc-900 dark:text-zinc-50">
-            {group.hero || group.slug}
-          </h1>
-          
-          <div className="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-            <span className="rounded-full bg-zinc-100 px-4 py-1 font-mono dark:bg-zinc-800">
-              {group.slug}
-            </span>
-            {group.created && (
-              <span>
-                Created: {new Date(group.created).toLocaleDateString()}
-              </span>
-            )}
-          </div>
-        </div>
+      {/* Who We Are Section */}
+      <WhoWeAre />
 
-        {/* Information Section */}
-        {group.expand?.information && (
-          <div className="mb-12 rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
-            <h2 className="mb-4 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-              Information Component
-            </h2>
-            <pre className="overflow-x-auto rounded-lg bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-              {JSON.stringify(group.expand.information, null, 2)}
-            </pre>
-          </div>
-        )}
+      {/* Get Highlights Section */}
+      <GetHighlights />
 
-        {/* Expanded Hero Data */}
-        {group.expand?.hero && (
-          <div className="mb-12 rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
-            <h2 className="mb-4 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-              Hero Details
-            </h2>
-            <pre className="overflow-x-auto rounded-lg bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-              {JSON.stringify(group.expand.hero, null, 2)}
-            </pre>
-          </div>
-        )}
+      {/* Our Journey Section */}
+      <OurJourney />
+            
+      {/* Useful Links Section */}
+      <UsefulLinks />
 
-        {/* Raw Data (for development) */}
-        <div className="rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
-          <h2 className="mb-4 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-            Raw Data
-          </h2>
-          <pre className="overflow-x-auto rounded-lg bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-            {JSON.stringify(group, null, 2)}
-          </pre>
-        </div>
-      </main>
+      {/* Stay In The Loop Section */}
+      <StayInTheLoop />
+
+      {/* Multimedia Section */}
+      <Multimedia />
+
+      {/* Contact Card Section */}
+      <ContactCard />
+
+      {/* Join Our Team Section */}
+      <JoinOurTeam />
+
     </div>
   );
+}
+
+/**
+ * Group Information Component
+ * Renders expanded information data
+ */
+function GroupInformation({ information }) {
+  // Handle different information formats
+  if (typeof information === 'string') {
+    return (
+      <div className="prose prose-lg max-w-none">
+        <div 
+          className="font-work-sans-medium text-navy/90 text-base sm:text-lg leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: information }}
+        />
+      </div>
+    );
+  }
+
+  if (typeof information === 'object' && information !== null) {
+    return (
+      <div className="space-y-6">
+        {information.title && (
+          <h2 className="font-literata-medium text-navy text-2xl sm:text-3xl md:text-4xl mb-4">
+            {information.title}
+          </h2>
+        )}
+        
+        {information.content && (
+          <div className="prose prose-lg max-w-none">
+            <div 
+              className="font-work-sans-medium text-navy/90 text-base sm:text-lg leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: information.content }}
+            />
+          </div>
+        )}
+
+        {information.description && (
+          <p className="font-work-sans-medium text-navy/80 text-lg sm:text-xl leading-relaxed">
+            {information.description}
+          </p>
+        )}
+
+        {/* Render other fields if they exist */}
+        {Object.entries(information).map(([key, value]) => {
+          if (['title', 'content', 'description', 'id', 'collectionId', 'collectionName', 'created', 'updated'].includes(key)) {
+            return null;
+          }
+          
+          if (typeof value === 'string' && value.trim()) {
+            return (
+              <div key={key} className="border-l-4 border-turquoise pl-4 py-2">
+                <h3 className="font-work-sans-extrabold text-navy text-sm uppercase tracking-wide mb-1">
+                  {key.replace(/_/g, ' ')}
+                </h3>
+                <p className="font-work-sans-medium text-navy/80">
+                  {value}
+                </p>
+              </div>
+            );
+          }
+          
+          return null;
+        })}
+      </div>
+    );
+  }
+
+  return null;
 }
