@@ -2,6 +2,7 @@ import { Literata, Work_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { HeaderProvider } from "@/context/HeaderContext";
 
 // Literata for headings (Light & Medium)
 const literata = Literata({
@@ -28,9 +29,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${literata.variable} ${workSans.variable} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <HeaderProvider>
+          <Header />
+          {children}
+          <Footer />
+        </HeaderProvider>
       </body>
     </html>
   );

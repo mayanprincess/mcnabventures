@@ -13,3 +13,4 @@ export { default as JoinOurTeam } from './JoinOurTeam';
 export { default as WhoWeAre } from './WhoWeAre';
 export { default as GetHighlights } from './GetHighlights';
 export { default as OurJourney } from './OurJourney';
+export { default as PrimaryHero } from './PrimaryHero';
