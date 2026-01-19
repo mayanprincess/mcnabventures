@@ -4,7 +4,7 @@ export default function Experiences() {
     return (
         <main className="min-h-screen">
             <SecondaryHero />
-            <MissionStatement />
+            <MissionStatement vectorType="vector2" />
             <TheExperiences />
             <ExperiencesGallery />
             <SustainabilityInAction />

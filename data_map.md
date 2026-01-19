@@ -36,13 +36,17 @@ Endpoints de contenido para el CMS/Backend.
 
 ```json
 {
-  "hero_image": "file (image)",
+  "image": "file (image)",
   "heading": "string",
-  "link_label": "string",
-  "link_url": "string",
-  "use_vector_design": "boolean"
+  "linkLabel": "string",
+  "linkUrl": "string",
+  "useVectorDesign": "boolean"
 }
 ```
+
+**Variantes de diseño:**
+- `useVectorDesign: false` - Imagen de fondo con texto overlay
+- `useVectorDesign: true` - Diseño con barras curvas turquesa
 
 ---
 
@@ -50,15 +54,12 @@ Endpoints de contenido para el CMS/Backend.
 
 ```json
 {
-  "text_before_highlight_1": "string",
-  "highlight_1": "string",
-  "text_before_highlight_2": "string",
-  "highlight_2": "string",
-  "text_before_highlight_3": "string",
-  "highlight_3": "string",
-  "text_after": "string"
+  "text": "string",
+  "highlights": ["string", "string", "..."]
 }
 ```
+
+**Uso:** El texto completo se pasa en `text` y las palabras/frases a resaltar en turquesa se pasan en el array `highlights`.
 
 ---
 

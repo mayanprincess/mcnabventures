@@ -1,35 +1,25 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { getRecord } from '@/lib/services/collections';
-import { getPocketBaseClient } from '@/lib/pocketbase';
+import { secondaryHeroData } from '@/data';
 
 /**
  * SecondaryHero Component - MCNAB VENTURES
  * 
- * Hero section that displays content from PocketBase.
- * Supports two design variants:
- * - Default: Full-width image background with overlay text and CTA button
- * - Alternative: Vector design with turquoise curved stripes
+ * Hero section secundario con dos variantes de diseño:
+ * - Default: Imagen de fondo con texto y botón CTA
+ * - Vector: Diseño con barras curvas turquesa
  * 
- * @param {Object} props
- * @param {string} props.id - Record ID to fetch from PocketBase collection 'group_hero'
- * @component
+ * Se alimenta de datos JSON (futuro REST API)
  */
-export default async function SecondaryHero({ id }) {
-  // Fetch data from PocketBase
-  const heroData = await getHeroData(id);
-
-  if (!heroData) {
-    return null; // Or return a default/fallback component
-  }
-
-  const {
-    image,
-    heading,
-    linkLabel,
-    linkUrl,
-    useVectorDesign = false,
-  } = heroData;
-
+export default function SecondaryHero({
+  image = secondaryHeroData.image,
+  heading = secondaryHeroData.heading,
+  linkLabel = secondaryHeroData.linkLabel,
+  linkUrl = secondaryHeroData.linkUrl,
+  useVectorDesign = secondaryHeroData.useVectorDesign,
+}) {
   // Render based on design variant
   if (useVectorDesign) {
     return <VectorDesignHero heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} />;
@@ -39,45 +29,33 @@ export default async function SecondaryHero({ id }) {
 }
 
 /**
- * Fetch hero data from PocketBase by ID
- * 
- * @param {string} id - The record ID to fetch
- * @returns {Promise<Object|null>} Hero data or null if not found
- */
-async function getHeroData(id) {
-  try {
-    const pb = await getPocketBaseClient();
-    
-    // Fetch record by ID from group_hero collection
-    const result = await pb.collection('group_hero').getOne(id, {
-      expand: '',
-    });
-
-    // Get image URL if exists
-    // PocketBase file URLs format: /api/files/{collectionId}/{recordId}/{filename}
-    const imageUrl = result.hero_image 
-      ? pb.files.getUrl(result, result.hero_image)
-      : null;
-
-    return {
-      image: imageUrl,
-      heading: result.heading || '',
-      linkLabel: result.link_label || '',
-      linkUrl: result.link_url || '',
-      useVectorDesign: result.use_vector_design || false,
-    };
-  } catch (error) {
-    console.error('Error fetching SecondaryHero data:', error);
-    return null;
-  }
-}
-
-/**
  * Default Design Hero
  * White full-width background with rounded image container
  * Text and button overlay on top-left of the rounded image container
+ * Parallax effect on scroll
  */
 function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
+  const imageRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Parallax effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (imageRef.current && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const scrollProgress = -rect.top;
+        const parallaxSpeed = 0.3;
+        const offset = scrollProgress * parallaxSpeed;
+        imageRef.current.style.transform = `translateY(${offset}px) scale(1.1)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Aspect ratio: 1348px / 751px ≈ 1.794
   const aspectRatio = 1348 / 751;
 
@@ -90,66 +68,73 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
       {/* Rounded Image Container */}
       {image && (
         <div 
-          className="relative w-[90%] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg mx-auto"
+          ref={containerRef}
+          className="relative w-[90%] rounded-2xl sm:rounded-3xl overflow-hidden mx-auto"
           style={{
             aspectRatio: aspectRatio,
           }}
         >
-          {/* Background Image */}
-          <Image
-            src={image}
-            alt=""
-            fill
-            className="object-cover"
-            priority
-            sizes="90vw"
-          />
+          {/* Background Image with Parallax */}
+          <div 
+            ref={imageRef}
+            className="absolute inset-0 will-change-transform"
+            style={{ transform: 'translateY(0) scale(1.1)' }}
+          >
+            <Image
+              src={image}
+              alt=""
+              fill
+              className="object-cover"
+              priority
+              sizes="90vw"
+            />
+          </div>
 
           {/* Text and Button Overlay - Top Left */}
           <div className="absolute inset-0 z-10 flex items-start">
-            <div className="px-6 sm:px-8 lg:px-12 xl:px-16 pt-8 sm:pt-12 lg:pt-16 xl:pt-20">
+            <div style={{ paddingLeft: '118px', paddingTop: '106px' }}>
               <div className="max-w-2xl space-y-6 sm:space-y-8">
                 {/* Heading */}
-                <h1 className="font-literata-light text-white text-[64px] leading-tight">
+                <h1 className="font-literata-light text-white text-[64px] leading-[1.1] tracking-[-0.02em]">
                   {heading}
                 </h1>
 
-                  {/* CTA Button */}
-                  {linkLabel && linkUrl && (
-                    <div className="pt-2 sm:pt-4">
-                      <a
-                        href={linkUrl}
-                        className="inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy rounded"
-                        aria-label={linkLabel}
-                      >
-                        <span>{linkLabel}</span>
-                        <Image
-                          src="/btn_arrow.svg"
-                          alt=""
-                          width={24}
-                          height={24}
-                          className="flex-shrink-0"
-                          aria-hidden="true"
-                        />
-                      </a>
-                    </div>
-                  )}
-                </div>
+                {/* CTA Button */}
+                {linkLabel && linkUrl && (
+                  <div className="pt-2 sm:pt-4">
+                    <a
+                      href={linkUrl}
+                      className="inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-colors duration-200 rounded"
+                      aria-label={linkLabel}
+                    >
+                      <span>{linkLabel}</span>
+                      <Image
+                        src="/btn_arrow.svg"
+                        alt=""
+                        width={24}
+                        height={24}
+                        className="flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
-
-            {/* Scroll Indicator - Bottom Center */}
-            <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-              <Image
-                src="/down_arrow.svg"
-                alt="Scroll down"
-                width={56}
-                height={21}
-                className="w-12 sm:w-14 h-auto"
-              />
-            </div>
           </div>
-        )}
+
+          {/* Scroll Indicator - Bottom Center */}
+          <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+            <Image
+              src="/down_arrow.svg"
+              alt="Scroll down"
+              width={56}
+              height={21}
+              className="w-12 sm:w-14 h-auto"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -196,7 +181,7 @@ function VectorDesignHero({ heading, linkLabel, linkUrl }) {
           </div>
         </div>
 
-        {/* Blurred Background Image Layer (optional, can be added if provided in PocketBase) */}
+        {/* Blurred Background Image Layer */}
         <div className="absolute left-[12%] sm:left-[15%] right-0 top-0 bottom-0 z-[2] opacity-20">
           <div className="w-full h-full bg-gradient-to-br from-sand/30 to-navy/10" />
         </div>
@@ -213,7 +198,7 @@ function VectorDesignHero({ heading, linkLabel, linkUrl }) {
               <div className="pt-4">
                 <a
                   href={linkUrl}
-                  className="inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2 focus:ring-offset-white rounded"
+                  className="inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-colors duration-200 rounded"
                   aria-label={linkLabel}
                 >
                   <span>{linkLabel}</span>
