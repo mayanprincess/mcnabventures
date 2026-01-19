@@ -9,6 +9,7 @@ import PrimaryHero from '@/components/sections/PrimaryHero';
 import MissionStatement from '@/components/sections/MissionStatement';
 import OurPartners from '@/components/sections/OurPartners';
 import GroupSnapshot from '@/components/sections/GroupSnapshot';
+import FeaturedExperiences from '@/components/sections/FeaturedExperiences';
 
 export default function Home() {
   return (
@@ -21,6 +22,9 @@ export default function Home() {
 
       {/* Group Snapshot Section */}
       <GroupSnapshot />
+
+      {/* Featured Experiences Section */}
+      <FeaturedExperiences />
 
       {/* Our Partners Section */}
       <OurPartners />
