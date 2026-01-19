@@ -45,33 +45,31 @@ export default function Footer() {
       aria-label="Site footer"
     >
       {/* Decorative Vectors - Background Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Vector 1 - Upper wave (sand color) - screen width x 466 */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Vector 1 - Upper wave */}
         <div 
-          className="absolute w-full right-0"
-          style={{ top: '40%' }}
+          className="absolute w-[120%] -left-[10%]"
+          style={{ top: '35%' }}
         >
           <Image
             src="/logos/footer_vector_1.svg"
             alt=""
-            width={1440}
+            width={1728}
             height={466}
-            className="w-full h-[466px] opacity-20"
-            style={{ objectFit: 'cover' }}
+            className="w-full h-auto opacity-15"
           />
         </div>
-        {/* Vector 2 - Lower wave (sand color) - screen width x 373 */}
+        {/* Vector 2 - Lower wave */}
         <div 
-          className="absolute w-full left-0"
-          style={{ bottom: '-30px' }}
+          className="absolute w-[120%] -left-[10%]"
+          style={{ bottom: '-100px' }}
         >
           <Image
             src="/logos/footer_vector_2.svg"
             alt=""
-            width={1520}
+            width={1728}
             height={373}
-            className="w-full h-[373px] opacity-20"
-            style={{ objectFit: 'cover' }}
+            className="w-full h-auto opacity-15"
           />
         </div>
       </div>
@@ -79,14 +77,14 @@ export default function Footer() {
       {/* Large Background Logo - Bottom Center */}
       <div 
         className="absolute left-1/2 transform -translate-x-1/2 z-[1]"
-        style={{ bottom: '-80px' }}
+        style={{ bottom: '0px' }}
       >
         <Image
           src="/logos/mcnab_logo.svg"
           alt=""
-          width={373}
-          height={540}
-          className="w-[373px] h-[540px] opacity-90"
+          width={400}
+          height={580}
+          className="w-[320px] sm:w-[360px] lg:w-[400px] h-auto opacity-80"
         />
       </div>
 

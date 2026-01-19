@@ -18,3 +18,5 @@ export { default as MissionStatement } from './MissionStatement';
 export { default as OurPartners } from './OurPartners';
 export { default as GroupSnapshot } from './GroupSnapshot';
 export { default as FeaturedExperiences } from './FeaturedExperiences';
+export { default as Diversified } from './Diversified';
+export { default as VideoPlayer } from './VideoPlayer';

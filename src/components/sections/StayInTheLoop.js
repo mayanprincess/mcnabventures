@@ -49,7 +49,7 @@ const newsItems = [
   }
 ];
 
-export default function StayInTheLoop({ items = newsItems }) {
+export default function StayInTheLoop({ items = newsItems, title = 'Stay in the Loop' }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     slidesToScroll: 1,
@@ -108,7 +108,7 @@ export default function StayInTheLoop({ items = newsItems }) {
             id="stay-in-loop-heading"
             className="font-literata-light text-navy text-[36px] sm:text-[42px] lg:text-[48px]"
           >
-            Stay in the Loop
+            {title}
           </h2>
           
           <Link
