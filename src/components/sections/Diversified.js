@@ -50,7 +50,7 @@ export default function Diversified({
 
           {/* Text Overlay */}
           <div className="absolute inset-0 flex items-start justify-center pt-12 sm:pt-16 lg:pt-20">
-            <h2 className="font-literata-light-italic text-navy text-center text-[28px] sm:text-[36px] lg:text-[42px] leading-[1.3] max-w-md px-4">
+            <h2 className="font-literata-light text-navy text-center text-[28px] sm:text-[36px] lg:text-[42px] leading-[1.3] max-w-md px-4">
               {title}
             </h2>
           </div>

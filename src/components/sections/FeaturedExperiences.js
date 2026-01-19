@@ -35,7 +35,7 @@ export default function FeaturedExperiences({
             className="bg-navy flex items-center justify-center p-4"
             style={{ gridColumn: '1 / 3', gridRow: '1 / 2' }}
           >
-            <span className="font-literata-light-italic text-white text-xl lg:text-2xl text-center">
+            <span className="font-literata-light text-white text-xl lg:text-2xl text-center">
               Beachfront getaways
             </span>
           </div>
@@ -93,7 +93,7 @@ export default function FeaturedExperiences({
             className="bg-gold flex items-center justify-center p-4"
             style={{ gridColumn: '4 / 6', gridRow: '2 / 3' }}
           >
-            <span className="font-literata-light-italic text-white text-xl lg:text-2xl text-center">
+            <span className="font-literata-light text-white text-xl lg:text-2xl text-center">
               From Land to sea
             </span>
           </div>
@@ -111,7 +111,7 @@ export default function FeaturedExperiences({
             className="bg-turquoise flex items-center justify-center p-4"
             style={{ gridColumn: '4 / 5', gridRow: '3 / 4' }}
           >
-            <span className="font-literata-light-italic text-navy text-xl lg:text-2xl text-center leading-tight">
+            <span className="font-literata-light text-navy text-xl lg:text-2xl text-center leading-tight">
               Connecting<br />the world
             </span>
           </div>
@@ -135,7 +135,7 @@ export default function FeaturedExperiences({
             className="bg-gold flex items-end justify-start p-4"
             style={{ gridColumn: '1 / 2', gridRow: '4 / 6' }}
           >
-            <span className="font-literata-light-italic text-white text-xl lg:text-2xl leading-tight">
+            <span className="font-literata-light text-white text-xl lg:text-2xl leading-tight">
               Discover<br />Roatan
             </span>
           </div>
@@ -158,7 +158,7 @@ export default function FeaturedExperiences({
             className="bg-sand flex items-center justify-center p-4"
             style={{ gridColumn: '3 / 4', gridRow: '4 / 5' }}
           >
-            <span className="font-literata-light-italic text-navy text-xl lg:text-2xl text-center leading-tight">
+            <span className="font-literata-light text-navy text-xl lg:text-2xl text-center leading-tight">
               Sustainable<br />Fishing
             </span>
           </div>
@@ -203,7 +203,7 @@ export default function FeaturedExperiences({
             className="bg-sand flex items-center justify-center p-4"
             style={{ gridColumn: '5 / 7', gridRow: '5 / 6' }}
           >
-            <span className="font-literata-light-italic text-navy text-xl lg:text-2xl text-center">
+            <span className="font-literata-light text-navy text-xl lg:text-2xl text-center">
               Fuel for our island
             </span>
           </div>

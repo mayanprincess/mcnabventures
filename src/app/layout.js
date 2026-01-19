@@ -8,7 +8,7 @@ import { HeaderProvider } from "@/context/HeaderContext";
 const fustat = Fustat({
   variable: "--font-fustat",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"], // Light to ExtraBold
+  weight: [ "200", "300", "400", "500", "600", "700", "800"], // Light to ExtraBold
 });
 
 // Literata for headings (Light & Medium)
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${fustat.variable} ${literata.variable} ${workSans.variable} antialiased font-fustat`}
+        className={`${fustat.variable} ${literata.variable} ${workSans.variable} antialiased`}
       >
         <HeaderProvider>
           <Header />

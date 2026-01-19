@@ -23,7 +23,7 @@ export default function PrimaryHero({ content = heroContent }) {
 
   return (
     <section 
-      className="relative w-full h-screen overflow-hidden"
+      className="relative w-full h-[50vh] overflow-hidden"
       aria-labelledby="primary-hero-heading"
     >
       {/* Background Video */}
@@ -44,11 +44,11 @@ export default function PrimaryHero({ content = heroContent }) {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-center h-full px-6 sm:px-12 lg:px-20 xl:px-32 pt-20">
-        <div className="max-w-4xl">
+        <div className="max-w-5xl">
           {/* Heading */}
           <h1 
             id="primary-hero-heading"
-            className="font-literata-light text-white text-[40px] sm:text-[56px] lg:text-[72px] xl:text-[80px] leading-[1.1] mb-8 sm:mb-10 whitespace-pre-line"
+            className="font-literata font-extralight text-white text-[40px] sm:text-[56px] lg:text-[72px] xl:text-[80px] leading-[1.1] mb-8 sm:mb-10 whitespace-pre-line"
           >
             {content.heading}
           </h1>

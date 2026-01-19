@@ -19,8 +19,8 @@ export default function MissionStatement() {
       {/* Content */}
       <div className="container mx-auto px-6 sm:px-12 lg:px-20 pt-16 sm:pt-20 lg:pt-24">
         <div className="relative z-10 flex justify-end">
-          <div className="max-w-xl lg:max-w-2xl text-center lg:text-right">
-            <p className="font-literata-light-italic text-navy text-[20px] sm:text-[24px] lg:text-[28px] leading-[1.5]">
+          <div className="max-w-xl text-center lg:text-right">
+            <p className="font-literata font-medium text-navy text-[20px] sm:text-[24px] lg:text-[28px] leading-[1.5]">
               Driving the economic growth of{' '}
               <span className="text-turquoise">our region</span>,{' '}
               fostering the well-being of{' '}
