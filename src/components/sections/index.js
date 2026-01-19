@@ -15,3 +15,5 @@ export { default as GetHighlights } from './GetHighlights';
 export { default as OurJourney } from './OurJourney';
 export { default as PrimaryHero } from './PrimaryHero';
 export { default as MissionStatement } from './MissionStatement';
+export { default as OurPartners } from './OurPartners';
+export { default as GroupSnapshot } from './GroupSnapshot';
