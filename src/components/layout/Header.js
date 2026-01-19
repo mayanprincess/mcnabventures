@@ -20,10 +20,10 @@ export default function Header() {
 
   const navigationItems = [
     { label: 'About Us', href: '/about-us' },
-    { label: 'Group', href: '/group' },
-    { label: 'Our Impact', href: '/our-impact' },
+    { label: 'Group', href: '/group/mayan-princess' },
+    { label: 'Our Impact', href: '/#our-impact' },
     { label: 'Experiences', href: '/experiences' },
-    { label: 'Careers', href: '/careers' },
+    { label: 'Careers', href: '/#careers' },
   ];
 
   const toggleMobileMenu = () => {
