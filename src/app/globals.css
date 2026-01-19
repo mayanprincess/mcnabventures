@@ -22,6 +22,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-fustat: var(--font-fustat);
   --font-heading: var(--font-literata);
   --font-body: var(--font-work-sans);
   
@@ -50,7 +51,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-work-sans), sans-serif;
+  font-family: var(--font-fustat), sans-serif;
 }
 
 /* Typography */
@@ -83,6 +84,41 @@ h1, h2, h3, h4, h5, h6 {
 
 .font-work-sans-extrabold {
   font-family: var(--font-work-sans), sans-serif;
+  font-weight: 800;
+}
+
+/* Fustat - Main Font */
+.font-fustat {
+  font-family: var(--font-fustat), sans-serif;
+}
+
+.font-fustat-light {
+  font-family: var(--font-fustat), sans-serif;
+  font-weight: 300;
+}
+
+.font-fustat-regular {
+  font-family: var(--font-fustat), sans-serif;
+  font-weight: 400;
+}
+
+.font-fustat-medium {
+  font-family: var(--font-fustat), sans-serif;
+  font-weight: 500;
+}
+
+.font-fustat-semibold {
+  font-family: var(--font-fustat), sans-serif;
+  font-weight: 600;
+}
+
+.font-fustat-bold {
+  font-family: var(--font-fustat), sans-serif;
+  font-weight: 700;
+}
+
+.font-fustat-extrabold {
+  font-family: var(--font-fustat), sans-serif;
   font-weight: 800;
 }
 

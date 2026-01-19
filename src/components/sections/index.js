@@ -14,3 +14,4 @@ export { default as WhoWeAre } from './WhoWeAre';
 export { default as GetHighlights } from './GetHighlights';
 export { default as OurJourney } from './OurJourney';
 export { default as PrimaryHero } from './PrimaryHero';
+export { default as MissionStatement } from './MissionStatement';
