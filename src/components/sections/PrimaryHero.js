@@ -3,16 +3,9 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { useHeader } from '@/context/HeaderContext';
+import { primaryHeroData } from '@/data';
 
-// Hero content - replace with actual data from PocketBase
-const heroContent = {
-  heading: 'Heart in Roatan,\nvision in Central America',
-  primaryButton: { label: 'Discover our companies', href: '/companies' },
-  secondaryButton: { label: 'Explore Our Industries', href: '/industries' },
-  videoSrc: '/experience-jamaica.mp4',
-};
-
-export default function PrimaryHero({ content = heroContent }) {
+export default function PrimaryHero({ content = primaryHeroData }) {
   const { setIsTransparent } = useHeader();
 
   // Set header to transparent when this component mounts

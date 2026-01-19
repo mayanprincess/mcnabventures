@@ -3,49 +3,12 @@
 import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
+import { groupSnapshotData, companyLogosData } from '@/data';
 
-// Company logos for the bottom section
-const companyLogos = [
-  { name: 'Mayan Princess', logo: '/logos/empresas/mayanprincess.svg', width: 120, height: 80 },
-  { name: 'Turquoise Bay', logo: '/logos/empresas/turq.svg', width: 100, height: 80 },
-  { name: 'Acqua di Mare Resort', logo: '/logos/empresas/acqua.svg', width: 140, height: 70 },
-  { name: 'Galaxy Wave', logo: '/logos/empresas/galaxywave.svg', width: 100, height: 50 },
-  { name: 'CM Airlines', logo: '/logos/empresas/cmairlines.svg', width: 140, height: 40 },
-  { name: 'Petroa', logo: '/logos/empresas/petroa.svg', width: 100, height: 50 },
-];
-
-// Sample slides data - replace with PocketBase data
-const sampleSlides = [
-  {
-    id: 1,
-    mainImage: '/placeholder-resort.jpg',
-    circleImage: '/placeholder-person.jpg',
-    badge: 'Group Snapshot',
-    title: 'Tourism & Hospitality',
-    description: 'Creating world-class stays and memorable getaways.',
-    highlights: [
-      'Mayan Princess',
-      'Las Sirenas',
-      'Acqua di Mare',
-      'Turquoise Bay',
-    ],
-  },
-  {
-    id: 2,
-    mainImage: '/placeholder-resort-2.jpg',
-    circleImage: '/placeholder-person-2.jpg',
-    badge: 'Group Snapshot',
-    title: 'Aviation & Transport',
-    description: 'Connecting communities across Central America.',
-    highlights: [
-      'CM Airlines',
-      'Galaxy Wave',
-      'Air Services',
-    ],
-  },
-];
-
-export default function GroupSnapshot({ slides = sampleSlides }) {
+export default function GroupSnapshot({ 
+  slides = groupSnapshotData.slides,
+  companyLogos = companyLogosData 
+}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState([]);

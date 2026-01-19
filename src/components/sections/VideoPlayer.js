@@ -2,10 +2,11 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
+import { videoPlayerData } from '@/data';
 
 export default function VideoPlayer({
-  videoSrc = '/imagenes/featured_video.mp4',
-  posterImage = '/imagenes/video.png',
+  videoSrc = videoPlayerData.videoSrc,
+  posterImage = videoPlayerData.posterImage,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);

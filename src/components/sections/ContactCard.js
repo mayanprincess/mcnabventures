@@ -2,28 +2,19 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-
-// Social media icons configuration
-const socialLinks = [
-  { name: 'Instagram', icon: '/iconos/social/instagram.svg', href: '#' },
-  { name: 'X', icon: '/iconos/social/x.svg', href: '#' },
-  { name: 'WhatsApp', icon: '/iconos/social/whatsapp.svg', href: '#' },
-  { name: 'Facebook', icon: '/iconos/social/facebook.svg', href: '#' },
-  { name: 'YouTube', icon: '/iconos/social/youtube.svg', href: '#' },
-  { name: 'LinkedIn', icon: '/iconos/social/linkedin.svg', href: '#' },
-];
+import { contactCardData } from '@/data';
 
 export default function ContactCard({
-  title = 'Contact Card',
-  contactType = 'Press Contact',
-  name = 'María Fernanda López',
-  position = 'Director of Corporate Communications',
-  email = 'press@cmayanpricess.hn',
-  phone = '+504 2200-5500 ext. 340',
-  website = 'www.mayanprincess.hn',
-  address = '1234 Aviation Way, Tegucigalpa, Honduras',
-  image = '/placeholder-contact.jpg',
-  socials = socialLinks,
+  title = contactCardData.title,
+  contactType = contactCardData.contactType,
+  name = contactCardData.name,
+  position = contactCardData.position,
+  email = contactCardData.email,
+  phone = contactCardData.phone,
+  website = contactCardData.website,
+  address = contactCardData.address,
+  image = contactCardData.image,
+  socials = contactCardData.socialLinks,
 }) {
   return (
     <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">

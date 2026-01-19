@@ -45,11 +45,11 @@ export default function Header() {
           {/* Logo */}
           <Link 
             href="/" 
-            className="flex items-center focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2 rounded"
+            className="flex items-center outline-none"
             aria-label="MCNAB VENTURES Home"
           >
             <Image
-              src={isTransparent ? "/logos/mcnab_logo_white.svg" : "/logos/Logo.svg"}
+              src={isTransparent ? '/logos/mcnab_logo_white.svg' : '/logos/Logo.svg'}
               alt="MCNAB VENTURES Logo"
               width={120}
               height={52}
@@ -64,10 +64,10 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded px-2 py-1 ${
+                className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-1 ${
                   isTransparent 
-                    ? 'text-white hover:text-turquoise focus:ring-white' 
-                    : 'text-navy hover:text-turquoise focus:ring-navy'
+                    ? 'text-white hover:text-turquoise' 
+                    : 'text-navy hover:text-turquoise'
                 }`}
                 aria-label={`Navigate to ${item.label}`}
               >
@@ -124,10 +124,10 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`font-work-sans-medium text-base uppercase tracking-wide transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded px-2 py-2 ${
+                  className={`font-work-sans-medium text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-2 ${
                     isTransparent 
-                      ? 'text-white hover:text-turquoise focus:ring-white' 
-                      : 'text-navy hover:text-turquoise focus:ring-navy'
+                      ? 'text-white hover:text-turquoise' 
+                      : 'text-navy hover:text-turquoise'
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   role="menuitem"

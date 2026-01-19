@@ -1,11 +1,12 @@
 import Image from 'next/image';
+import { whoWeAreData } from '@/data';
 
 export default function WhoWeAre({
-  badge = 'WHO WE ARE',
-  titlePart1 = 'Experience crystal-clear waters, world-class diving, and the warmth of Honduran hospitality at',
-  titleHighlight = 'Mayan Princess Beach & Dive Resort.',
-  description = 'As a proud member of a diversified corporate group, we leverage shared expertise and resources while maintaining our focus on domestic connectivity.',
-  logo = '/placeholder-logo.png',
+  badge = whoWeAreData.badge,
+  titlePart1 = whoWeAreData.titlePart1,
+  titleHighlight = whoWeAreData.titleHighlight,
+  description = whoWeAreData.description,
+  logo = whoWeAreData.logo,
 }) {
   return (
     <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">
@@ -33,14 +34,14 @@ export default function WhoWeAre({
           </span>
 
           {/* Title */}
-          <h2 className="font-literata-light-italic text-[28px] sm:text-[32px] lg:text-[36px] leading-snug mb-6">
+          <h2 className="font-fustat-medium text-[28px] sm:text-[32px] lg:text-[36px] leading-snug mb-6">
             <span className="text-navy">{titlePart1}</span>
             <br />
             <span className="text-turquoise">{titleHighlight}</span>
           </h2>
 
           {/* Description */}
-          <p className="font-work-sans text-navy/80 text-[20px] sm:text-[22px] lg:text-[24px] leading-relaxed max-w-2xl ml-auto">
+          <p className="font-fustat-medium text-navy/80 text-[20px] sm:text-[22px] lg:text-[24px] leading-relaxed max-w-2xl ml-auto">
             {description}
           </p>
         </div>

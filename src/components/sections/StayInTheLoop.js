@@ -4,52 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
+import { stayInTheLoopData } from '@/data';
 
-// Sample news data - replace with actual data from PocketBase
-const newsItems = [
-  {
-    id: 1,
-    category: 'Galaxy Wave',
-    title: 'Galaxy Wave Expands Service Between Roatán and Utila',
-    date: 'September 24, 2025',
-    image: '/placeholder-news-1.jpg',
-    href: '/news/galaxy-wave-expands-service'
-  },
-  {
-    id: 2,
-    category: 'Galaxy Wave',
-    title: 'Updated Departure Times for the Holiday Season',
-    date: 'October 15, 2025',
-    image: '/placeholder-news-2.jpg',
-    href: '/news/updated-departure-times'
-  },
-  {
-    id: 3,
-    category: 'Galaxy Wave',
-    title: 'Schedule Adjustments During Weather Conditions',
-    date: 'November 10, 2025',
-    image: '/placeholder-news-3.jpg',
-    href: '/news/schedule-adjustments'
-  },
-  {
-    id: 4,
-    category: 'Galaxy Wave',
-    title: 'Top Things to Do When You Arrive in Roatán',
-    date: 'November 10, 2025',
-    image: '/placeholder-news-4.jpg',
-    href: '/news/top-things-roatan'
-  },
-  {
-    id: 5,
-    category: 'Galaxy Wave',
-    title: 'New Routes Coming Soon',
-    date: 'December 1, 2025',
-    image: '/placeholder-news-5.jpg',
-    href: '/news/new-routes'
-  }
-];
-
-export default function StayInTheLoop({ items = newsItems, title = 'Stay in the Loop' }) {
+export default function StayInTheLoop({ 
+  items = stayInTheLoopData.items, 
+  title = stayInTheLoopData.title 
+}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     slidesToScroll: 1,
@@ -113,7 +73,7 @@ export default function StayInTheLoop({ items = newsItems, title = 'Stay in the 
           
           <Link
             href="/news"
-            className="inline-flex items-center gap-3 bg-navy text-white px-6 py-3 rounded-full font-work-sans-medium text-sm hover:bg-opacity-90 transition-colors duration-300 w-fit"
+            className="inline-flex items-center justify-center gap-3 bg-navy text-white rounded-full font-work-sans-medium text-sm hover:bg-opacity-90 transition-colors duration-300 w-[186px] h-[59px]"
           >
             View All News
             <Image
@@ -127,14 +87,17 @@ export default function StayInTheLoop({ items = newsItems, title = 'Stay in the 
         </div>
 
         {/* Carousel */}
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-6">
+        <div className="overflow-visible" ref={emblaRef}>
+          <div className="flex gap-6 py-4 -my-4">
             {items.map((item) => (
               <article
                 key={item.id}
-                className="flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[320px]"
+                className="flex-shrink-0 w-[350px] h-[409px]"
               >
-                <Link href={item.href} className="block group">
+                <Link 
+                  href={item.href} 
+                  className="block group rounded-2xl p-4 h-full transition-shadow duration-300 hover:shadow-[0px_8px_16px_-8px_#00000024,0px_13px_27px_-5px_#32325D17]"
+                >
                   {/* Image */}
                   <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-gray-100">
                     <Image
@@ -148,13 +111,13 @@ export default function StayInTheLoop({ items = newsItems, title = 'Stay in the 
                   
                   {/* Content */}
                   <div className="space-y-2">
-                    <span className="font-work-sans-medium text-turquoise text-xs uppercase tracking-wide">
+                    <span className="font-fustat-extrabold text-[#6E6E73] text-xs uppercase tracking-wide">
                       {item.category}
                     </span>
-                    <h3 className="font-work-sans-semibold text-navy text-lg leading-snug group-hover:text-turquoise transition-colors duration-300">
+                    <h3 className="font-fustat-extrabold text-navy text-lg leading-snug mb-8">
                       {item.title}
                     </h3>
-                    <p className="font-work-sans text-gray-500 text-sm">
+                    <p className="font-fustat-extrabold text-[#6E6E73] text-sm">
                       {item.date}
                     </p>
                   </div>
@@ -172,11 +135,10 @@ export default function StayInTheLoop({ items = newsItems, title = 'Stay in the 
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
-                  index === selectedIndex 
-                    ? 'bg-turquoise' 
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
+                className="w-2.5 h-2.5 rounded-full transition-colors duration-300"
+                style={{ 
+                  backgroundColor: index === selectedIndex ? '#CB9763' : '#D2D2D7' 
+                }}
                 aria-label={`Go to slide ${index + 1}`}
                 aria-current={index === selectedIndex ? 'true' : 'false'}
               />
@@ -188,49 +150,39 @@ export default function StayInTheLoop({ items = newsItems, title = 'Stay in the 
             <button
               onClick={scrollPrev}
               disabled={prevBtnDisabled}
-              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+              className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
                 prevBtnDisabled
-                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
-                  : 'border-navy text-navy hover:bg-navy hover:text-white'
+                  ? 'bg-sand/40 cursor-not-allowed opacity-50'
+                  : 'bg-sand/70 hover:bg-sand'
               }`}
               aria-label="Previous slides"
             >
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2"
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
+              <Image
+                src="/iconos/chevron_left.svg"
+                alt=""
+                width={14}
+                height={28}
+                className="w-[10px] h-[20px]"
+              />
             </button>
             
             <button
               onClick={scrollNext}
               disabled={nextBtnDisabled}
-              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+              className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
                 nextBtnDisabled
-                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
-                  : 'border-navy text-navy hover:bg-navy hover:text-white'
+                  ? 'bg-sand/40 cursor-not-allowed opacity-50'
+                  : 'bg-sand/70 hover:bg-sand'
               }`}
               aria-label="Next slides"
             >
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2"
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
+              <Image
+                src="/iconos/chevron_right.svg"
+                alt=""
+                width={14}
+                height={28}
+                className="w-[10px] h-[20px]"
+              />
             </button>
           </div>
         </div>

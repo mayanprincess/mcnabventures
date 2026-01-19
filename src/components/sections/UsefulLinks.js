@@ -1,18 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { usefulLinksData } from '@/data';
 
-const usefulLinksData = [
-  { label: 'Flight Deals', href: '/flight-deals', icon: '/iconos/etiqueta.svg' },
-  { label: 'Route Map', href: '/route-map', icon: '/iconos/location.svg' },
-  { label: 'Cargo Services', href: '/cargo-services', icon: '/iconos/box.svg' },
-  { label: 'Our Fleet', href: '/our-fleet', icon: '/iconos/flight.svg' },
-  { label: 'Baggage Policy', href: '/baggage-policy', icon: '/iconos/bag.svg' },
-  { label: 'Check-in', href: '/check-in', icon: '/iconos/check.svg' },
-  { label: 'Travel Tips', href: '/travel-tips', icon: '/iconos/idea.svg' },
-  { label: 'FAQs', href: '/faqs', icon: '/iconos/question.svg' },
-];
-
-export default function UsefulLinks({ links = usefulLinksData }) {
+export default function UsefulLinks({ links = usefulLinksData.links }) {
   return (
     <section 
       className="w-full bg-white py-12 sm:py-16 lg:py-20"

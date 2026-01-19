@@ -9,32 +9,37 @@ import Link from 'next/link';
  * @component
  */
 export default function Footer() {
-  // Static footer data
+  // Static data - no API needed
+  const logo = '/logos/mcnab_logo_text.svg';
+  const logoLarge = '/logos/mcnab_logo.svg';
+  const vector1 = '/logos/footer_vector_1.svg';
+  const vector2 = '/logos/footer_vector_2.svg';
+
   const aboutUsLinks = [
-    { label: 'Lorem Ipsum', url: '#' },
-    { label: 'Dolor Sit Amet', url: '#' },
-    { label: 'Consectetur', url: '#' },
-    { label: 'Adipiscing Elit', url: '#' },
+    { label: 'Our Story', url: '/about-us' },
+    { label: 'Leadership', url: '/leadership' },
+    { label: 'Mission & Values', url: '/mission' },
+    { label: 'Sustainability', url: '/sustainability' },
   ];
 
   const companyLinks = [
-    { label: 'Sed do Eiusmod', url: '#' },
-    { label: 'Tempor incididunt', url: '#' },
-    { label: 'Labore et Dolore', url: '#' },
-    { label: 'Magna Aliqua', url: '#' },
+    { label: 'Tourism', url: '/industries/tourism' },
+    { label: 'Aviation', url: '/industries/aviation' },
+    { label: 'Energy', url: '/industries/energy' },
+    { label: 'Real Estate', url: '/industries/real-estate' },
   ];
 
   const careersLinks = [
-    { label: 'Ut Enim Ad Minim', url: '#' },
-    { label: 'Veniam, Quis Nostrud', url: '#' },
-    { label: 'Exercitation Ullamco', url: '#' },
-    { label: 'Laboris Nisi ut Aliquip', url: '#' },
+    { label: 'Open Positions', url: '/careers' },
+    { label: 'Benefits', url: '/careers/benefits' },
+    { label: 'Culture', url: '/careers/culture' },
+    { label: 'Internships', url: '/careers/internships' },
   ];
 
   const socialLinks = [
-    { platform: 'linkedin', url: '#' },
-    { platform: 'twitter', url: '#' },
-    { platform: 'facebook', url: '#' },
+    { platform: 'linkedin', url: 'https://linkedin.com/company/mcnabventures' },
+    { platform: 'twitter', url: 'https://twitter.com/mcnabventures' },
+    { platform: 'facebook', url: 'https://facebook.com/mcnabventures' },
   ];
 
   return (
@@ -52,7 +57,7 @@ export default function Footer() {
           style={{ top: '35%' }}
         >
           <Image
-            src="/logos/footer_vector_1.svg"
+            src={vector1}
             alt=""
             width={1728}
             height={466}
@@ -65,7 +70,7 @@ export default function Footer() {
           style={{ bottom: '-100px' }}
         >
           <Image
-            src="/logos/footer_vector_2.svg"
+            src={vector2}
             alt=""
             width={1728}
             height={373}
@@ -80,7 +85,7 @@ export default function Footer() {
         style={{ bottom: '0px' }}
       >
         <Image
-          src="/logos/mcnab_logo.svg"
+            src={logoLarge}
           alt=""
           width={400}
           height={580}
@@ -99,7 +104,7 @@ export default function Footer() {
               aria-label="MCNAB VENTURES Home"
             >
               <Image
-                src="/logos/mcnab_logo_text.svg"
+                src={logo}
                 alt="MCNAB VENTURES"
                 width={166}
                 height={174}

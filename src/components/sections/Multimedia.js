@@ -2,29 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { multimediaData } from '@/data';
 
-// Sample data - replace with actual data from PocketBase
-const samplePhotos = [
-  { id: 1, src: '/placeholder-1.jpg', alt: 'Aerial beach view', size: 'large' },
-  { id: 2, src: '/placeholder-2.jpg', alt: 'Gourmet food', size: 'small' },
-  { id: 3, src: '/placeholder-3.jpg', alt: 'Beautiful woman', size: 'tall' },
-  { id: 4, src: '/placeholder-4.jpg', alt: 'Beach float', size: 'small' },
-  { id: 5, src: '/placeholder-5.jpg', alt: 'Friends dining', size: 'small' },
-  { id: 6, src: '/placeholder-6.jpg', alt: 'Beach cabana', size: 'medium' },
-  { id: 7, src: '/placeholder-7.jpg', alt: 'Tropical drinks', size: 'small' },
-];
-
-const sampleVideos = [
-  { id: 1, src: '/placeholder-video-1.jpg', alt: 'Resort tour', size: 'large', isVideo: true },
-  { id: 2, src: '/placeholder-video-2.jpg', alt: 'Water activities', size: 'small', isVideo: true },
-  { id: 3, src: '/placeholder-video-3.jpg', alt: 'Dining experience', size: 'tall', isVideo: true },
-  { id: 4, src: '/placeholder-video-4.jpg', alt: 'Sunset timelapse', size: 'small', isVideo: true },
-  { id: 5, src: '/placeholder-video-5.jpg', alt: 'Island hopping', size: 'small', isVideo: true },
-  { id: 6, src: '/placeholder-video-6.jpg', alt: 'Snorkeling', size: 'medium', isVideo: true },
-  { id: 7, src: '/placeholder-video-7.jpg', alt: 'Beach walk', size: 'small', isVideo: true },
-];
-
-export default function Multimedia({ photos = samplePhotos, videos = sampleVideos }) {
+export default function Multimedia({ 
+  photos = multimediaData.photos, 
+  videos = multimediaData.videos 
+}) {
   const [activeTab, setActiveTab] = useState('photos');
   const currentData = activeTab === 'photos' ? photos : videos;
 

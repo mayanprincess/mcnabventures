@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import { featuredExperiencesData } from '@/data';
 
 export default function FeaturedExperiences({
-  title = 'Featured experiences',
-  description = 'Our team covers a bunch of different industries, offering solutions that impact all aspects of life — from travel and tourism to energy and telecom.',
+  title = featuredExperiencesData.title,
+  description = featuredExperiencesData.description,
 }) {
   return (
     <section className="w-full bg-white py-16 sm:py-20 lg:py-24">

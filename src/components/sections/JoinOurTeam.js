@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { joinOurTeamData } from '@/data';
 
 export default function JoinOurTeam({
-  title = 'Join Our Team',
-  description = 'Our success comes from passionate people who drive change and deliver excellence.',
-  buttonText = 'Explore Our Positions',
-  buttonHref = '/careers',
-  image = '/placeholder-team.jpg',
+  title = joinOurTeamData.title,
+  description = joinOurTeamData.description,
+  buttonText = joinOurTeamData.buttonText,
+  buttonHref = joinOurTeamData.buttonHref,
+  image = joinOurTeamData.image,
 }) {
   return (
     <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">

@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import { diversifiedData } from '@/data';
 
 export default function Diversified({
-  title = 'Diversified businesses with a focus on tourism.',
-  image = '/imagenes/diversified1.jpg',
+  title = diversifiedData.title,
+  image = diversifiedData.image,
 }) {
   return (
     <section className="w-full py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden">

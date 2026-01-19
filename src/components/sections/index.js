@@ -20,3 +20,4 @@ export { default as GroupSnapshot } from './GroupSnapshot';
 export { default as FeaturedExperiences } from './FeaturedExperiences';
 export { default as Diversified } from './Diversified';
 export { default as VideoPlayer } from './VideoPlayer';
+export { default as DrivenByProgress } from './DrivenByProgress';

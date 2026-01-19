@@ -1,32 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-
-// Partner logos configuration
-const partners = [
-  {
-    name: 'Roatan Events',
-    logo: '/re.svg',
-    width: 158,
-    height: 33,
-  },
-  {
-    name: 'Margaritaville Hotels & Resorts',
-    logo: '/mv.svg',
-    width: 158,
-    height: 41,
-  },
-  {
-    name: 'Bitel',
-    logo: '/bitel1.svg',
-    width: 97,
-    height: 40,
-  },
-];
+import { ourPartnersData } from '@/data';
 
 export default function OurPartners({
-  badge = 'Our Partners',
-  title = 'Strong partnerships, stronger results.',
+  badge = ourPartnersData.badge,
+  title = ourPartnersData.title,
+  partners = ourPartnersData.partners,
 }) {
   return (
     <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">

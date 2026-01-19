@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import { missionStatementData } from '@/data';
 
-export default function MissionStatement() {
+export default function MissionStatement({ data = missionStatementData }) {
+  const { content } = data;
   return (
     <section className="relative bg-white min-h-[500px] sm:min-h-[550px] lg:min-h-[600px] overflow-visible flex items-center">
       {/* Vector decoration - top left, positioned to overflow */}
@@ -21,13 +23,13 @@ export default function MissionStatement() {
         <div className="relative z-10 flex justify-end">
           <div className="max-w-xl text-center lg:text-right">
             <p className="font-literata font-medium text-navy text-[20px] sm:text-[24px] lg:text-[28px] leading-[1.5]">
-              Driving the economic growth of{' '}
-              <span className="text-turquoise">our region</span>,{' '}
-              fostering the well-being of{' '}
-              <span className="text-turquoise">our people</span>, nature,{' '}
-              and{' '}
-              <span className="text-turquoise">our communities</span>.{' '}
-              With our heart on the island and our vision on Central America.
+              {content.textBeforeHighlight1}{' '}
+              <span className="text-turquoise">{content.highlight1}</span>
+              {content.textBeforeHighlight2}{' '}
+              <span className="text-turquoise">{content.highlight2}</span>
+              {content.textBeforeHighlight3}{' '}
+              <span className="text-turquoise">{content.highlight3}</span>
+              {content.textAfter}
             </p>
           </div>
         </div>
