@@ -380,6 +380,33 @@ Endpoints de contenido para el CMS/Backend.
 
 ---
 
+### TheExperiences
+
+```json
+{
+  "title": "string",
+  "items": [
+    {
+      "id": "number",
+      "layout": "single | two-images",
+      "mainImage": "file (image)",
+      "secondaryImage": "file (image, optional)",
+      "circularImage": "file (image, optional)",
+      "title": "string",
+      "description": "string",
+      "buttonText": "string",
+      "buttonHref": "string"
+    }
+  ]
+}
+```
+
+**Layout types:**
+- `single`: Imagen panorámica full width con contenido abajo
+- `two-images`: Imagen portrait (255x450) + imagen landscape (635x450), gap 125px, soporta reverse automático
+
+---
+
 ## Resumen de Colecciones
 
 | Colección | Tipo |
@@ -406,3 +433,4 @@ Endpoints de contenido para el CMS/Backend.
 | `driven_by_progress` | single |
 | `experiences_gallery` | collection |
 | `sustainability` | single |
+| `the_experiences` | single |

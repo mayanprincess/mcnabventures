@@ -28,3 +28,4 @@ export { drivenByProgressData } from './drivenByProgress';
 export { ourIndustriesData } from './ourIndustries';
 export { sustainabilityData } from './sustainability';
 export { experiencesGalleryData } from './experiencesGallery';
+export { theExperiencesData } from './theExperiences';

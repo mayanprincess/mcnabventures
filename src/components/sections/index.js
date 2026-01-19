@@ -23,3 +23,4 @@ export { default as VideoPlayer } from './VideoPlayer';
 export { default as DrivenByProgress } from './DrivenByProgress';
 export { default as SustainabilityInAction } from './SustainabilityInAction';
 export { default as ExperiencesGallery } from './ExperiencesGallery';
+export { default as TheExperiences } from './TheExperiences';
