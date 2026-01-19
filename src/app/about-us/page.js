@@ -1,8 +1,5 @@
 /**
  * About Us Page - MCNAB VENTURES
- * 
-    * About Us page featuring the PrimaryHero slider
-    * and other about us components.
  */
 
 import SecondaryHero from '@/components/sections/SecondaryHero';

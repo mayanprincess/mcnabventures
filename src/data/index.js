@@ -26,3 +26,5 @@ export { contactCardData } from './contactCard';
 export { usefulLinksData } from './usefulLinks';
 export { drivenByProgressData } from './drivenByProgress';
 export { ourIndustriesData } from './ourIndustries';
+export { sustainabilityData } from './sustainability';
+export { experiencesGalleryData } from './experiencesGallery';
