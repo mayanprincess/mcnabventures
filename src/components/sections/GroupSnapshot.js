@@ -1,130 +1,146 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import useEmblaCarousel from 'embla-carousel-react';
 import { groupSnapshotData, companyLogosData } from '@/data';
 
 export default function GroupSnapshot({ 
   slides = groupSnapshotData.slides,
   companyLogos = companyLogosData 
 }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState([]);
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
-  const scrollTo = useCallback((index) => emblaApi && emblaApi.scrollTo(index), [emblaApi]);
+  const goToPrev = () => {
+    setSelectedIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  const goToNext = () => {
+    setSelectedIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
 
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    setScrollSnaps(emblaApi.scrollSnapList());
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
-    return () => {
-      emblaApi.off('select', onSelect);
-      emblaApi.off('reInit', onSelect);
-    };
-  }, [emblaApi, onSelect]);
+  const goToSlide = (index) => {
+    setSelectedIndex(index);
+  };
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24">
+    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+      {/* Main Content Area */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Content Area */}
-        <div className="embla overflow-hidden" ref={emblaRef}>
-          <div className="embla__container flex">
-            {slides.map((slide) => (
-              <div key={slide.id} className="embla__slide flex-shrink-0 w-full min-w-0">
-                <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-                  {/* Left Side - Images */}
-                  <div className="relative flex-1 w-full lg:w-auto">
-                    {/* Main Image */}
-                    <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden">
-                      <Image
-                        src={slide.mainImage}
-                        alt={slide.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                      />
-                    </div>
-
-                    {/* Circle Image - Overlapping */}
-                    <div className="absolute -bottom-8 right-8 sm:right-16 lg:-right-12 w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden border-4 border-white shadow-xl">
-                      <Image
-                        src={slide.circleImage}
-                        alt=""
-                        fill
-                        className="object-cover"
-                        sizes="200px"
-                      />
-                    </div>
+        <div className="relative">
+          {/* Slides with fade effect */}
+          {slides.map((slide, index) => (
+            <div 
+              key={slide.id} 
+              className={`transition-opacity duration-700 ease-in-out ${
+                index === selectedIndex 
+                  ? 'opacity-100 relative' 
+                  : 'opacity-0 absolute inset-0 pointer-events-none'
+              }`}
+            >
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+                {/* Left Side - Images */}
+                <div className="relative flex-1 w-full lg:w-auto">
+                  {/* Main Image */}
+                  <div 
+                    className="relative overflow-hidden"
+                    style={{ 
+                      width: '798px', 
+                      height: '450px',
+                      borderTopRightRadius: '500px',
+                      borderBottomRightRadius: '500px'
+                    }}
+                  >
+                    <Image
+                      src={slide.mainImage}
+                      alt={slide.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
                   </div>
 
-                  {/* Right Side - Content */}
-                  <div className="flex-1 pt-12 lg:pt-0">
-                    {/* Badge */}
-                    <span className="inline-block border border-navy/30 rounded-full px-4 py-1.5 font-fustat-medium text-navy text-xs tracking-wider mb-6">
-                      {slide.badge}
-                    </span>
-
-                    {/* Title */}
-                    <h2 className="font-literata-light text-navy text-[36px] sm:text-[44px] lg:text-[52px] leading-tight mb-4">
-                      {slide.title}
-                    </h2>
-
-                    {/* Description */}
-                    <p className="font-fustat-regular text-navy/70 text-lg mb-8">
-                      {slide.description}
-                    </p>
-
-                    {/* Highlights List */}
-                    <ul className="space-y-3">
-                      {slide.highlights.map((item, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <span className="text-turquoise font-fustat-medium">→</span>
-                          <span className="font-fustat-medium text-navy text-base">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Overlay Image */}
+                  <div 
+                    className="absolute -bottom-[90px] right-5 sm:right-8 overflow-hidden bg-white shadow-xl"
+                    style={{ 
+                      width: '191px', 
+                      height: '289px', 
+                      borderWidth: '12px',
+                      borderColor: 'white',
+                      borderStyle: 'solid',
+                      borderRadius: '122px'
+                    }}
+                  >
+                    <Image
+                      src={slide.circleImage}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="191px"
+                    />
                   </div>
                 </div>
+
+                {/* Right Side - Content */}
+                <div className="flex-1 pt-12 lg:pt-0">
+                  {/* Badge */}
+                  <span className="inline-block border border-navy/30 rounded-full px-4 py-1.5 font-fustat-medium text-navy text-xs tracking-wider mb-6">
+                    {slide.badge}
+                  </span>
+
+                  {/* Title */}
+                  <h2 className="font-literata-light text-navy text-[36px] sm:text-[44px] lg:text-[52px] leading-tight mb-4">
+                    {slide.title}
+                  </h2>
+
+                  {/* Description */}
+                  <p className="font-fustat-regular text-navy/70 text-lg mb-8">
+                    {slide.description}
+                  </p>
+
+                  {/* Highlights List */}
+                  <ul className="space-y-3">
+                    {slide.highlights.map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-3">
+                        <span className="text-turquoise font-fustat-medium">→</span>
+                        <span className="font-fustat-medium text-navy text-base">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         {/* Navigation Controls */}
-        <div className="flex items-center gap-4 mt-12 lg:mt-16">
+        <div className="flex items-center justify-center gap-4 mt-8" style={{ maxWidth: '798px' }}>
           {/* Previous Button */}
           <button
-            onClick={scrollPrev}
+            onClick={goToPrev}
             className="w-10 h-10 rounded-full border-2 border-turquoise text-turquoise flex items-center justify-center hover:bg-turquoise hover:text-white transition-colors duration-200"
             aria-label="Previous slide"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
+            <Image
+              src="/iconos/chevron_left.svg"
+              alt=""
+              width={14}
+              height={28}
+              className="w-[10px] h-[20px]"
+            />
           </button>
 
           {/* Dots */}
           <div className="flex gap-2">
-            {scrollSnaps.map((_, index) => (
+            {slides.map((_, index) => (
               <button
                 key={index}
-                onClick={() => scrollTo(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  selectedIndex === index 
-                    ? 'bg-turquoise w-6' 
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
+                onClick={() => goToSlide(index)}
+                className="h-3 rounded-full transition-all duration-300"
+                style={{ 
+                  backgroundColor: selectedIndex === index ? '#00BFB3' : '#D2D2D7',
+                  width: selectedIndex === index ? '24px' : '12px'
+                }}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
@@ -132,18 +148,22 @@ export default function GroupSnapshot({
 
           {/* Next Button */}
           <button
-            onClick={scrollNext}
+            onClick={goToNext}
             className="w-10 h-10 rounded-full bg-turquoise text-white flex items-center justify-center hover:bg-turquoise/90 transition-colors duration-200"
             aria-label="Next slide"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
+            <Image
+              src="/iconos/chevron_right.svg"
+              alt=""
+              width={14}
+              height={28}
+              className="w-[10px] h-[20px]"
+            />
           </button>
         </div>
 
         {/* Company Logos Section */}
-        <div className="mt-16 sm:mt-20 lg:mt-24 pt-12 border-t border-sand/40">
+        <div className="mt-16 sm:mt-20 lg:mt-24">
           <div className="flex flex-wrap items-center justify-center lg:justify-between gap-8 lg:gap-12">
             {companyLogos.map((company, index) => (
               <div key={index} className="flex items-center justify-center">

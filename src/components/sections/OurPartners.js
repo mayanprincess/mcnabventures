@@ -9,7 +9,7 @@ export default function OurPartners({
   partners = ourPartnersData.partners,
 }) {
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden pt-[80px] pb-[160px]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           {/* Left Side - Text Content */}

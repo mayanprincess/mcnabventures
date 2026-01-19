@@ -5,8 +5,8 @@ export const groupSnapshotData = {
   slides: [
     {
       id: 1,
-      mainImage: '/imagenes/tourism-resort.jpg',
-      circleImage: '/imagenes/tourism-person.jpg',
+      mainImage: '/imagenes/featured1.jpg',
+      circleImage: '/imagenes/featured2.jpg',
       badge: 'Group Snapshot',
       title: 'Tourism & Hospitality',
       description: 'Creating world-class stays and memorable getaways.',
@@ -19,8 +19,8 @@ export const groupSnapshotData = {
     },
     {
       id: 2,
-      mainImage: '/imagenes/aviation-plane.jpg',
-      circleImage: '/imagenes/aviation-crew.jpg',
+      mainImage: '/imagenes/featured1.jpg',
+      circleImage: '/imagenes/featured2.jpg',
       badge: 'Group Snapshot',
       title: 'Aviation & Transport',
       description: 'Connecting communities across Central America.',
@@ -32,8 +32,8 @@ export const groupSnapshotData = {
     },
     {
       id: 3,
-      mainImage: '/imagenes/energy-station.jpg',
-      circleImage: '/imagenes/energy-worker.jpg',
+      mainImage: '/imagenes/featured1.jpg',
+      circleImage: '/imagenes/featured2.jpg',
       badge: 'Group Snapshot',
       title: 'Energy & Fuel',
       description: 'Powering the region with reliable energy solutions.',
