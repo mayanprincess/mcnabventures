@@ -75,7 +75,7 @@ export default function OurJourney({
                 }`}
               >
                 <div className="pl-12 pb-6 pr-4 sm:pr-8">
-                  <p className="font-fustat-medium text-navy text-base sm:text-lg leading-relaxed max-w-4xl">
+                  <p className="font-fustat-medium text-navy text-[18px] leading-[24px] tracking-[0px] sm:text-lg sm:leading-relaxed max-w-4xl">
                     {item.content}
                   </p>
                 </div>
