@@ -20,11 +20,9 @@ export default function FeaturedExperiences({
           </p>
         </div>
 
-        {/* Bento Grid - 6 columns x 5 rows - NO GAPS - 900px total height */}
-        {/* Column widths: 185px each (6 × 185 = 1110px) */}
-        {/* Row heights: 180px each (5 × 180 = 900px) */}
+        {/* DESKTOP VERSION - Bento Grid */}
         <div 
-          className="hidden sm:grid rounded-3xl overflow-hidden"
+          className="hidden lg:grid rounded-3xl overflow-hidden"
           style={{
             gridTemplateColumns: 'repeat(6, 1fr)',
             gridTemplateRows: 'repeat(5, 180px)',
@@ -210,31 +208,123 @@ export default function FeaturedExperiences({
           </div>
         </div>
 
-        {/* Mobile version - simplified stack */}
-        <div className="grid grid-cols-2 sm:hidden rounded-2xl overflow-hidden">
-          <div className="bg-navy h-24 flex items-center justify-center p-3">
-            <span className="font-fustat-regular text-white text-sm text-center">Beachfront getaways</span>
+        {/* MOBILE VERSION - Stacked blocks with rounded corners */}
+        <div className="lg:hidden rounded-[32px] overflow-hidden">
+          {/* Block 1: Island image - full width */}
+          <div className="relative w-full h-[200px]">
+            <Image
+              src="/imagenes/featured1.jpg"
+              alt="Tropical island"
+              fill
+              className="object-cover"
+            />
           </div>
-          <div className="relative h-24">
-            <Image src="/imagenes/featured1.jpg" alt="Island" fill className="object-cover" />
+
+          {/* Block 2: Beachfront getaways - navy background */}
+          <div className="bg-navy w-full h-[80px] flex items-center justify-center px-6">
+            <span className="font-literata-light text-white text-[18px] text-center">
+              Beachfront getaways
+            </span>
           </div>
-          <div className="relative h-32 col-span-2">
-            <Image src="/imagenes/featured2.jpg" alt="Ferry" fill className="object-cover" />
+
+          {/* Block 3: Two-column - Icon (sand) & Text (turquoise) */}
+          <div className="flex w-full h-[160px]">
+            <div className="w-1/2 bg-sand flex items-center justify-center">
+              <Image src="/vector5.svg" alt="" width={60} height={36} />
+            </div>
+            <div className="w-1/2 bg-turquoise flex items-center justify-center px-4">
+              <span className="font-literata-light text-white text-[18px] text-center leading-tight">
+                Connecting<br />the world
+              </span>
+            </div>
           </div>
-          <div className="bg-gold h-24 flex items-center justify-center p-3">
-            <span className="font-fustat-light text-white text-sm text-center">From Land to sea</span>
+
+          {/* Block 4: Airplane image - full width */}
+          <div className="relative w-full h-[200px]">
+            <Image
+              src="/imagenes/featured4.jpg"
+              alt="Airplane boarding"
+              fill
+              className="object-cover"
+            />
           </div>
-          <div className="bg-turquoise h-24 flex items-center justify-center p-3">
-            <span className="font-fustat-regular text-navy text-sm text-center">Connecting the world</span>
+
+          {/* Block 5: Two-column - Icon (turquoise) & Image */}
+          <div className="flex w-full h-[200px]">
+            <div className="w-1/2 bg-turquoise flex items-center justify-center">
+              <Image src="/vector7.svg" alt="" width={60} height={36} className="[filter:brightness(0)_saturate(100%)_invert(19%)_sepia(96%)_saturate(1015%)_hue-rotate(166deg)_brightness(93%)_contrast(101%)]" />
+            </div>
+            <div className="w-1/2 relative">
+              <Image
+                src="/imagenes/featured6.png"
+                alt="Girl with parrot"
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
-          <div className="relative h-32 col-span-2">
-            <Image src="/imagenes/featured4.jpg" alt="Airplane" fill className="object-cover" />
+
+          {/* Block 6: Discover Roatan - gold background */}
+          <div className="bg-gold w-full h-[80px] flex items-center justify-center px-6">
+            <span className="font-literata-light text-white text-[18px] text-center">
+              Discover Roatan
+            </span>
           </div>
-          <div className="bg-sand h-24 flex items-center justify-center p-3">
-            <span className="font-fustat-regular text-navy text-sm text-center">Fuel for our island</span>
+
+          {/* Block 7: Ferry image - full width */}
+          <div className="relative w-full h-[200px]">
+            <Image
+              src="/imagenes/featured2.jpg"
+              alt="Ferries"
+              fill
+              className="object-cover"
+            />
           </div>
-          <div className="bg-navy h-24 flex items-center justify-center">
-            <Image src="/vector6.svg" alt="" width={50} height={40} />
+
+          {/* Block 8: From Land to sea - gold background */}
+          <div className="bg-gold w-full h-[80px] flex items-center justify-center px-6">
+            <span className="font-literata-light text-white text-[18px] text-center">
+              From Land to sea
+            </span>
+          </div>
+
+          {/* Block 9: Two-column - Image & Text (sand) */}
+          <div className="flex w-full h-[200px]">
+            <div className="w-1/2 relative">
+              <Image
+                src="/imagenes/featured3.jpg"
+                alt="Diving"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="w-1/2 bg-sand flex items-center justify-center px-4">
+              <span className="font-literata-light text-navy text-[18px] text-center leading-tight">
+                Sustainable<br />Fishing
+              </span>
+            </div>
+          </div>
+
+          {/* Block 10: Two-column - Icon (navy) & Image */}
+          <div className="flex w-full h-[200px]">
+            <div className="w-1/2 bg-navy flex items-center justify-center">
+              <Image src="/vector6.svg" alt="" width={70} height={50} />
+            </div>
+            <div className="w-1/2 relative">
+              <Image
+                src="/imagenes/featured5.jpg"
+                alt="Woman"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Block 11: Fuel for our island - sand background */}
+          <div className="bg-sand w-full h-[80px] flex items-center justify-center px-6">
+            <span className="font-literata-light text-navy text-[18px] text-center leading-tight">
+              Fuel for our Island
+            </span>
           </div>
         </div>
       </div>
