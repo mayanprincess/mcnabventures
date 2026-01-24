@@ -47,18 +47,37 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
         const rect = containerRef.current.getBoundingClientRect();
         const offset = -rect.top * 0.3;
         imageRef.current.style.transform = `translateY(${offset}px) scale(1.1)`;
+      } else if (imageRef.current && window.innerWidth < 1024) {
+        // Reset transform on mobile
+        imageRef.current.style.transform = 'none';
       }
     };
 
-    // Set aspect ratio for desktop
-    if (window.innerWidth >= 1024) {
-      containerRef.current.style.aspectRatio = '1348 / 751';
-      containerRef.current.style.height = 'auto';
-    }
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      
+      if (window.innerWidth >= 1024) {
+        // Desktop: set aspect ratio
+        containerRef.current.style.aspectRatio = '1348 / 751';
+        containerRef.current.style.height = 'auto';
+      } else {
+        // Mobile: fixed height
+        containerRef.current.style.aspectRatio = 'none';
+        containerRef.current.style.height = '600px';
+      }
+    };
+
+    // Set initial state
+    handleResize();
 
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
@@ -70,20 +89,22 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
       {image && (
         <div 
           ref={containerRef}
-          className="relative w-full h-[600px] lg:h-auto lg:w-[90%] lg:mx-auto lg:rounded-2xl lg:rounded-3xl overflow-hidden"
+          className="relative w-full h-[600px] min-h-[600px] lg:h-auto lg:min-h-0 lg:w-[90%] lg:mx-auto lg:rounded-2xl lg:rounded-3xl overflow-hidden"
         >
           {/* Background Image */}
           <div 
             ref={imageRef}
             className="absolute inset-0 w-full h-full"
+            style={{ minHeight: '600px' }}
           >
             <Image
               src={image}
               alt=""
               fill
-              className="object-cover w-full h-full"
+              className="object-cover"
               priority
               sizes="(max-width: 1023px) 100vw, 90vw"
+              style={{ objectFit: 'cover' }}
             />
           </div>
 
