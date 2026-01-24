@@ -38,60 +38,66 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Parallax effect
+  // Parallax effect (desktop only)
   useEffect(() => {
+    if (!containerRef.current) return;
+    
     const handleScroll = () => {
-      if (imageRef.current && containerRef.current) {
+      if (imageRef.current && containerRef.current && window.innerWidth >= 1024) {
         const rect = containerRef.current.getBoundingClientRect();
-        const scrollProgress = -rect.top;
-        const parallaxSpeed = 0.3;
-        const offset = scrollProgress * parallaxSpeed;
+        const offset = -rect.top * 0.3;
         imageRef.current.style.transform = `translateY(${offset}px) scale(1.1)`;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial call
+    // Set aspect ratio for desktop
+    if (window.innerWidth >= 1024) {
+      containerRef.current.style.aspectRatio = '1348 / 751';
+      containerRef.current.style.height = 'auto';
+    }
 
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Aspect ratio: 1348px / 751px ≈ 1.794
-  const aspectRatio = 1348 / 751;
-
   return (
     <section 
-      className="relative w-full bg-white py-8 sm:py-12 lg:py-16"
+      className="relative w-full bg-white lg:py-16"
       role="banner"
       aria-label="Hero section"
     >
-      {/* Rounded Image Container */}
       {image && (
         <div 
           ref={containerRef}
-          className="relative w-[90%] rounded-2xl sm:rounded-3xl overflow-hidden mx-auto"
-          style={{
-            aspectRatio: aspectRatio,
-          }}
+          className="relative w-full h-[600px] lg:h-auto lg:w-[90%] lg:mx-auto lg:rounded-2xl lg:rounded-3xl overflow-hidden"
         >
-          {/* Background Image with Parallax */}
+          {/* Background Image */}
           <div 
             ref={imageRef}
-            className="absolute inset-0 will-change-transform"
-            style={{ transform: 'translateY(0) scale(1.1)' }}
+            className="absolute inset-0 w-full h-full"
           >
             <Image
               src={image}
               alt=""
               fill
-              className="object-cover"
+              className="object-cover w-full h-full"
               priority
-              sizes="90vw"
+              sizes="(max-width: 1023px) 100vw, 90vw"
             />
           </div>
 
-          {/* Text and Button Overlay - Top Left */}
-          <div className="absolute inset-0 z-10 flex items-start">
+          {/* Text Overlay - Mobile */}
+          <div className="absolute inset-0 z-10 flex items-start pt-[20%] pl-6 pr-6 lg:hidden">
+            <div className="max-w-[85%]">
+              <h1 className="font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.2] tracking-[-0.02em]">
+                {heading}
+              </h1>
+            </div>
+          </div>
+
+          {/* Text and Button Overlay - Desktop */}
+          <div className="absolute inset-0 z-10 hidden lg:flex items-start">
             <div style={{ paddingLeft: '118px', paddingTop: '106px' }}>
               <div className="max-w-2xl space-y-6 sm:space-y-8">
                 {/* Heading */}
@@ -123,8 +129,29 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
             </div>
           </div>
 
-          {/* Scroll Indicator - Bottom Center */}
-          <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+          {/* Scroll Indicator - Mobile */}
+          <div className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 z-10 lg:hidden">
+            <div className="w-14 h-7 border border-white rounded-full flex items-center justify-center">
+              <svg
+                width="10"
+                height="6"
+                viewBox="0 0 10 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L5 5L9 1"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Scroll Indicator - Desktop */}
+          <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10 hidden lg:block">
             <Image
               src="/down_arrow.svg"
               alt="Scroll down"
