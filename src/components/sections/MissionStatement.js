@@ -40,19 +40,35 @@ export default function MissionStatement({
   return (
     <section className="relative bg-white overflow-visible" style={{ height: '552px' }}>
       {/* Vector decoration - top left, positioned to overflow */}
-      <div className="absolute -top-12 -left-2 lg:-top-26">
+      <div className="absolute -top-20 -left-1 sm:-top-8 sm:-left-2 lg:-top-12 lg:-left-2">
         <Image
           src={vectorSrc}
           alt=""
           width={527}
           height={366}
-          className="w-[280px] sm:w-[400px] lg:w-[527px] h-auto"
+          className="w-[200px] sm:w-[240px] md:w-[400px] lg:w-[280px] xl:w-[527px] h-auto"
         />
       </div>
 
-      {/* Content */}
+      {/* Mobile version - Large text, left-aligned */}
+      <div className="relative z-10 container mx-auto px-6 sm:px-8 pt-[180px] sm:pt-[200px] lg:hidden">
+        <div className="max-w-xl text-left">
+          <p 
+            className="font-literata font-medium text-navy"
+            style={{
+              fontSize: '32px',
+              lineHeight: '40px', // 1.25 ratio
+              letterSpacing: '-0.5px'
+            }}
+          >
+            {highlightText(text, highlights)}
+          </p>
+        </div>
+      </div>
+
+      {/* Desktop version - Keep original styling */}
       <div 
-        className="absolute z-10 max-w-xl text-right"
+        className="hidden lg:block absolute z-10 max-w-xl text-right"
         style={{ 
           right: '163px', 
           top: '150px',
