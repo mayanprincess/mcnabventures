@@ -1,8 +1,82 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
+import useEmblaCarousel from 'embla-carousel-react';
 import { groupSnapshotData, companyLogosData } from '@/data';
+
+// Company Logos Slider Component for Mobile
+function CompanyLogosSlider({ companyLogos }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: 'start',
+    slidesToScroll: 1,
+    containScroll: 'trimSnaps',
+    loop: false,
+    dragFree: true,
+  });
+
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const onScroll = useCallback(() => {
+    if (!emblaApi) return;
+    const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
+    setScrollProgress(progress);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onScroll();
+    emblaApi.on('scroll', onScroll);
+    emblaApi.on('reInit', onScroll);
+    return () => {
+      emblaApi.off('scroll', onScroll);
+      emblaApi.off('reInit', onScroll);
+    };
+  }, [emblaApi, onScroll]);
+
+  return (
+    <div className="lg:hidden">
+      {/* Slider Container */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {companyLogos.map((company, index) => (
+            <div 
+              key={index}
+              className="flex-shrink-0 flex items-center justify-center w-[50%] min-w-0 px-2"
+            >
+              <Image
+                src={company.logo}
+                alt={company.name}
+                width={company.width}
+                height={company.height}
+                className="object-contain opacity-80"
+                style={{
+                  minWidth: '160px',
+                  minHeight: '94px',
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  maxHeight: '94px'
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Progress Bar - Oval shaped */}
+      <div className="mt-[40px] w-full h-3 rounded-full overflow-hidden" style={{ backgroundColor: '#E5E5E5' }}>
+        <div 
+          className="h-full rounded-full transition-all duration-300 ease-out"
+          style={{ 
+            width: `${scrollProgress * 100}%`,
+            backgroundColor: '#CB9763'
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function GroupSnapshot({ 
   slides = groupSnapshotData.slides,
@@ -323,7 +397,11 @@ export default function GroupSnapshot({
 
         {/* Company Logos Section */}
         <div className="mt-16 sm:mt-20 lg:mt-24">
-          <div className="flex flex-wrap items-center justify-center lg:justify-between gap-8 lg:gap-12">
+          {/* MOBILE VERSION - Slider with progress bar */}
+          <CompanyLogosSlider companyLogos={companyLogos} />
+
+          {/* DESKTOP VERSION - Keep original layout */}
+          <div className="hidden lg:flex flex-wrap items-center justify-center lg:justify-between gap-8 lg:gap-12">
             {companyLogos.map((company, index) => (
               <div key={index} className="flex items-center justify-center">
                 <Image
