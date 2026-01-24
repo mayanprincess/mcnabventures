@@ -35,6 +35,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${fustat.variable} ${literata.variable} ${workSans.variable} antialiased`}
+        suppressHydrationWarning
       >
         <HeaderProvider>
           <Header />
