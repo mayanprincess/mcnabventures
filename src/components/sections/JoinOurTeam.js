@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { joinOurTeamData } from '@/data';
@@ -12,37 +14,40 @@ export default function JoinOurTeam({
   return (
     <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">
       <div className="w-[90%] max-w-[1200px] mx-auto">
-        <div className="relative rounded-3xl overflow-hidden min-h-[400px] sm:min-h-[450px] lg:min-h-[500px]">
-          {/* Background Image */}
-          <Image
-            src={image}
-            alt="Join our team"
-            fill
-            className="object-cover"
-            sizes="90vw"
-            priority
-          />
+        {/* MOBILE VERSION */}
+        <div className="lg:hidden">
+          <div className="relative rounded-[60px] overflow-hidden min-h-[520px]">
+            {/* Background Image */}
+            <Image
+              src={image}
+              alt="Join our team"
+              fill
+              className="object-cover"
+              sizes="90vw"
+              priority
+            />
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-transparent" />
+            {/* Dark Gradient Overlay - Top */}
+            <div className="absolute inset-0 bg-[linear-gradient(360deg,rgba(0,0,0,0.568)_0.01%,rgba(0,0,0,0)_21.98%),linear-gradient(180deg,rgba(0,0,0,0.384)_-0.01%,rgba(0,0,0,0)_31.81%)]" />
 
-          {/* Content */}
-          <div className="absolute inset-0 flex items-center">
-            <div className="p-8 sm:p-12 lg:p-16 max-w-md">
-              {/* Title */}
-              <h2 className="font-literata-light-italic text-white text-[32px] sm:text-[40px] lg:text-[48px] leading-tight mb-4">
-                {title}
-              </h2>
+            {/* Content */}
+            <div className="absolute inset-0 flex flex-col items-center text-center pt-10 pb-8 px-6">
+              <div className="max-w-[280px]">
+                {/* Title */}
+                <h2 className="font-literata-light text-white text-[32px] leading-[38px] tracking-[-1px] mb-4">
+                  {title}
+                </h2>
 
-              {/* Description */}
-              <p className="font-work-sans text-white/90 text-base sm:text-lg leading-relaxed mb-8">
-                {description}
-              </p>
+                {/* Description */}
+                <p className="font-fustat-medium text-white/90 text-[16px] leading-[24px] tracking-[0px]">
+                  {description}
+                </p>
+              </div>
 
               {/* CTA Button */}
               <Link
                 href={buttonHref}
-                className="inline-flex items-center gap-3 bg-gold text-white px-6 py-3.5 rounded-full font-work-sans-semibold text-sm hover:bg-gold/90 transition-colors duration-300 w-fit"
+                className="mt-auto inline-flex items-center justify-center gap-2 bg-gold text-white w-[263px] h-[56px] px-[23px] py-[15px] rounded-[24px] font-fustat-extrabold text-[16px] leading-[24px] tracking-[0px] hover:bg-gold/90 transition-colors duration-300"
               >
                 {buttonText}
                 <Image
@@ -53,6 +58,54 @@ export default function JoinOurTeam({
                   className="w-5 h-5"
                 />
               </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* DESKTOP VERSION - Keep original layout */}
+        <div className="hidden lg:block">
+          <div className="relative rounded-3xl overflow-hidden min-h-[500px]">
+            {/* Background Image */}
+            <Image
+              src={image}
+              alt="Join our team"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1200px) 90vw, 1200px"
+              priority
+            />
+
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-transparent" />
+
+            {/* Content */}
+            <div className="absolute inset-0 flex items-center">
+              <div className="p-8 sm:p-12 lg:p-16 max-w-md">
+                {/* Title */}
+                <h2 className="font-literata-light-italic text-white text-[32px] sm:text-[40px] lg:text-[48px] leading-tight mb-4">
+                  {title}
+                </h2>
+
+                {/* Description */}
+                <p className="font-work-sans text-white/90 text-base sm:text-lg leading-relaxed mb-8">
+                  {description}
+                </p>
+
+                {/* CTA Button */}
+                <Link
+                  href={buttonHref}
+                  className="inline-flex items-center gap-3 bg-gold text-white px-6 py-3.5 rounded-full font-work-sans-semibold text-sm hover:bg-gold/90 transition-colors duration-300 w-fit"
+                >
+                  {buttonText}
+                  <Image
+                    src="/btn_arrow_white.svg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                  />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
