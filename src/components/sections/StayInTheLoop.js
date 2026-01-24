@@ -39,7 +39,7 @@ export default function StayInTheLoop({
       setCanNextMobile(details.abs < details.maxIdx);
     },
     slides: {
-      perView: 1.4,
+      perView: 1.5,
       spacing: 30,
     },
     breakpoints: {
@@ -114,14 +114,14 @@ export default function StayInTheLoop({
           </div>
 
           {/* Carousel - Mobile */}
-          <div className="overflow-hidden -mx-4 sm:-mx-6">
+          <div className="overflow-x-hidden overflow-y-visible -mx-4 sm:-mx-6 pb-12">
             <div ref={sliderRefMobile} className="keen-slider pl-4 sm:pl-6">
               {items.map((item) => (
-                <div key={item.id} className="keen-slider__slide">
+                <div key={item.id} className="keen-slider__slide pb-6">
                   <article className="w-[260px] h-[453px]">
                     <Link 
                       href={item.href} 
-                      className="block group rounded-2xl p-4 h-full transition-shadow duration-300 hover:shadow-[0px_8px_16px_-8px_#00000024,0px_13px_27px_-5px_#32325D17]"
+                      className="block group rounded-2xl p-4 h-full transition-shadow duration-300 shadow-[0px_8px_16px_-8px_rgba(0,0,0,0.14),0px_13px_27px_-5px_rgba(50,50,93,0.09)]"
                       style={{ backgroundColor: '#F6F4EF' }}
                     >
                       {/* Image */}
@@ -156,7 +156,7 @@ export default function StayInTheLoop({
 
           {/* Controls - Mobile */}
           {loadedMobile && instanceRefMobile.current && (
-            <div className="flex items-center justify-between mt-10" suppressHydrationWarning>
+            <div className="flex items-center justify-between" suppressHydrationWarning>
               {/* Dots */}
               <div className="flex items-center gap-2">
                 {items.map((_, index) => (
