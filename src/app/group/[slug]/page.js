@@ -2,11 +2,8 @@
  * Group Dynamic Route - /group/[slug]
  * 
  * Modern frontend for group pages with SecondaryHero integration
- * Fetches and displays group data from PocketBase using the slug
  */
 
-import { getRecords } from '@/lib/services/collections';
-import { getPocketBaseClient } from '@/lib/pocketbase';
 import { notFound } from 'next/navigation';
 import SecondaryHero from '@/components/sections/SecondaryHero';
 import UsefulLinks from '@/components/sections/UsefulLinks';
@@ -23,24 +20,10 @@ import OurJourney from '@/components/sections/OurJourney';
  */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  
-  const result = await getRecords('group', {
-    filter: `slug = "${slug}"`,
-    perPage: 1,
-    expand: 'hero,information',
-  });
-
-  if (!result.success || result.data.items.length === 0) {
-    return {
-      title: 'Group Not Found - McNab Ventures',
-    };
-  }
-
-  const group = result.data.items[0];
 
   return {
-    title: `${group.name || group.slug} - McNab Ventures`,
-    description: group.description || group.information || `Explore ${group.name || slug}`,
+    title: `${slug} - McNab Ventures`,
+    description: `Explore ${slug}`,
   };
 }
 
@@ -50,29 +33,14 @@ export async function generateMetadata({ params }) {
 export default async function GroupPage({ params }) {
   const { slug } = await params;
 
-  // Fetch group by slug
-  const result = await getRecords('group', {
-    filter: `slug = "${slug}"`,
-    perPage: 1,
-    expand: 'hero,information',
-  });
-
-  // Handle not found
-  if (!result.success || result.data.items.length === 0) {
-    notFound();
-  }
-
-  const group = result.data.items[0];
-
-  // Get hero ID if hero relation exists
-  const heroId = group.hero || group.expand?.hero?.id || null;
+  // For now, we'll just render the page without fetching data
+  // You can add your own data fetching logic here if needed
+  const heroId = null;
 
   return (
     <div className="min-h-screen bg-white">
       {/* Secondary Hero Section */}
-      {heroId && (
-        <SecondaryHero id={heroId} />
-      )}
+      <SecondaryHero />
 
       {/* Who We Are Section */}
       <WhoWeAre />
