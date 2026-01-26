@@ -16,7 +16,7 @@ export default function PrimaryHero({ content = primaryHeroData }) {
 
   return (
     <section 
-      className="relative w-full h-[600px] lg:h-[60vh] overflow-hidden"
+      className="relative w-full h-[600px] lg:h-[75vh] overflow-hidden"
       aria-labelledby="primary-hero-heading"
     >
       {/* Background Video */}

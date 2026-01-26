@@ -40,18 +40,18 @@ export default function MissionStatement({
   return (
     <section className="relative bg-white overflow-visible" style={{ height: '552px' }}>
       {/* Vector decoration - top left, positioned to overflow */}
-      <div className="absolute -top-20 -left-1 sm:-top-8 sm:-left-2 lg:-top-12 lg:-left-2">
+      <div className="absolute -top-20 -left-1 sm:-top-8 sm:-left-2 xl:-top-12 xl:-left-2">
         <Image
           src={vectorSrc}
           alt=""
           width={527}
           height={366}
-          className="w-[200px] sm:w-[240px] md:w-[400px] lg:w-[280px] xl:w-[527px] h-auto"
+          className="w-[200px] sm:w-[240px] md:w-[280px] lg:w-[280px] xl:w-[527px] h-auto"
         />
       </div>
 
-      {/* Mobile version - Large text, left-aligned */}
-      <div className="relative z-10 container mx-auto px-6 sm:px-8 pt-[180px] sm:pt-[200px] lg:hidden">
+      {/* Mobile version - Large text, left-aligned (up to 1280px) */}
+      <div className="relative z-10 container mx-auto px-6 sm:px-8 pt-[180px] sm:pt-[200px] xl:hidden">
         <div className="max-w-xl text-left">
           <p 
             className="font-literata font-medium text-navy"
@@ -66,18 +66,13 @@ export default function MissionStatement({
         </div>
       </div>
 
-      {/* Desktop version - Keep original styling */}
-      <div 
-        className="hidden lg:block absolute z-10 max-w-xl text-right"
-        style={{ 
-          right: '163px', 
-          top: '150px',
-          left: 'calc(527px + 127px)' // vector width + gap
-        }}
-      >
-        <p className="font-literata font-medium text-navy text-[20px] sm:text-[24px] lg:text-[28px] leading-[1.5]">
-          {highlightText(text, highlights)}
-        </p>
+      {/* Desktop version - Keep original styling (1280px+) */}
+      <div className="hidden xl:flex absolute inset-0 z-10 items-center justify-end pr-[10%] 2xl:pr-[12%]">
+        <div className="max-w-xl text-right">
+          <p className="font-literata font-medium text-navy text-[28px] leading-[1.5]">
+            {highlightText(text, highlights)}
+          </p>
+        </div>
       </div>
     </section>
   );
