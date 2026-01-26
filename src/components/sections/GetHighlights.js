@@ -62,11 +62,11 @@ export default function GetHighlights({
       className="w-full py-16 sm:py-20 lg:py-24 bg-[#F6F4EF]"
       aria-labelledby="highlights-heading"
     >
-      <div className="w-[90%] max-w-[1400px] mx-auto">
+      <div className="w-full lg:w-[90%] max-w-[1400px] mx-auto px-6 lg:px-0">
         {/* Title */}
         <h2 
           id="highlights-heading"
-          className="font-literata-light text-navy text-[36px] sm:text-[42px] lg:text-[48px] mb-10 sm:mb-12"
+          className="font-literata-light text-navy text-[36px] lg:text-[48px] mb-10 lg:mb-12"
         >
           {title}
         </h2>
@@ -79,34 +79,34 @@ export default function GetHighlights({
                 key={item.id}
                 className={`flex-shrink-0 ${
                   variant === 'industry' 
-                    ? 'w-[280px] sm:w-[300px] lg:w-[320px]' 
-                    : 'w-[85%] sm:w-[60%] lg:w-[45%]'
+                    ? 'w-full lg:w-[320px]' 
+                    : 'w-full lg:w-[45%]'
                 }`}
               >
                 {variant === 'industry' ? (
                   /* Industry Card Variant */
                   <div 
-                    className="rounded-2xl p-6 sm:p-8 h-full flex flex-col items-center text-center"
+                    className="rounded-2xl p-8 lg:p-8 h-full flex flex-col items-center text-center"
                     style={{ background: 'linear-gradient(to bottom, #E8E1DA, #F7F4F1)' }}
                   >
                     {/* Title */}
-                    <h3 className="font-fustat-medium text-navy text-base sm:text-xl mb-6">
+                    <h3 className="font-fustat-medium text-navy text-xl lg:text-xl mb-6">
                       {item.title}
                     </h3>
                     
                     {/* Circular Image */}
-                    <div className="relative w-32 h-32 sm:w-40 sm:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden mb-6 flex-shrink-0">
+                    <div className="relative w-[320px] h-[320px] lg:w-44 lg:h-44 rounded-full overflow-hidden mb-6 flex-shrink-0">
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
                         className="object-cover"
-                        sizes="180px"
+                        sizes="(max-width: 1023px) 320px, 180px"
                       />
                     </div>
                     
                     {/* Description */}
-                    <p className="font-fustat-medium text-[#1E1C1AE0] text-lg leading-relaxed mb-6 flex-grow">
+                    <p className="font-fustat-medium text-[#1E1C1AE0] text-lg leading-relaxed mb-6 flex-grow max-w-[90%]">
                       {item.description}
                     </p>
                     
@@ -114,9 +114,9 @@ export default function GetHighlights({
                     {item.href && (
                       <Link
                         href={item.href}
-                        className="inline-block bg-[#E8E1DA] text-[#1E1C1A] font-fustat-extrabold text-xs uppercase tracking-wider px-6 py-2.5 rounded-full hover:bg-[#DDD5CC] transition-colors duration-300"
+                        className="inline-flex items-center justify-center bg-[#E8E1DA] text-[#1E1C1A] font-fustat-extrabold uppercase rounded-full hover:bg-[#DDD5CC] transition-colors duration-300 w-[101px] h-[40px] lg:w-auto lg:h-auto lg:px-6 lg:py-2.5 text-[14px] leading-[24px] tracking-[1.5px] lg:text-xs lg:tracking-wider"
                       >
-                        Explore
+                        EXPLORE
                       </Link>
                     )}
                   </div>
@@ -130,14 +130,14 @@ export default function GetHighlights({
                         alt={item.title}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 45vw"
+                        sizes="(max-width: 1023px) 100vw, 45vw"
                       />
                     </div>
                     
                     {/* Content */}
                     <div className="max-w-md">
-                      <p className="font-work-sans text-navy text-base sm:text-lg leading-relaxed">
-                        <span className="font-work-sans-semibold">{item.title}</span>{' '}
+                      <p className="font-work-sans text-navy text-base lg:text-lg leading-relaxed">
+                        <span className="font-work-sans-semibold">{item.title}.</span>{' '}
                         {item.description}
                       </p>
                     </div>
@@ -149,7 +149,7 @@ export default function GetHighlights({
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-between mt-10 sm:mt-12">
+        <div className="flex items-center justify-between mt-10 lg:mt-12">
           {/* Dots */}
           <div className="flex items-center gap-2">
             {scrollSnaps.map((_, index) => (
@@ -173,8 +173,8 @@ export default function GetHighlights({
               disabled={prevBtnDisabled}
               className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
                 prevBtnDisabled
-                  ? 'bg-sand/40 cursor-not-allowed opacity-50'
-                  : 'bg-sand/70 hover:bg-sand'
+                  ? 'bg-[#D2D2D7] cursor-not-allowed opacity-50'
+                  : 'bg-sand/70 hover:bg-sand lg:bg-sand/70'
               }`}
               aria-label="Previous slide"
             >
@@ -192,8 +192,8 @@ export default function GetHighlights({
               disabled={nextBtnDisabled}
               className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
                 nextBtnDisabled
-                  ? 'bg-sand/40 cursor-not-allowed opacity-50'
-                  : 'bg-sand/70 hover:bg-sand'
+                  ? 'bg-[#D2D2D7] cursor-not-allowed opacity-50'
+                  : 'bg-sand/70 hover:bg-sand lg:bg-sand/70'
               }`}
               aria-label="Next slide"
             >

@@ -27,7 +27,7 @@ export default function ExperiencesGallery({
     <section className="w-full bg-white">
       <div className="h-full flex flex-col">
         {/* Image Container - Full Screen Width */}
-        <div className="relative w-full" style={{ height: '640px' }}>
+        <div className="relative w-full h-[410px] lg:h-[640px]">
           {/* Images with Fade */}
           {slides.map((slide, index) => (
             <div
@@ -48,26 +48,26 @@ export default function ExperiencesGallery({
           ))}
 
           {/* Text Overlay */}
-          <div className="absolute inset-0 z-10 flex items-center justify-center">
-            {/* Left Text */}
+          <div className="absolute inset-0 z-10 flex flex-col lg:flex-row items-center justify-center">
+            {/* Left Text - Top in mobile, Left in desktop */}
             <h2 
-              className="absolute left-8 sm:left-16 lg:left-24 font-literata-light text-white text-[48px] sm:text-[72px] lg:text-[96px] xl:text-[120px] uppercase tracking-wider"
+              className="absolute top-8 lg:top-auto lg:left-8 sm:left-16 lg:left-24 font-fustat-extrabold lg:font-literata-light text-white text-[101.96px] leading-[100%] tracking-[-0.8px] lg:text-[96px] xl:text-[120px] lg:tracking-wider uppercase"
               style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
             >
               {currentSlide.leftText}
             </h2>
 
-            {/* Right Text */}
+            {/* Right Text - Bottom in mobile, Right in desktop */}
             <h2 
-              className="absolute right-8 sm:right-16 lg:right-24 font-literata-light text-white text-[48px] sm:text-[72px] lg:text-[96px] xl:text-[120px] uppercase tracking-wider"
+              className="absolute bottom-8 lg:bottom-auto lg:right-8 sm:right-16 lg:right-24 font-fustat-extrabold lg:font-literata-light text-white text-[101.96px] leading-[100%] tracking-[-0.8px] lg:text-[96px] xl:text-[120px] lg:tracking-wider uppercase"
               style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
             >
               {currentSlide.rightText}
             </h2>
           </div>
 
-          {/* Center Dots - On top of image at bottom */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3 px-6 py-4 rounded-full" style={{ backgroundColor: 'rgba(139, 119, 101, 0.8)' }}>
+          {/* Center Dots - On top of image at bottom - Desktop Only */}
+          <div className="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-20 items-center gap-3 px-6 py-4 rounded-full" style={{ backgroundColor: 'rgba(139, 119, 101, 0.8)' }}>
             {slides.map((_, index) => (
               <button
                 key={index}
@@ -84,8 +84,8 @@ export default function ExperiencesGallery({
         </div>
 
         {/* Controls - Container Width */}
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-[106px]">
-          <div className="w-full max-w-[1110px] mx-auto flex items-center justify-between py-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-[106px]">
+          <div className="w-full max-w-[1110px] mx-auto flex items-center justify-between mt-12 lg:mt-0 lg:py-6">
             {/* Left Dots (Page indicator) */}
             <div className="flex items-center gap-2">
               {slides.map((_, index) => (

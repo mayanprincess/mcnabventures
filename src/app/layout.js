@@ -27,7 +27,7 @@ const workSans = Work_Sans({
 
 export const metadata = {
   title: "McNab Ventures",
-  description: "A modern full-stack web application built with Next.js 16 and PocketBase backend",
+  description: "A modern web application built with Next.js 16",
 };
 
 export default function RootLayout({ children }) {
@@ -35,6 +35,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${fustat.variable} ${literata.variable} ${workSans.variable} antialiased`}
+        suppressHydrationWarning
       >
         <HeaderProvider>
           <Header />
