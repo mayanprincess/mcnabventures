@@ -33,7 +33,7 @@ export default function DrivenByProgress({
 }) {
   return (
     <section 
-      className="relative w-full py-16 sm:py-20 lg:py-24 overflow-hidden"
+      className="relative w-full py-16 sm:py-20 lg:py-[100px] overflow-hidden"
       style={{ backgroundColor: '#00354A' }}
     >
       {/* Background Vector - Desktop Only */}

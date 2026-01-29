@@ -97,7 +97,7 @@ export default function GroupSnapshot({
   };
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+    <section className="w-full bg-white py-16 sm:py-20 lg:py-[100px] overflow-hidden">
       {/* Main Content Area */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* MOBILE VERSION - Vertical layout: Text → Controls → Images */}
@@ -396,7 +396,7 @@ export default function GroupSnapshot({
         </div>
 
         {/* Company Logos Section */}
-        <div className="mt-16 sm:mt-20 lg:mt-24">
+        <div className="mt-16 sm:mt-20 lg:mt-24 py-16 sm:py-20 lg:py-[100px]">
           {/* MOBILE VERSION - Slider with progress bar */}
           <CompanyLogosSlider companyLogos={companyLogos} />
 

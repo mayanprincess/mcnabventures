@@ -10,7 +10,7 @@ export default function OurPartners({
 }) {
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 overflow-hidden pt-[80px] pb-[160px]">
+    <section className="w-full bg-white py-16 sm:py-20 lg:py-[100px] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* MOBILE VERSION - Semi-circular background with vertical stacked logos */}
         <div className="lg:hidden">

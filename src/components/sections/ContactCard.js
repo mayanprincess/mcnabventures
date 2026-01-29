@@ -17,7 +17,7 @@ export default function ContactCard({
   socials = contactCardData.socialLinks,
 }) {
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
       <div className="w-[90%] max-w-[1200px] mx-auto">
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
