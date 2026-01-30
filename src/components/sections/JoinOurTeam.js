@@ -12,7 +12,7 @@ export default function JoinOurTeam({
   image = joinOurTeamData.image,
 }) {
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
       <div className="w-[90%] max-w-[1200px] mx-auto">
         {/* MOBILE VERSION */}
         <div className="lg:hidden">

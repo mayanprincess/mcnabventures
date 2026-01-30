@@ -13,7 +13,7 @@ export default function UsefulLinks({ links = usefulLinksData.links }) {
 
   return (
     <section 
-      className="w-full bg-white py-12 sm:py-16 lg:py-20"
+      className="w-full bg-white py-12 sm:py-16 lg:py-[100px]"
       aria-labelledby="useful-links-heading"
     >
       <div className="container mx-auto px-6 lg:px-8">

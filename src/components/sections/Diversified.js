@@ -8,7 +8,7 @@ export default function Diversified({
   image = diversifiedData.image,
 }) {
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden">
+    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white relative overflow-hidden">
       {/* MOBILE VERSION */}
       <div className="lg:hidden">
         {/* Decorative SVG - Mobile */}

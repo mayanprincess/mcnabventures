@@ -50,7 +50,7 @@ export default function VideoPlayer({
   };
 
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
       <div className="w-[90%] max-w-[1110px] mx-auto">
         <div className="relative rounded-3xl overflow-hidden aspect-video bg-black">
           {/* Poster Image - Shows before video starts */}

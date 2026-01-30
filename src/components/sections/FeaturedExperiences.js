@@ -8,7 +8,7 @@ export default function FeaturedExperiences({
   description = featuredExperiencesData.description,
 }) {
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24">
+    <section className="w-full bg-white py-16 sm:py-20 lg:py-[100px]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10 sm:mb-12 lg:mb-16 max-w-2xl">

@@ -9,7 +9,7 @@ export default function TheExperiences({
   items = theExperiencesData.items,
 }) {
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-[#F6F4EF]">
+    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-[#F6F4EF]">
       <div className="container mx-auto px-6 lg:px-8 max-w-[1110px]">
         {/* Section Title */}
         <h2 className="font-literata-light text-navy text-[36px] lg:text-[48px] mb-12 lg:mb-20">

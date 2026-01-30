@@ -83,7 +83,7 @@ export default function StayInTheLoop({
 
   return (
     <section 
-      className="w-full py-16 sm:py-20 lg:py-24 bg-white"
+      className="w-full py-16 sm:py-20 lg:py-[100px] bg-white"
       aria-labelledby="stay-in-loop-heading"
     >
       <div className="w-[90%] max-w-[1400px] mx-auto">

@@ -9,7 +9,7 @@ export default function WhoWeAre({
   logo = whoWeAreData.logo,
 }) {
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
       {/* MOBILE VERSION */}
       <div className="lg:hidden flex flex-col items-center px-6">
         {/* Logo Container - Oval with beige background */}
