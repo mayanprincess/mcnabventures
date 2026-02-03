@@ -29,7 +29,6 @@ export default function Header() {
   const navigationItems = [
     { label: 'About Us', href: '/about-us' },
     { label: 'Group', href: '/group/mayan-princess' }, // href kept for key/back-compat; rendered as dropdown
-    { label: 'Our Impact', href: '/#our-impact' },
     { label: 'Experiences', href: '/experiences' },
     { label: 'Careers', href: '/#careers' },
   ];

@@ -19,6 +19,10 @@ import JoinOurTeam from '@/components/sections/JoinOurTeam';
 import OurPartners from '@/components/sections/OurPartners';
 import Diversified from '@/components/sections/Diversified';
 import FeaturedExperiences from '@/components/sections/FeaturedExperiences';
+import DrivenByProgress from '@/components/sections/DrivenByProgress';
+import TheExperiences from '@/components/sections/TheExperiences';
+import ExperiencesGallery from '@/components/sections/ExperiencesGallery';
+import SustainabilityInAction from '@/components/sections/SustainabilityInAction';
 import { companyLogosData, ourPartnersData } from '@/data';
 
 const LAYOUT_TO_COMPONENT = {
@@ -32,7 +36,12 @@ const LAYOUT_TO_COMPONENT = {
   'featured-experiences': FeaturedExperiences,
   'who-we-are': WhoWeAre,
   highlights: GetHighlights,
+  'our-industries': GetHighlights,
   'our-journey': OurJourney,
+  'driven-by-progress': DrivenByProgress,
+  'the-experiences': TheExperiences,
+  'experiences-gallery': ExperiencesGallery,
+  'sustainability-in-action': SustainabilityInAction,
   'useful-links': UsefulLinks,
   multimedia: Multimedia,
   'contact-card': ContactCard,
@@ -111,7 +120,7 @@ export function getSectionConfig(section) {
         Component,
         props: {
           text: section.text ?? undefined,
-          vectorType: section.vector_type ?? 'vector1',
+          vectorType: section.vectorType ?? section.vector_type ?? 'vector1',
         },
       };
 
@@ -217,6 +226,22 @@ export function getSectionConfig(section) {
         },
       };
 
+    case 'our-industries':
+      return {
+        Component,
+        props: {
+          title: section.title ?? undefined,
+          variant: 'industry',
+          items: (section.items ?? []).map((item, i) => ({
+            id: item.id ?? i,
+            image: getUrl(item.image),
+            title: item.title ?? '',
+            description: item.description ?? '',
+            href: item.href ?? undefined,
+          })),
+        },
+      };
+
     case 'our-journey':
       return {
         Component,
@@ -311,6 +336,74 @@ export function getSectionConfig(section) {
 
     case 'featured-experiences':
       return { Component, props: {} };
+
+    case 'driven-by-progress': {
+      const rawStats = section.stats ?? [];
+      const stats = rawStats.map((stat) => ({
+        icon: getUrl(stat.icon),
+        value: stat.value ?? '',
+        label: stat.label ?? '',
+      })).filter((s) => s.icon);
+      return {
+        Component,
+        props: {
+          title: section.title ?? undefined,
+          description: section.description ?? undefined,
+          image: getUrl(section.image) ?? undefined,
+          stats: stats.length > 0 ? stats : undefined,
+        },
+      };
+    }
+
+    case 'the-experiences':
+      return {
+        Component,
+        props: {
+          title: section.title ?? undefined,
+          items: (section.items ?? []).map((item, i) => ({
+            id: item.id ?? i,
+            layout: item.layout ?? 'single',
+            mainImage: getUrl(item.main_image ?? item.mainImage) ?? '',
+            secondaryImage: item.secondary_image
+              ? getUrl(item.secondary_image)
+              : item.secondaryImage
+                ? getUrl(item.secondaryImage)
+                : undefined,
+            title: item.title ?? '',
+            description: item.description ?? '',
+            buttonText: item.button_text ?? item.buttonText ?? '',
+            buttonHref: item.button_href ?? item.buttonHref ?? '',
+          })),
+        },
+      };
+
+    case 'experiences-gallery':
+      return {
+        Component,
+        props: {
+          slides: (section.slides ?? []).map((slide, i) => ({
+            id: slide.id ?? i,
+            backgroundImage: getUrl(slide.background_image ?? slide.backgroundImage) ?? '',
+            leftText: slide.left_text ?? slide.leftText ?? '',
+            rightText: slide.right_text ?? slide.rightText ?? '',
+          })).filter((s) => s.backgroundImage),
+        },
+      };
+
+    case 'sustainability-in-action':
+      return {
+        Component,
+        props: {
+          title: section.title ?? undefined,
+          backgroundImage: getUrl(section.background_image ?? section.backgroundImage) ?? undefined,
+          cards: (section.cards ?? []).map((card, i) => ({
+            id: card.id ?? i,
+            title: card.title ?? '',
+            image: getUrl(card.image) ?? '',
+            href: card.href ?? '#',
+          })).filter((c) => c.image),
+        },
+      };
 
     default:
       return null;
