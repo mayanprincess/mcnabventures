@@ -1,140 +1,68 @@
 /**
  * Group Dynamic Route - /group/[slug]
- * 
- * Modern frontend for group pages with SecondaryHero integration
+ *
+ * Renders group subpages from WordPress API (acf.page_components).
+ * API: https://mcnabventures.up.railway.app/wp-json/wp/v2/pages
  */
 
 import { notFound } from 'next/navigation';
-import SecondaryHero from '@/components/sections/SecondaryHero';
-import UsefulLinks from '@/components/sections/UsefulLinks';
-import StayInTheLoop from '@/components/sections/StayInTheLoop';
-import Multimedia from '@/components/sections/Multimedia';
-import ContactCard from '@/components/sections/ContactCard';
-import JoinOurTeam from '@/components/sections/JoinOurTeam';
-import WhoWeAre from '@/components/sections/WhoWeAre';
-import GetHighlights from '@/components/sections/GetHighlights';
-import OurJourney from '@/components/sections/OurJourney';
+import { getGroupPageSlugs, getPageBySlug } from '@/lib/wp';
+import { getSectionComponent } from '@/lib/getSectionComponent';
 
 /**
- * Generate metadata for SEO
+ * Generate static paths for all group child pages (parent = 76)
+ */
+export async function generateStaticParams() {
+  try {
+    const slugs = await getGroupPageSlugs();
+    return slugs;
+  } catch (err) {
+    console.error('Error fetching group page slugs:', err);
+    return [];
+  }
+}
+
+/**
+ * Generate metadata for SEO from WP page
  */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-
+  const page = await getPageBySlug(slug);
+  if (!page) {
+    return { title: `${slug} - McNab Ventures`, description: `Explore ${slug}` };
+  }
+  const title = page.title?.rendered ?? slug;
+  const description =
+    page.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || `Explore ${title}`;
   return {
-    title: `${slug} - McNab Ventures`,
-    description: `Explore ${slug}`,
+    title: `${title} - McNab Ventures`,
+    description,
   };
 }
 
 /**
- * Group Page Component
+ * Group Page Component – fetches page by slug and renders ACF page_components
  */
 export default async function GroupPage({ params }) {
   const { slug } = await params;
 
-  // For now, we'll just render the page without fetching data
-  // You can add your own data fetching logic here if needed
-  const heroId = null;
+  const page = await getPageBySlug(slug);
+  if (!page) notFound();
+
+  const sections = page.acf?.page_components;
+  if (!Array.isArray(sections) || sections.length === 0) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="font-work-sans text-navy">No content configured for this page.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Secondary Hero Section */}
-      <SecondaryHero />
-
-      {/* Who We Are Section */}
-      <WhoWeAre />
-
-      {/* Get Highlights Section */}
-      <GetHighlights />
-
-      {/* Our Journey Section */}
-      <OurJourney />
-            
-      {/* Useful Links Section */}
-      <UsefulLinks />
-
-      {/* Stay In The Loop Section */}
-      <StayInTheLoop />
-
-      {/* Multimedia Section */}
-      <Multimedia />
-
-      {/* Contact Card Section */}
-      <ContactCard />
-
-      {/* Join Our Team Section */}
-      <JoinOurTeam />
-
+      {sections.map((section, index) =>
+        getSectionComponent(section, index, slug)
+      )}
     </div>
   );
-}
-
-/**
- * Group Information Component
- * Renders expanded information data
- */
-function GroupInformation({ information }) {
-  // Handle different information formats
-  if (typeof information === 'string') {
-    return (
-      <div className="prose prose-lg max-w-none">
-        <div 
-          className="font-work-sans-medium text-navy/90 text-base sm:text-lg leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: information }}
-        />
-      </div>
-    );
-  }
-
-  if (typeof information === 'object' && information !== null) {
-    return (
-      <div className="space-y-6">
-        {information.title && (
-          <h2 className="font-literata-medium text-navy text-2xl sm:text-3xl md:text-4xl mb-4">
-            {information.title}
-          </h2>
-        )}
-        
-        {information.content && (
-          <div className="prose prose-lg max-w-none">
-            <div 
-              className="font-work-sans-medium text-navy/90 text-base sm:text-lg leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: information.content }}
-            />
-          </div>
-        )}
-
-        {information.description && (
-          <p className="font-work-sans-medium text-navy/80 text-lg sm:text-xl leading-relaxed">
-            {information.description}
-          </p>
-        )}
-
-        {/* Render other fields if they exist */}
-        {Object.entries(information).map(([key, value]) => {
-          if (['title', 'content', 'description', 'id', 'collectionId', 'collectionName', 'created', 'updated'].includes(key)) {
-            return null;
-          }
-          
-          if (typeof value === 'string' && value.trim()) {
-            return (
-              <div key={key} className="border-l-4 border-turquoise pl-4 py-2">
-                <h3 className="font-work-sans-extrabold text-navy text-sm uppercase tracking-wide mb-1">
-                  {key.replace(/_/g, ' ')}
-                </h3>
-                <p className="font-work-sans-medium text-navy/80">
-                  {value}
-                </p>
-              </div>
-            );
-          }
-          
-          return null;
-        })}
-      </div>
-    );
-  }
-
-  return null;
 }

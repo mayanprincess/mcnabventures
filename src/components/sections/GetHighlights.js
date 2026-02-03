@@ -96,13 +96,15 @@ export default function GetHighlights({
                     
                     {/* Circular Image */}
                     <div className="relative w-[320px] h-[320px] lg:w-44 lg:h-44 rounded-full overflow-hidden mb-6 flex-shrink-0">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1023px) 320px, 180px"
-                      />
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1023px) 320px, 180px"
+                        />
+                      ) : null}
                     </div>
                     
                     {/* Description */}
@@ -125,13 +127,15 @@ export default function GetHighlights({
                   <>
                     {/* Image */}
                     <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-gray-200">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1023px) 100vw, 45vw"
-                      />
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1023px) 100vw, 45vw"
+                        />
+                      ) : null}
                     </div>
                     
                     {/* Content */}
