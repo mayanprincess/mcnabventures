@@ -1,45 +1,45 @@
 /**
  * Home Page - MCNAB VENTURES
- * 
- * Main landing page featuring the PrimaryHero slider
- * and other homepage components.
+ *
+ * Content from WordPress API (slug: sample-page).
  */
 
-import PrimaryHero from '@/components/sections/PrimaryHero';
-import MissionStatement from '@/components/sections/MissionStatement';
-import OurPartners from '@/components/sections/OurPartners';
-import GroupSnapshot from '@/components/sections/GroupSnapshot';
-import FeaturedExperiences from '@/components/sections/FeaturedExperiences';
-import { JoinOurTeam, StayInTheLoop, Diversified, VideoPlayer } from '@/components/sections';
+import { getPageBySlug } from '@/lib/wp';
+import { getSectionComponent } from '@/lib/getSectionComponent';
 
-export default function Home() {
+const PAGE_SLUG = 'sample-page';
+
+export async function generateMetadata() {
+  const page = await getPageBySlug(PAGE_SLUG);
+  if (!page) {
+    return { title: 'McNab Ventures', description: 'McNab Ventures' };
+  }
+  const title = page.title?.rendered ?? 'McNab Ventures';
+  const description =
+    page.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || 'McNab Ventures';
+  return {
+    title: `${title} - McNab Ventures`,
+    description,
+  };
+}
+
+export default async function Home() {
+  const page = await getPageBySlug(PAGE_SLUG);
+  const sections = page?.acf?.page_components;
+
+  if (!Array.isArray(sections) || sections.length === 0) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="font-work-sans text-navy">No content configured for this page.</p>
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen">
-      {/* Primary Hero Section - Full screen video */}
-      <PrimaryHero />
-
-      {/* Mission Statement Section */}
-      <MissionStatement />
-
-      {/* Video Player Section */}
-      <VideoPlayer />
-
-      {/* Group Snapshot Section */}
-      <GroupSnapshot />
-      {/* Our Partners Section */}
-      <OurPartners />
-      {/* Featured Experiences Section */}
-      <FeaturedExperiences />
-
-
-
-      <StayInTheLoop title='Latest News' />
-
-      {/* Diversified Section */}
-      <Diversified />
-
-      <JoinOurTeam />
-      {/* Additional homepage sections will be added here */}
+      {sections.map((section, index) =>
+        getSectionComponent(section, index, PAGE_SLUG)
+      )}
     </main>
   );
 }

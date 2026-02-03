@@ -4,17 +4,32 @@
  */
 
 import React from 'react';
+import PrimaryHero from '@/components/sections/PrimaryHero';
 import SecondaryHero from '@/components/sections/SecondaryHero';
 import WhoWeAre from '@/components/sections/WhoWeAre';
+import MissionStatement from '@/components/sections/MissionStatement';
+import VideoPlayer from '@/components/sections/VideoPlayer';
+import GroupSnapshot from '@/components/sections/GroupSnapshot';
 import GetHighlights from '@/components/sections/GetHighlights';
 import OurJourney from '@/components/sections/OurJourney';
 import UsefulLinks from '@/components/sections/UsefulLinks';
 import Multimedia from '@/components/sections/Multimedia';
 import ContactCard from '@/components/sections/ContactCard';
 import JoinOurTeam from '@/components/sections/JoinOurTeam';
+import OurPartners from '@/components/sections/OurPartners';
+import Diversified from '@/components/sections/Diversified';
+import FeaturedExperiences from '@/components/sections/FeaturedExperiences';
+import { companyLogosData, ourPartnersData } from '@/data';
 
 const LAYOUT_TO_COMPONENT = {
+  'primary-hero': PrimaryHero,
   'secondary-hero': SecondaryHero,
+  'mission-statement': MissionStatement,
+  'video-player': VideoPlayer,
+  'group-snapshot': GroupSnapshot,
+  'our-partners': OurPartners,
+  diversified: Diversified,
+  'featured-experiences': FeaturedExperiences,
   'who-we-are': WhoWeAre,
   highlights: GetHighlights,
   'our-journey': OurJourney,
@@ -70,6 +85,98 @@ export function getSectionConfig(section) {
   if (!Component) return null;
 
   switch (layout) {
+    case 'primary-hero': {
+      const videoSrc = getUrl(section.video_src);
+      const primaryButton = section.primary_button
+        ? { label: section.primary_button.label ?? '', href: section.primary_button.href ?? '#' }
+        : undefined;
+      const secondaryButton = section.secondary_button
+        ? { label: section.secondary_button.label ?? '', href: section.secondary_button.href ?? '#' }
+        : undefined;
+      return {
+        Component,
+        props: {
+          content: {
+            heading: section.heading ?? '',
+            videoSrc: videoSrc ?? '',
+            primaryButton,
+            secondaryButton,
+          },
+        },
+      };
+    }
+
+    case 'mission-statement':
+      return {
+        Component,
+        props: {
+          text: section.text ?? undefined,
+          vectorType: section.vector_type ?? 'vector1',
+        },
+      };
+
+    case 'video-player':
+      return {
+        Component,
+        props: {
+          videoSrc: getUrl(section.video_src) ?? undefined,
+          posterImage: getUrl(section.poster_image) ?? undefined,
+        },
+      };
+
+    case 'group-snapshot': {
+      const rawSlides = section.slides ?? [];
+      const slides = rawSlides.map((s, i) => ({
+        id: s.id ?? i,
+        mainImage: getUrl(s.main_image),
+        circleImage: getUrl(s.circle_image),
+        badge: s.badge ?? '',
+        title: s.title ?? '',
+        description: typeof s.description === 'string' ? s.description : '',
+      }));
+      const companyLogos = Array.isArray(section.company_logos) && section.company_logos.length > 0
+        ? section.company_logos.map((c) => {
+            const logoObj = c.logo && typeof c.logo === 'object' ? c.logo : c;
+            const url = getUrl(logoObj) ?? '';
+            return { name: c.name ?? logoObj?.title ?? '', logo: url, width: 160, height: 100 };
+          }).filter((c) => c.logo)
+        : companyLogosData;
+      return {
+        Component,
+        props: {
+          slides,
+          companyLogos,
+        },
+      };
+    }
+
+    case 'our-partners': {
+      const staticPartners = ourPartnersData.partners ?? [];
+      const apiLogos = Array.isArray(section.partners) ? section.partners : [];
+      let partners = staticPartners;
+      if (apiLogos.length > 0) {
+        const merged = apiLogos.map((item, i) => {
+          const logoUrl = getUrl(item.logo ?? item) ?? '';
+          const fallback = staticPartners[i] ?? staticPartners[0] ?? { name: '', logo: '', width: 158, height: 41 };
+          return {
+            name: fallback.name,
+            logo: logoUrl || fallback.logo,
+            width: fallback.width ?? 158,
+            height: fallback.height ?? 41,
+          };
+        }).filter((p) => p.logo);
+        if (merged.length > 0) partners = merged;
+      }
+      return {
+        Component,
+        props: {
+          badge: ourPartnersData.badge,
+          title: ourPartnersData.title,
+          partners,
+        },
+      };
+    }
+
     case 'secondary-hero':
       return {
         Component,
@@ -192,6 +299,18 @@ export function getSectionConfig(section) {
           image: getUrl(section.image),
         },
       };
+
+    case 'diversified':
+      return {
+        Component,
+        props: {
+          title: section.title ?? undefined,
+          image: getUrl(section.image) ?? undefined,
+        },
+      };
+
+    case 'featured-experiences':
+      return { Component, props: {} };
 
     default:
       return null;
