@@ -1,13 +1,45 @@
-import { ExperiencesGallery, SustainabilityInAction, SecondaryHero, MissionStatement, TheExperiences } from '@/components/sections';
+/**
+ * Experiences Page - MCNAB VENTURES
+ *
+ * Content from WordPress API (slug: experiences).
+ */
 
-export default function Experiences() {
+import { getPageBySlug } from '@/lib/wp';
+import { getSectionComponent } from '@/lib/getSectionComponent';
+
+const PAGE_SLUG = 'experiences';
+
+export async function generateMetadata() {
+  const page = await getPageBySlug(PAGE_SLUG);
+  if (!page) {
+    return { title: 'Experiences - McNab Ventures', description: 'Experiences' };
+  }
+  const title = page.title?.rendered ?? 'Experiences';
+  const description =
+    page.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || 'Experiences';
+  return {
+    title: `${title} - McNab Ventures`,
+    description,
+  };
+}
+
+export default async function Experiences() {
+  const page = await getPageBySlug(PAGE_SLUG);
+  const sections = page?.acf?.page_components;
+
+  if (!Array.isArray(sections) || sections.length === 0) {
     return (
-        <main className="min-h-screen">
-            <SecondaryHero />
-            <MissionStatement vectorType="vector2" />
-            <TheExperiences />
-            <ExperiencesGallery />
-            <SustainabilityInAction />
-        </main>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="font-work-sans text-navy">No content configured for this page.</p>
+      </div>
     );
+  }
+
+  return (
+    <main className="min-h-screen">
+      {sections.map((section, index) =>
+        getSectionComponent(section, index, PAGE_SLUG)
+      )}
+    </main>
+  );
 }

@@ -2,8 +2,15 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import useEmblaCarousel from 'embla-carousel-react';
 import { groupSnapshotData, companyLogosData } from '@/data';
+
+const markdownComponents = {
+  p: ({ children }) => <span className="text-navy/70">{children}</span>,
+  strong: ({ children }) => <span className="font-fustat-medium text-turquoise">{children}</span>,
+};
 
 // Company Logos Slider Component for Mobile
 function CompanyLogosSlider({ companyLogos }) {
@@ -39,24 +46,24 @@ function CompanyLogosSlider({ companyLogos }) {
       {/* Slider Container */}
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {companyLogos.map((company, index) => (
+          {companyLogos.filter((c) => c.logo).map((company, index) => (
             <div 
               key={index}
               className="flex-shrink-0 flex items-center justify-center w-[50%] min-w-0 px-2"
             >
               <Image
                 src={company.logo}
-                alt={company.name}
-                width={company.width}
-                height={company.height}
+                alt={company.name ?? ''}
+                width={Number(company.width) || 160}
+                height={Number(company.height) || 100}
                 className="object-contain opacity-80"
                 style={{
                   minWidth: '160px',
-                  minHeight: '94px',
+                  minHeight: '100px',
                   width: 'auto',
                   height: 'auto',
                   maxWidth: '100%',
-                  maxHeight: '94px'
+                  maxHeight: '100px'
                 }}
               />
             </div>
@@ -125,20 +132,12 @@ export default function GroupSnapshot({
                     {slide.title}
                   </h2>
 
-                  {/* Description */}
-                  <p className="font-fustat-regular text-navy/70 text-lg mb-8">
-                    {slide.description}
-                  </p>
-
-                  {/* Highlights List */}
-                  <ul className="space-y-3">
-                    {slide.highlights.map((item, idx) => (
-                      <li key={idx} className="flex items-center gap-3">
-                        <span className="text-turquoise font-fustat-medium">→</span>
-                        <span className="font-fustat-medium text-navy text-base">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Description - ReactMarkdown with strong = turquoise */}
+                  <div className="font-fustat-regular text-navy/70 text-lg mb-8">
+                    <ReactMarkdown key={slide.description ?? slide.id} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+                      {slide.description ?? ''}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
             ))}
@@ -325,20 +324,12 @@ export default function GroupSnapshot({
                       {slide.title}
                     </h2>
 
-                    {/* Description */}
-                    <p className="font-fustat-regular text-navy/70 text-lg mb-8">
-                      {slide.description}
-                    </p>
-
-                    {/* Highlights List */}
-                    <ul className="space-y-3">
-                      {slide.highlights.map((item, idx) => (
-                        <li key={idx} className="flex items-center gap-3">
-                          <span className="text-turquoise font-fustat-medium">→</span>
-                          <span className="font-fustat-medium text-navy text-base">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {/* Description - ReactMarkdown with strong = turquoise */}
+                    <div className="font-fustat-regular text-navy/70 text-lg mb-8">
+                      <ReactMarkdown key={slide.description ?? slide.id} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+                        {slide.description ?? ''}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -402,14 +393,14 @@ export default function GroupSnapshot({
 
           {/* DESKTOP VERSION - Keep original layout */}
           <div className="hidden lg:flex flex-wrap items-center justify-center lg:justify-between gap-8 lg:gap-12">
-            {companyLogos.map((company, index) => (
+            {companyLogos.filter((c) => c.logo).map((company, index) => (
               <div key={index} className="flex items-center justify-center">
                 <Image
                   src={company.logo}
-                  alt={company.name}
-                  width={company.width}
-                  height={company.height}
-                  className="h-10 sm:h-12 lg:h-14 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  alt={company.name ?? ''}
+                width={Number(company.width) || 160}
+                height={Number(company.height) || 100}
+                className="h-[100px] w-[160px] object-contain"
                 />
               </div>
             ))}

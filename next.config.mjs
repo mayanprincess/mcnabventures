@@ -8,6 +8,18 @@ const nextConfig = {
         port: '',
         pathname: '/api/files/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'mcnabventures.up.railway.app',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

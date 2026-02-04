@@ -114,13 +114,15 @@ export default function ContactCard({
                     className="w-8 h-8 flex items-center justify-center text-navy hover:text-turquoise transition-colors duration-300"
                     aria-label={social.name}
                   >
-                    <Image
-                      src={social.icon}
-                      alt={social.name}
-                      width={32}
-                      height={32}
-                      className="w-8 h-8"
-                    />
+                    {social.icon ? (
+                      <Image
+                        src={social.icon}
+                        alt={social.name}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8"
+                      />
+                    ) : null}
                   </Link>
                 ))}
               </div>
@@ -128,13 +130,15 @@ export default function ContactCard({
 
             {/* Image Side */}
             <div className="relative min-h-[300px] lg:min-h-full">
-              <Image
-                src={image}
-                alt="Contact"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+              {image ? (
+                <Image
+                  src={image}
+                  alt="Contact"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              ) : null}
             </div>
           </div>
         </div>

@@ -27,19 +27,19 @@ export default function JoinOurTeam({
               priority
             />
 
-            {/* Dark Gradient Overlay - Top */}
-            <div className="absolute inset-0 bg-[linear-gradient(360deg,rgba(0,0,0,0.568)_0.01%,rgba(0,0,0,0)_21.98%),linear-gradient(180deg,rgba(0,0,0,0.384)_-0.01%,rgba(0,0,0,0)_31.81%)]" />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.71)_0%,rgba(0,0,0,0)_48.06%)]" />
 
             {/* Content */}
             <div className="absolute inset-0 flex flex-col items-center text-center pt-10 pb-8 px-6">
-              <div className="max-w-[280px]">
+              <div className="max-w-[360px]">
                 {/* Title */}
                 <h2 className="font-literata-light text-white text-[32px] leading-[38px] tracking-[-1px] mb-4">
                   {title}
                 </h2>
 
                 {/* Description */}
-                <p className="font-fustat-medium text-white/90 text-[16px] leading-[24px] tracking-[0px]">
+                <p className="font-fustat-medium text-white/90 text-[20px] leading-[26px] tracking-[0px] max-w-[285px] mx-auto">
                   {description}
                 </p>
               </div>
@@ -76,25 +76,25 @@ export default function JoinOurTeam({
             />
 
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-transparent" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.71)_0%,rgba(0,0,0,0)_48.06%)]" />
 
             {/* Content */}
             <div className="absolute inset-0 flex items-center">
-              <div className="p-8 sm:p-12 lg:p-16 max-w-md">
+              <div className="p-8 sm:p-12 lg:p-16 max-w-xl">
                 {/* Title */}
-                <h2 className="font-literata-light-italic text-white text-[32px] sm:text-[40px] lg:text-[48px] leading-tight mb-4">
+                <h2 className="font-literata-light text-white text-[48px] leading-[58px] tracking-[-1px] mb-4">
                   {title}
                 </h2>
 
                 {/* Description */}
-                <p className="font-work-sans text-white/90 text-base sm:text-lg leading-relaxed mb-8">
+                <p className="font-fustat-medium text-white/90 text-[20px] leading-[26px] tracking-[0px] mb-8 max-w-[285px]">
                   {description}
                 </p>
 
                 {/* CTA Button */}
                 <Link
                   href={buttonHref}
-                  className="inline-flex items-center gap-3 bg-gold text-white px-6 py-3.5 rounded-full font-work-sans-semibold text-sm hover:bg-gold/90 transition-colors duration-300 w-fit"
+                  className="inline-flex items-center justify-center gap-3 bg-gold text-white px-6 py-3.5 rounded-full font-bold text-[16px] leading-[26px] tracking-[-0.36px] text-center hover:bg-gold/90 transition-colors duration-300 w-fit"
                 >
                   {buttonText}
                   <Image

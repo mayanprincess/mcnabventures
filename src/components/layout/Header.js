@@ -18,10 +18,17 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isTransparent } = useHeader();
 
+  const groupLinks = [
+    { label: 'CM Airlines', href: '/group/cm-airlines' },
+    { label: 'Galaxy Wave', href: '/group/galaxy-wave' },
+    { label: 'Mayan Princess', href: '/group/mayan-princess' },
+    { label: 'Turquoise Bay', href: '/group/turquoise-bay' },
+    { label: 'Acqua Di Mare', href: '/group/acqua-di-mare-resort' },
+  ];
+
   const navigationItems = [
     { label: 'About Us', href: '/about-us' },
-    { label: 'Group', href: '/group/mayan-princess' },
-    { label: 'Our Impact', href: '/#our-impact' },
+    { label: 'Group', href: '/group/mayan-princess' }, // href kept for key/back-compat; rendered as dropdown
     { label: 'Experiences', href: '/experiences' },
     { label: 'Careers', href: '/#careers' },
   ];
@@ -68,20 +75,56 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8 xl:gap-10">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-1 ${
-                  isTransparent 
-                    ? 'text-white hover:text-turquoise' 
-                    : 'text-navy hover:text-turquoise'
-                }`}
-                aria-label={`Navigate to ${item.label}`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navigationItems.map((item) =>
+              item.label === 'Group' ? (
+                <div key={item.label} className="relative group">
+                  <button
+                    type="button"
+                    className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-1 ${
+                      isTransparent
+                        ? 'text-white hover:text-turquoise'
+                        : 'text-navy hover:text-turquoise'
+                    }`}
+                    aria-haspopup="menu"
+                    aria-label="Open Group menu"
+                  >
+                    Group
+                  </button>
+                  <div
+                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full pt-3 z-50"
+                    role="menu"
+                    aria-label="Group links"
+                  >
+                    <div className="min-w-[220px] rounded-2xl bg-white border border-sand/20 shadow-lg overflow-hidden">
+                      {groupLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="block px-5 py-3 font-work-sans-medium text-sm text-navy hover:text-turquoise hover:bg-sand/10 outline-none"
+                          role="menuitem"
+                          aria-label={`Navigate to ${link.label}`}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-1 ${
+                    isTransparent
+                      ? 'text-white hover:text-turquoise'
+                      : 'text-navy hover:text-turquoise'
+                  }`}
+                  aria-label={`Navigate to ${item.label}`}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -120,18 +163,40 @@ export default function Header() {
             aria-label="Mobile navigation menu"
           >
             <div className="flex flex-col gap-4">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="font-work-sans-medium text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-2 text-navy hover:text-turquoise"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  role="menuitem"
-                  aria-label={`Navigate to ${item.label}`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navigationItems.map((item) =>
+                item.label === 'Group' ? (
+                  <div key={item.label} className="flex flex-col gap-3">
+                    <div className="font-work-sans-medium text-base uppercase tracking-wide px-2 py-2 text-navy">
+                      Group
+                    </div>
+                    <div className="flex flex-col">
+                      {groupLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="font-work-sans-medium text-base transition-colors duration-200 outline-none px-4 py-2 text-navy hover:text-turquoise"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          role="menuitem"
+                          aria-label={`Navigate to ${link.label}`}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="font-work-sans-medium text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-2 text-navy hover:text-turquoise"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    role="menuitem"
+                    aria-label={`Navigate to ${item.label}`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
             </div>
           </div>
         )}

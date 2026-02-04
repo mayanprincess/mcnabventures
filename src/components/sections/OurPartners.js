@@ -46,16 +46,16 @@ export default function OurPartners({
               borderBottomRightRadius: '0px',
             }}
           >
-            {partners.map((partner, index) => (
+            {partners.filter((p) => p.logo).map((partner, index) => (
               <div 
                 key={index}
                 className="flex items-center justify-center"
               >
                 <Image
                   src={partner.logo}
-                  alt={partner.name}
-                  width={partner.width}
-                  height={partner.height}
+                  alt={partner.name ?? ''}
+                  width={Number(partner.width) || 158}
+                  height={Number(partner.height) || 41}
                   className="object-contain"
                   style={{
                     width: '158px',
@@ -93,16 +93,16 @@ export default function OurPartners({
                 marginRight: 'calc(-1 * (100vw - 100%) / 2)',
               }}
             >
-              {partners.map((partner, index) => (
+              {partners.filter((p) => p.logo).map((partner, index) => (
                 <div 
                   key={index}
                   className="flex items-center justify-center"
                 >
                   <Image
                     src={partner.logo}
-                    alt={partner.name}
-                    width={partner.width}
-                    height={partner.height}
+                    alt={partner.name ?? ''}
+                    width={Number(partner.width) || 158}
+                    height={Number(partner.height) || 41}
                     className="h-8 sm:h-10 lg:h-12 w-auto object-contain"
                   />
                 </div>

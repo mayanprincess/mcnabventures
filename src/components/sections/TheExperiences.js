@@ -44,6 +44,7 @@ function ExperienceItem({ item, isReversed }) {
             fill
             className="object-cover"
             sizes="(max-width: 1023px) 100vw, 1110px"
+            quality={90}
           />
         </div>
         {/* Content Below */}
@@ -84,6 +85,7 @@ function ExperienceItem({ item, isReversed }) {
                 fill
                 className="object-cover"
                 sizes="100vw"
+                quality={90}
               />
             </div>
             
@@ -96,6 +98,7 @@ function ExperienceItem({ item, isReversed }) {
                   fill
                   className="object-cover"
                   sizes="117px"
+                  quality={90}
                 />
               </div>
             )}
@@ -139,6 +142,7 @@ function ExperienceItem({ item, isReversed }) {
                 fill
                 className="object-cover"
                 sizes="255px"
+                quality={90}
               />
             </div>
             
@@ -155,6 +159,7 @@ function ExperienceItem({ item, isReversed }) {
                     fill
                     className="object-cover"
                     sizes="635px"
+                    quality={90}
                   />
                 </div>
               )}
