@@ -128,6 +128,7 @@ export function getSectionConfig(section) {
       return {
         Component,
         props: {
+          videoUrl: section.video_url ?? undefined,
           videoSrc: getUrl(section.video_src) ?? undefined,
           posterImage: getUrl(section.poster_image) ?? undefined,
         },
