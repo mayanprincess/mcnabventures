@@ -2,15 +2,17 @@
 
 import Image from 'next/image';
 import { ourPartnersData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function OurPartners({
   badge = ourPartnersData.badge,
   title = ourPartnersData.title,
   partners = ourPartnersData.partners,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-[100px] overflow-hidden">
+    <section ref={scrollRef} className={`w-full bg-white py-16 sm:py-20 lg:py-[100px] overflow-hidden ${animations.fadeUp(isVisible)}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* MOBILE VERSION - Semi-circular background with vertical stacked logos */}
         <div className="lg:hidden">

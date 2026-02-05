@@ -3,14 +3,17 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { sustainabilityData } from '@/data';
+import { useScrollAnimation, animations, getDelay } from '@/hooks/useScrollAnimation';
 
 export default function SustainabilityInAction({
   title = sustainabilityData.title,
   backgroundImage = sustainabilityData.backgroundImage,
   cards = sustainabilityData.cards,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
+
   return (
-    <section className="relative w-full overflow-hidden min-h-auto lg:h-[962px] py-12 lg:py-0">
+    <section ref={scrollRef} className={`relative w-full overflow-hidden min-h-auto lg:h-[962px] py-12 lg:py-0 ${animations.fadeUp(isVisible)}`}>
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image

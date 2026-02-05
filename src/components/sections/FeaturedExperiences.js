@@ -2,13 +2,16 @@
 
 import Image from 'next/image';
 import { featuredExperiencesData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function FeaturedExperiences({
   title = featuredExperiencesData.title,
   description = featuredExperiencesData.description,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.1 });
+
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-[100px]">
+    <section ref={scrollRef} className={`w-full bg-white py-16 sm:py-20 lg:py-[100px] ${animations.fadeUp(isVisible)}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10 sm:mb-12 lg:mb-16 max-w-2xl">

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useScrollAnimation, animations, getDelay } from '@/hooks/useScrollAnimation';
 
 const defaultStats = [
   {
@@ -31,9 +32,12 @@ export default function DrivenByProgress({
   image = '/imagenes/imagendriven.jpg',
   stats = defaultStats,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
+
   return (
     <section 
-      className="relative w-full py-16 sm:py-20 lg:py-[100px] overflow-hidden"
+      ref={scrollRef}
+      className={`relative w-full py-16 sm:py-20 lg:py-[100px] overflow-hidden ${animations.fadeUp(isVisible)}`}
       style={{ backgroundColor: '#00354A' }}
     >
       {/* Background Vector - Desktop Only */}

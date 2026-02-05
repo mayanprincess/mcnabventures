@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { multimediaData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 const isExternalUrl = (src) =>
   typeof src === 'string' && (src.startsWith('http://') || src.startsWith('https://'));
@@ -15,10 +16,12 @@ export default function Multimedia({
 }) {
   const [activeTab, setActiveTab] = useState('photos');
   const currentData = activeTab === 'photos' ? photos : videos;
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   return (
     <section 
-      className="w-full py-16 sm:py-20 lg:py-[100px] bg-white"
+      ref={scrollRef}
+      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-white ${animations.fadeUp(isVisible)}`}
       aria-labelledby="multimedia-heading"
     >
       <div className="w-full lg:w-[90%] max-w-[1400px] mx-auto px-6 lg:px-0">

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { secondaryHeroData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 /**
  * SecondaryHero Component - MCNAB VENTURES
@@ -20,12 +21,14 @@ export default function SecondaryHero({
   linkUrl = secondaryHeroData.linkUrl,
   useVectorDesign = secondaryHeroData.useVectorDesign,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
+
   // Render based on design variant
   if (useVectorDesign) {
-    return <VectorDesignHero heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} />;
+    return <VectorDesignHero heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} scrollRef={scrollRef} isVisible={isVisible} />;
   }
 
-  return <DefaultDesignHero image={image} heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} />;
+  return <DefaultDesignHero image={image} heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} scrollRef={scrollRef} isVisible={isVisible} />;
 }
 
 /**
@@ -34,7 +37,7 @@ export default function SecondaryHero({
  * Text and button overlay on top-left of the rounded image container
  * Parallax effect on scroll
  */
-function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
+function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVisible }) {
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -82,7 +85,8 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
 
   return (
     <section 
-      className="relative w-full bg-white lg:py-16"
+      ref={scrollRef}
+      className={`relative w-full bg-white lg:py-16 ${animations.fade(isVisible)}`}
       role="banner"
       aria-label="Hero section"
     >
@@ -191,10 +195,11 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl }) {
  * Vector Design Hero
  * Alternative design with turquoise curved stripes and dark vertical bar
  */
-function VectorDesignHero({ heading, linkLabel, linkUrl }) {
+function VectorDesignHero({ heading, linkLabel, linkUrl, scrollRef, isVisible }) {
   return (
     <section 
-      className="relative w-full min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] overflow-hidden bg-white"
+      ref={scrollRef}
+      className={`relative w-full min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] overflow-hidden bg-white ${animations.fade(isVisible)}`}
       role="banner"
       aria-label="Hero section"
     >

@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { experiencesGalleryData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function ExperiencesGallery({
   slides = experiencesGalleryData.slides,
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   const goToPrev = () => {
     setSelectedIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -24,7 +26,7 @@ export default function ExperiencesGallery({
   const currentSlide = slides[selectedIndex];
 
   return (
-    <section className="w-full bg-white">
+    <section ref={scrollRef} className={`w-full bg-white ${animations.fade(isVisible)}`}>
       <div className="h-full flex flex-col">
         {/* Image Container - Full Screen Width */}
         <div className="relative w-full h-[410px] lg:h-[640px]">

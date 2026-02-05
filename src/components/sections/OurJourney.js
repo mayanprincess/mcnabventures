@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ourJourneyData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function OurJourney({ 
   title = ourJourneyData.title,
@@ -10,6 +11,7 @@ export default function OurJourney({
   defaultOpen = ourJourneyData.defaultOpen
 }) {
   const [openItem, setOpenItem] = useState(defaultOpen);
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   const toggleItem = (id) => {
     setOpenItem(openItem === id ? null : id);
@@ -17,7 +19,8 @@ export default function OurJourney({
 
   return (
     <section 
-      className="w-full py-16 sm:py-20 lg:py-[100px] bg-[#F6F4EF]"
+      ref={scrollRef}
+      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-[#F6F4EF] ${animations.fadeUp(isVisible)}`}
       aria-labelledby="journey-heading"
     >
       <div className="w-[90%] max-w-[1400px] mx-auto">

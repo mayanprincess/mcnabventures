@@ -6,10 +6,19 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import useEmblaCarousel from 'embla-carousel-react';
 import { groupSnapshotData, companyLogosData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 const markdownComponents = {
   p: ({ children }) => <span className="text-navy/70">{children}</span>,
   strong: ({ children }) => <span className="font-fustat-medium text-turquoise">{children}</span>,
+  ul: ({ children }) => <ul className="mt-4 space-y-2">{children}</ul>,
+  ol: ({ children }) => <ol className="mt-4 space-y-2">{children}</ol>,
+  li: ({ children }) => (
+    <li className="flex items-start gap-3 ml-2">
+      <span className="text-turquoise flex-shrink-0" style={{ marginTop: '-2px' }}>→</span>
+      <span className="text-navy/70">{children}</span>
+    </li>
+  ),
 };
 
 // Company Logos Slider Component for Mobile
@@ -90,6 +99,7 @@ export default function GroupSnapshot({
   companyLogos = companyLogosData 
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   const goToPrev = () => {
     setSelectedIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -104,7 +114,7 @@ export default function GroupSnapshot({
   };
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-[100px] overflow-hidden">
+    <section ref={scrollRef} className={`w-full bg-white py-16 sm:py-20 lg:py-[100px] overflow-hidden ${animations.fadeUp(isVisible)}`}>
       {/* Main Content Area */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* MOBILE VERSION - Vertical layout: Text → Controls → Images */}

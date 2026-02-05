@@ -2,13 +2,16 @@
 
 import Image from 'next/image';
 import { diversifiedData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function Diversified({
   title = diversifiedData.title,
   image = diversifiedData.image,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
+
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white relative overflow-hidden">
+    <section ref={scrollRef} className={`w-full py-16 sm:py-20 lg:py-[100px] bg-white relative overflow-hidden ${animations.scale(isVisible)}`}>
       {/* MOBILE VERSION */}
       <div className="lg:hidden">
         {/* Decorative SVG - Mobile */}

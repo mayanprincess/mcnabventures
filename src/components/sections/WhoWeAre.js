@@ -1,7 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { whoWeAreData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 const titleMarkdownComponents = {
   p: ({ children }) => <span className="text-navy">{children}</span>,
@@ -14,8 +17,10 @@ export default function WhoWeAre({
   description = whoWeAreData.description,
   logo = whoWeAreData.logo,
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
+
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
+    <section ref={scrollRef} className={`w-full py-16 sm:py-20 lg:py-[100px] bg-white ${animations.fadeUp(isVisible)}`}>
       {/* MOBILE VERSION */}
       <div className="lg:hidden flex flex-col items-center px-6">
         {/* Logo Container - Oval with beige background */}

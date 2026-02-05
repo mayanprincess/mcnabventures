@@ -3,6 +3,9 @@
 import { useState, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { videoPlayerData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
+
+// Note: useScrollAnimation is imported and used below
 
 /**
  * Parse external video URL to get provider and embed ID
@@ -92,6 +95,9 @@ export default function VideoPlayer({
   const [progress, setProgress] = useState(0);
   const videoRef = useRef(null);
   const iframeRef = useRef(null);
+  
+  // Scroll animation
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   // Determine if we're using an external video (Vimeo/YouTube)
   const externalVideo = useMemo(() => parseVideoUrl(videoUrl), [videoUrl]);
@@ -139,7 +145,7 @@ export default function VideoPlayer({
   };
 
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
+    <section ref={scrollRef} className={`w-full py-16 sm:py-20 lg:py-[100px] bg-white ${animations.fadeUp(isVisible)}`}>
       <div className="w-[90%] max-w-[1110px] mx-auto">
         <div className="relative rounded-3xl overflow-hidden aspect-video bg-black">
           {/* Poster Image - Shows before video starts */}

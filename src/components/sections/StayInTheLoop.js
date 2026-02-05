@@ -6,11 +6,14 @@ import Link from 'next/link';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { stayInTheLoopData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function StayInTheLoop({ 
   items = stayInTheLoopData.items, 
   title = stayInTheLoopData.title 
 }) {
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
+
   // Mobile state
   const [currentSlideMobile, setCurrentSlideMobile] = useState(0);
   const [loadedMobile, setLoadedMobile] = useState(false);
@@ -83,7 +86,8 @@ export default function StayInTheLoop({
 
   return (
     <section 
-      className="w-full py-16 sm:py-20 lg:py-[100px] bg-white"
+      ref={scrollRef}
+      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-white ${animations.fadeUp(isVisible)}`}
       aria-labelledby="stay-in-loop-heading"
     >
       <div className="w-[90%] max-w-[1400px] mx-auto">

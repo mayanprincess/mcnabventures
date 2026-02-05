@@ -4,16 +4,19 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usefulLinksData } from '@/data';
+import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
 export default function UsefulLinks({ links = usefulLinksData.links }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   const initialLinks = links.slice(0, 4);
   const remainingLinks = links.slice(4);
 
   return (
     <section 
-      className="w-full bg-white py-12 sm:py-16 lg:py-[100px]"
+      ref={scrollRef}
+      className={`w-full bg-white py-12 sm:py-16 lg:py-[100px] ${animations.fadeUp(isVisible)}`}
       aria-labelledby="useful-links-heading"
     >
       <div className="container mx-auto px-6 lg:px-8">
