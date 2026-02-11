@@ -6,8 +6,9 @@ import rehypeRaw from 'rehype-raw';
 import { whoWeAreData } from '@/data';
 import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
-const titleMarkdownComponents = {
-  p: ({ children }) => <span className="text-navy">{children}</span>,
+const markdownComponents = {
+  // Render <p> as <span> so it inherits the wrapper styles.
+  p: ({ children }) => <span>{children}</span>,
   strong: ({ children }) => <span className="font-fustat-medium text-turquoise">{children}</span>,
 };
 
@@ -46,15 +47,17 @@ export default function WhoWeAre({
         {/* Title (WYSIWYG HTML via ReactMarkdown + rehype-raw) - key forces remount on content change (fixes client nav) */}
         {titlePart1 && (
           <div className="font-fustat-medium text-navy text-[28px] leading-[34px] tracking-[-0.5px] text-center max-w-[90%] mb-4">
-            <ReactMarkdown key={titlePart1} rehypePlugins={[rehypeRaw]} components={titleMarkdownComponents}>
+            <ReactMarkdown key={titlePart1} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
               {titlePart1}
             </ReactMarkdown>
           </div>
         )}
-        {/* Description - Centered, Fustat Medium */}
-        <p className="font-fustat-medium text-navy text-[28px] leading-[34px] tracking-[-0.5px] text-center max-w-[90%]">
-          {description}
-        </p>
+        {/* Description (same markdown pipeline as titlePart1) */}
+        <div className="font-fustat-medium text-navy text-[28px] leading-[34px] tracking-[-0.5px] text-center max-w-[90%]">
+          <ReactMarkdown key={description ?? ''} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+            {description ?? ''}
+          </ReactMarkdown>
+        </div>
       </div>
 
       {/* DESKTOP VERSION */}
@@ -84,16 +87,18 @@ export default function WhoWeAre({
           {/* Title (WYSIWYG HTML via ReactMarkdown + rehype-raw) - key forces remount on content change (fixes client nav) */}
           {titlePart1 && (
             <div className="font-fustat-medium text-navy text-[28px] sm:text-[32px] lg:text-[36px] leading-snug mb-6 max-w-2xl ml-auto">
-              <ReactMarkdown key={titlePart1} rehypePlugins={[rehypeRaw]} components={titleMarkdownComponents}>
+              <ReactMarkdown key={titlePart1} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
                 {titlePart1}
               </ReactMarkdown>
             </div>
           )}
 
           {/* Description */}
-          <p className="font-fustat-medium text-navy/80 text-[20px] sm:text-[22px] lg:text-[24px] leading-relaxed max-w-2xl ml-auto">
-            {description}
-          </p>
+          <div className="font-fustat-medium text-navy/80 text-[20px] sm:text-[22px] lg:text-[24px] leading-relaxed max-w-2xl ml-auto">
+            <ReactMarkdown key={description ?? ''} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+              {description ?? ''}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
     </section>
