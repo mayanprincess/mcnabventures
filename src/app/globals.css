@@ -128,6 +128,17 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
 }
 
+/* ── SecondaryHero Animations ── */
+@keyframes secondaryHeroBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+.secondary-hero-bounce {
+  animation: secondaryHeroBounce 2.8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
 /* Gold Gradient Utility Class */
 .bg-gold-gradient {
   background: linear-gradient(

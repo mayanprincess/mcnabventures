@@ -36,5 +36,5 @@ export const companyLogosData = [
   { name: 'Acqua di Mare Resort', logo: '/logos/empresas/acqua.svg', width: 160, height: 100 },
   { name: 'Galaxy Wave', logo: '/logos/empresas/galaxywave.svg', width: 160, height: 100 },
   { name: 'CM Airlines', logo: '/logos/empresas/cmairlines.svg', width: 160, height: 100 },
-  { name: 'Petroa', logo: '/logos/empresas/petroa.svg', width: 160, height: 100 },
-];
+  { name: 'PetroGas', logo: '/logos/empresas/petroa.svg', width: 160, height: 100 },
+  ];

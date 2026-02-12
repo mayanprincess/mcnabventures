@@ -1,17 +1,17 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { secondaryHeroData } from '@/data';
-import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 /**
  * SecondaryHero Component - MCNAB VENTURES
- * 
+ *
  * Hero section secundario con dos variantes de diseño:
- * - Default: Imagen de fondo con texto y botón CTA
+ * - Default: Imagen de fondo con overlay elegante, texto animado y botón CTA
  * - Vector: Diseño con barras curvas turquesa
- * 
+ *
  * Se alimenta de datos JSON (futuro REST API)
  */
 export default function SecondaryHero({
@@ -21,85 +21,99 @@ export default function SecondaryHero({
   linkUrl = secondaryHeroData.linkUrl,
   useVectorDesign = secondaryHeroData.useVectorDesign,
 }) {
-  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
-  // Render based on design variant
   if (useVectorDesign) {
-    return <VectorDesignHero heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} scrollRef={scrollRef} isVisible={isVisible} />;
+    return (
+      <VectorDesignHero
+        heading={heading}
+        linkLabel={linkLabel}
+        linkUrl={linkUrl}
+        scrollRef={scrollRef}
+        isVisible={isVisible}
+      />
+    );
   }
 
-  return <DefaultDesignHero image={image} heading={heading} linkLabel={linkLabel} linkUrl={linkUrl} scrollRef={scrollRef} isVisible={isVisible} />;
+  return (
+    <DefaultDesignHero
+      image={image}
+      heading={heading}
+      linkLabel={linkLabel}
+      linkUrl={linkUrl}
+      scrollRef={scrollRef}
+      isVisible={isVisible}
+    />
+  );
 }
 
 /**
  * Default Design Hero
- * White full-width background with rounded image container
- * Text and button overlay on top-left of the rounded image container
- * Parallax effect on scroll
+ * Elegant full-width hero with cinematic overlay, parallax image,
+ * and orchestrated staggered entrance animation.
  */
 function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVisible }) {
   const imageRef = useRef(null);
   const containerRef = useRef(null);
+  const [isRevealed, setIsRevealed] = useState(false);
 
-  // Parallax effect (desktop only)
+  // Trigger entrance animation after first paint
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      setIsRevealed(true);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // Parallax effect (desktop only) - passive listeners for performance
   useEffect(() => {
     if (!containerRef.current) return;
-    
+
     const handleScroll = () => {
-      if (imageRef.current && containerRef.current && window.innerWidth >= 1024) {
+      if (!imageRef.current || !containerRef.current) return;
+
+      if (window.innerWidth >= 1024) {
         const rect = containerRef.current.getBoundingClientRect();
-        const offset = -rect.top * 0.3;
-        imageRef.current.style.transform = `translateY(${offset}px) scale(1.1)`;
-      } else if (imageRef.current && window.innerWidth < 1024) {
-        // Reset transform on mobile
+        const offset = -rect.top * 0.18;
+        imageRef.current.style.transform = `translateY(${offset}px) scale(1.08)`;
+      } else {
         imageRef.current.style.transform = 'none';
       }
     };
 
-    const handleResize = () => {
-      if (!containerRef.current) return;
-      
-      if (window.innerWidth >= 1024) {
-        // Desktop: set aspect ratio
-        containerRef.current.style.aspectRatio = '1348 / 751';
-        containerRef.current.style.height = 'auto';
-      } else {
-        // Mobile: fixed height
-        containerRef.current.style.aspectRatio = 'none';
-        containerRef.current.style.height = '600px';
-      }
-    };
-
-    // Set initial state
-    handleResize();
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <section 
+    <section
       ref={scrollRef}
-      className={`relative w-full bg-white lg:py-16 ${animations.fade(isVisible)}`}
+      className="relative w-full bg-white lg:py-12"
       role="banner"
       aria-label="Hero section"
     >
       {image && (
-        <div 
+        <div
           ref={containerRef}
-          className="relative w-full h-[600px] min-h-[600px] lg:h-auto lg:min-h-0 lg:w-[90%] lg:mx-auto lg:rounded-2xl lg:rounded-3xl overflow-hidden"
+          className={`
+            relative w-full overflow-hidden
+            h-[500px] max-h-[70vh]
+            lg:h-auto lg:aspect-[1348/600] lg:max-h-[75vh]
+            lg:w-[90%] lg:mx-auto lg:rounded-3xl
+            transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)]
+            ${isRevealed ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.97]'}
+          `}
         >
-          {/* Background Image */}
-          <div 
+          {/* Background Image — cinematic zoom-in reveal */}
+          <div
             ref={imageRef}
-            className="absolute inset-0 w-full h-full"
-            style={{ minHeight: '600px' }}
+            className={`
+              absolute inset-0 w-full h-full
+              transition-all duration-[2s] ease-[cubic-bezier(0.16,1,0.3,1)]
+              ${isRevealed ? 'scale-[1.02] opacity-100' : 'scale-[1.15] opacity-0'}
+            `}
           >
             <Image
               src={image}
@@ -108,34 +122,105 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
               className="object-cover"
               priority
               sizes="(max-width: 1023px) 100vw, 90vw"
-              style={{ objectFit: 'cover' }}
             />
           </div>
 
-          {/* Text Overlay - Mobile */}
-          <div className="absolute inset-0 z-10 flex items-start pt-[20%] pl-6 pr-6 lg:hidden">
-            <div className="max-w-[85%]">
-              <h1 className="font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.2] tracking-[-0.02em]">
+          {/* ── Elegant Multi-Layer Overlay ── */}
+          <div
+            className={`
+              absolute inset-0 z-[1]
+              transition-opacity duration-[2.2s] ease-out
+              ${isRevealed ? 'opacity-100' : 'opacity-0'}
+            `}
+            aria-hidden="true"
+          >
+            {/* Layer 1: Left-to-right gradient — text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/15 to-transparent" />
+
+            {/* Layer 2: Bottom vignette — cinematic depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
+            {/* Layer 3: Subtle brand color accent */}
+            <div className="absolute inset-0 bg-gradient-to-br from-navy/10 via-transparent to-turquoise/[0.03]" />
+
+            {/* Layer 4: Top-left radial — soft corner darkening */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.12)_0%,transparent_55%)]" />
+
+            {/* Layer 5: Subtle film grain texture via noise */}
+            <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjEiLz48L3N2Zz4=')] bg-repeat" />
+          </div>
+
+          {/* ── Text Overlay — Mobile ── */}
+          <div className="absolute inset-0 z-10 flex items-start pt-[16%] pl-6 pr-6 lg:hidden">
+            <div className="max-w-[85%] space-y-4">
+              <h1
+                className={`
+                  font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.2] tracking-[-0.02em]
+                  drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]
+                  transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[500ms]
+                  ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                `}
+              >
                 {heading}
               </h1>
+
+              {/* CTA Button — Mobile */}
+              {linkLabel && linkUrl && (
+                <div
+                  className={`
+                    pt-1
+                    transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[800ms]
+                    ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+                  `}
+                >
+                  <a
+                    href={linkUrl}
+                    className="group inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 py-3 text-base transition-all duration-300 rounded hover:shadow-lg hover:shadow-navy/20"
+                    aria-label={linkLabel}
+                  >
+                    <span>{linkLabel}</span>
+                    <Image
+                      src="/btn_arrow.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                      className="flex-shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Text and Button Overlay - Desktop */}
+          {/* ── Text and Button Overlay — Desktop ── */}
           <div className="absolute inset-0 z-10 hidden lg:flex items-start">
-            <div style={{ paddingLeft: '118px', paddingTop: '106px' }}>
-              <div className="max-w-2xl space-y-6 sm:space-y-8">
+            <div style={{ paddingLeft: '118px', paddingTop: '80px' }}>
+              <div className="max-w-2xl space-y-6">
                 {/* Heading */}
-                <h1 className="font-literata-light text-white text-[64px] leading-[1.1] tracking-[-0.02em]">
+                <h1
+                  className={`
+                    font-literata-light text-white text-[56px] xl:text-[64px] leading-[1.1] tracking-[-0.02em]
+                    drop-shadow-[0_2px_20px_rgba(0,0,0,0.3)]
+                    transition-all duration-[1.1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[600ms]
+                    ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+                  `}
+                >
                   {heading}
                 </h1>
 
                 {/* CTA Button */}
                 {linkLabel && linkUrl && (
-                  <div className="pt-2 sm:pt-4">
+                  <div
+                    className={`
+                      pt-2
+                      transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[900ms]
+                      ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+                    `}
+                  >
                     <a
                       href={linkUrl}
-                      className="inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-colors duration-200 rounded"
+                      className="group inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-8 py-4 text-lg transition-all duration-300 rounded hover:gap-4 hover:shadow-lg hover:shadow-navy/20"
                       aria-label={linkLabel}
                     >
                       <span>{linkLabel}</span>
@@ -144,7 +229,7 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
                         alt=""
                         width={24}
                         height={24}
-                        className="flex-shrink-0"
+                        className="flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1"
                         aria-hidden="true"
                       />
                     </a>
@@ -154,9 +239,15 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
             </div>
           </div>
 
-          {/* Scroll Indicator - Mobile */}
-          <div className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 z-10 lg:hidden">
-            <div className="w-14 h-7 border border-white rounded-full flex items-center justify-center">
+          {/* ── Scroll Indicator — Mobile ── */}
+          <div
+            className={`
+              absolute bottom-[8%] left-1/2 -translate-x-1/2 z-10 lg:hidden
+              transition-all duration-700 ease-out delay-[1300ms]
+              ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+            `}
+          >
+            <div className="w-14 h-7 border border-white/60 rounded-full flex items-center justify-center secondary-hero-bounce">
               <svg
                 width="10"
                 height="6"
@@ -175,15 +266,23 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
             </div>
           </div>
 
-          {/* Scroll Indicator - Desktop */}
-          <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10 hidden lg:block">
-            <Image
-              src="/down_arrow.svg"
-              alt="Scroll down"
-              width={56}
-              height={21}
-              className="w-12 sm:w-14 h-auto"
-            />
+          {/* ── Scroll Indicator — Desktop ── */}
+          <div
+            className={`
+              absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden lg:block
+              transition-all duration-700 ease-out delay-[1300ms]
+              ${isRevealed ? 'opacity-70 translate-y-0' : 'opacity-0 translate-y-4'}
+            `}
+          >
+            <div className="secondary-hero-bounce">
+              <Image
+                src="/down_arrow.svg"
+                alt="Scroll down"
+                width={56}
+                height={21}
+                className="w-14 h-auto"
+              />
+            </div>
           </div>
         </div>
       )}
@@ -197,9 +296,15 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
  */
 function VectorDesignHero({ heading, linkLabel, linkUrl, scrollRef, isVisible }) {
   return (
-    <section 
+    <section
       ref={scrollRef}
-      className={`relative w-full min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] overflow-hidden bg-white ${animations.fade(isVisible)}`}
+      className={`
+        relative w-full overflow-hidden bg-white
+        min-h-[500px] sm:min-h-[550px] lg:min-h-[600px]
+        max-h-[75vh]
+        transition-opacity duration-700 ease-out
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
+      `}
       role="banner"
       aria-label="Hero section"
     >
@@ -213,7 +318,6 @@ function VectorDesignHero({ heading, linkLabel, linkUrl, scrollRef, isVisible })
         {/* Vector SVG - Positioned to create curved stripes effect */}
         <div className="absolute left-[12%] sm:left-[15%] right-0 top-0 bottom-0 z-[1] overflow-hidden">
           <div className="relative w-full h-full">
-            {/* Vector SVG positioned in the middle-upper section */}
             <div className="absolute top-[35%] left-0 w-full">
               <svg
                 width="100%"

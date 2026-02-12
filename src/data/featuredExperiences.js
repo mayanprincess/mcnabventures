@@ -3,7 +3,7 @@
  */
 export const featuredExperiencesData = {
   title: 'Featured experiences',
-  description: 'Our team covers a bunch of different industries, offering solutions that impact all aspects of life — from travel and tourism to energy and telecom.',
+  description: 'We operate a diversified portfolio of businesses that support tourism and everyday economic activity across the region, from hospitality and transportation to fuel and LPG distribution. Through strategic partnerships and operational excellence, we strengthen connectivity, reliability, and long-term regional growth. Our commitment to responsible development drives everything we do.',
   gridItems: [
     // ROW 1
     {

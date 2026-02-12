@@ -24,6 +24,7 @@ export default function Header() {
     { label: 'Mayan Princess', href: '/group/mayan-princess' },
     { label: 'Turquoise Bay', href: '/group/turquoise-bay' },
     { label: 'Acqua Di Mare', href: '/group/acqua-di-mare-resort' },
+    { label: 'PetroGas', href: '/group/petrogas' },
   ];
 
   const navigationItems = [
