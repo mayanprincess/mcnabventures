@@ -121,6 +121,7 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
               fill
               className="object-cover"
               priority
+              quality={90}
               sizes="(max-width: 1023px) 100vw, 90vw"
             />
           </div>
@@ -134,29 +135,23 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
             `}
             aria-hidden="true"
           >
-            {/* Layer 1: Left-to-right gradient — text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/15 to-transparent" />
+            {/* Layer 1: Soft left gradient — just enough for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/8 to-transparent" />
 
-            {/* Layer 2: Bottom vignette — cinematic depth */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+            {/* Layer 2: Gentle bottom vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
 
-            {/* Layer 3: Subtle brand color accent */}
-            <div className="absolute inset-0 bg-gradient-to-br from-navy/10 via-transparent to-turquoise/[0.03]" />
-
-            {/* Layer 4: Top-left radial — soft corner darkening */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.12)_0%,transparent_55%)]" />
-
-            {/* Layer 5: Subtle film grain texture via noise */}
-            <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjEiLz48L3N2Zz4=')] bg-repeat" />
+            {/* Layer 3: Very subtle brand tint */}
+            <div className="absolute inset-0 bg-gradient-to-br from-navy/5 via-transparent to-transparent" />
           </div>
 
           {/* ── Text Overlay — Mobile ── */}
-          <div className="absolute inset-0 z-10 flex items-start pt-[16%] pl-6 pr-6 lg:hidden">
-            <div className="max-w-[85%] space-y-4">
+          <div className="absolute inset-0 z-10 flex flex-col justify-center pl-6 pr-6 pb-[35%] lg:hidden">
+            <div className="max-w-[85%] space-y-5">
               <h1
                 className={`
-                  font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.2] tracking-[-0.02em]
-                  drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]
+                  font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.15] tracking-[-0.01em]
+                  drop-shadow-[0_1px_8px_rgba(0,0,0,0.35)] [text-shadow:_0_2px_16px_rgba(0,0,0,0.2)]
                   transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[500ms]
                   ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                 `}
@@ -168,14 +163,13 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
               {linkLabel && linkUrl && (
                 <div
                   className={`
-                    pt-1
                     transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[800ms]
                     ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
                   `}
                 >
                   <a
                     href={linkUrl}
-                    className="group inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-6 py-3 text-base transition-all duration-300 rounded hover:shadow-lg hover:shadow-navy/20"
+                    className="group inline-flex items-center gap-3 bg-navy/90 hover:bg-navy text-white font-work-sans-medium px-6 py-3 text-base transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
                     aria-label={linkLabel}
                   >
                     <span>{linkLabel}</span>
@@ -194,14 +188,14 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
           </div>
 
           {/* ── Text and Button Overlay — Desktop ── */}
-          <div className="absolute inset-0 z-10 hidden lg:flex items-start">
-            <div style={{ paddingLeft: '118px', paddingTop: '80px' }}>
+          <div className="absolute inset-0 z-10 hidden lg:flex items-center">
+            <div style={{ paddingLeft: '118px', paddingBottom: '14%' }}>
               <div className="max-w-2xl space-y-6">
                 {/* Heading */}
                 <h1
                   className={`
-                    font-literata-light text-white text-[56px] xl:text-[64px] leading-[1.1] tracking-[-0.02em]
-                    drop-shadow-[0_2px_20px_rgba(0,0,0,0.3)]
+                    font-literata-light text-white text-[52px] xl:text-[60px] leading-[1.12] tracking-[-0.01em]
+                    drop-shadow-[0_1px_10px_rgba(0,0,0,0.35)] [text-shadow:_0_2px_20px_rgba(0,0,0,0.25)]
                     transition-all duration-[1.1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[600ms]
                     ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
                   `}
@@ -213,14 +207,13 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
                 {linkLabel && linkUrl && (
                   <div
                     className={`
-                      pt-2
                       transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[900ms]
                       ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
                     `}
                   >
                     <a
                       href={linkUrl}
-                      className="group inline-flex items-center gap-3 bg-navy hover:bg-navy/90 text-white font-work-sans-medium px-8 py-4 text-lg transition-all duration-300 rounded hover:gap-4 hover:shadow-lg hover:shadow-navy/20"
+                      className="group inline-flex items-center gap-3 bg-navy/90 hover:bg-navy text-white font-work-sans-medium px-8 py-4 text-lg transition-all duration-300 rounded-full shadow-md hover:gap-4 hover:shadow-lg"
                       aria-label={linkLabel}
                     >
                       <span>{linkLabel}</span>

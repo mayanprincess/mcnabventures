@@ -31,7 +31,7 @@ export default function Header() {
     { label: 'About Us', href: '/about-us' },
     { label: 'Group', href: '/group/mayan-princess' }, // href kept for key/back-compat; rendered as dropdown
     { label: 'Experiences', href: '/experiences' },
-    { label: 'Careers', href: '/#careers' },
+    { label: 'Apply Now', href: '/apply-now' },
   ];
 
   const toggleMobileMenu = () => {

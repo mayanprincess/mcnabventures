@@ -16,10 +16,9 @@ export default function Footer() {
   const vector2 = '/logos/footer_vector_2.svg';
 
   const aboutUsLinks = [
-    { label: 'Our Story', url: '/about-us' },
-    { label: 'Leadership', url: '/leadership' },
-    { label: 'Mission & Values', url: '/mission' },
-    { label: 'Sustainability', url: '/sustainability' },
+    { label: 'About Us', url: '/about-us' },
+    { label: 'Experiences', url: '/experiences' },
+    { label: 'Contact Us', url: '/contact' },
   ];
 
   const companyLinks = [
@@ -30,10 +29,7 @@ export default function Footer() {
   ];
 
   const careersLinks = [
-    { label: 'Open Positions', url: '/careers' },
-    { label: 'Benefits', url: '/careers/benefits' },
-    { label: 'Culture', url: '/careers/culture' },
-    { label: 'Internships', url: '/careers/internships' },
+    { label: 'Open Positions', url: '/apply-now' },
   ];
 
   const socialLinks = [
@@ -46,8 +42,8 @@ export default function Footer() {
     { label: 'About Us', url: '/about-us' },
     { label: 'Our Group', url: '/our-group' },
     { label: 'Our Company', url: '/our-company' },
-    { label: 'Mc Nab Careers', url: '/careers' },
-    { label: 'McNab Experiences', url: '/experiences' },
+    { label: 'Apply Now', url: '/apply-now' },
+    { label: 'Experiences', url: '/experiences' },
     { label: 'Contact Us', url: '/contact' },
   ];
 
