@@ -4,98 +4,132 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { whoWeAreData } from '@/data';
-import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
+/**
+ * Module-level constant — avoids re-creation on every render
+ * (per rerender-memo: hoist non-primitive defaults)
+ */
 const markdownComponents = {
-  // Render <p> as <span> so it inherits the wrapper styles.
   p: ({ children }) => <span>{children}</span>,
-  strong: ({ children }) => <span className="font-fustat-medium text-turquoise">{children}</span>,
+  strong: ({ children }) => (
+    <span className="font-fustat-medium text-turquoise">{children}</span>
+  ),
 };
 
+/**
+ * WhoWeAre Component - MCNAB VENTURES
+ *
+ * Company identity section with asymmetric layout:
+ * - Mobile: centered vertical stack with oval logo
+ * - Tablet+: horizontal layout with full-bleed left pill + right-aligned text
+ *
+ * Unified responsive layout — single render block, no duplication.
+ */
 export default function WhoWeAre({
   badge = whoWeAreData.badge,
   titlePart1 = whoWeAreData.titlePart1,
   description = whoWeAreData.description,
   logo = whoWeAreData.logo,
 }) {
-  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
   return (
-    <section ref={scrollRef} className={`w-full py-16 sm:py-20 lg:py-[100px] bg-white ${animations.fadeUp(isVisible)}`}>
-      {/* MOBILE VERSION */}
-      <div className="lg:hidden flex flex-col items-center px-6">
-        {/* Logo Container - Oval with beige background */}
-        <div className="mb-16">
-          <div className="bg-[#F6F4EF] rounded-full w-[342px] h-[153px] flex items-center justify-center">
-            <Image
-              src={logo}
-              alt="MCNAB VENTURES"
-              width={100}
-              height={60}
-              className="w-[100px] h-auto object-contain"
-            />
-          </div>
-        </div>
-
-        {/* Badge - "WHO WE ARE" */}
-        <div className="mb-3">
-          <span className="inline-flex items-center justify-center border border-navy rounded-full w-[115px] h-[29px] font-work-sans-medium text-navy text-xs tracking-wider uppercase">
-            {badge}
-          </span>
-        </div>
-
-        {/* Title (WYSIWYG HTML via ReactMarkdown + rehype-raw) - key forces remount on content change (fixes client nav) */}
-        {titlePart1 && (
-          <div className="font-fustat-medium text-navy text-[28px] leading-[34px] tracking-[-0.5px] text-center max-w-[90%] mb-4">
-            <ReactMarkdown key={titlePart1} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
-              {titlePart1}
-            </ReactMarkdown>
-          </div>
-        )}
-        {/* Description (same markdown pipeline as titlePart1) */}
-        <div className="font-fustat-medium text-navy text-[28px] leading-[34px] tracking-[-0.5px] text-center max-w-[90%]">
-          <ReactMarkdown key={description ?? ''} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
-            {description ?? ''}
-          </ReactMarkdown>
-        </div>
-      </div>
-
-      {/* DESKTOP VERSION */}
-      <div className="hidden lg:flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-        {/* Logo Container */}
-        <div className="flex-shrink-0">
-          <div className="bg-[#F6F4EF] rounded-r-full py-24 sm:py-28 lg:py-32 pl-0 pr-32 sm:pr-48 lg:pr-64 flex items-center justify-center min-w-[450px] sm:min-w-[600px] lg:min-w-[750px]">
-            <div className="pl-24 sm:pl-36 lg:pl-48">
+    <section
+      ref={scrollRef}
+      className="w-full py-16 sm:py-20 lg:py-24 xl:py-[100px] bg-white overflow-hidden"
+    >
+      <div className="flex flex-col md:flex-row items-center gap-10 md:gap-8 lg:gap-12 xl:gap-16">
+        {/* ── Logo Container ──
+            Mobile: centered oval pill
+            Tablet+: full-bleed left pill with rounded right edge
+            Proportions matched to Figma (~35% tablet, ~40% desktop) */}
+        <div
+          className={`
+            md:flex-shrink-0
+            transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]
+            ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
+          `}
+        >
+          <div
+            className="
+              bg-[#F6F4EF] flex items-center justify-center
+              rounded-full w-[280px] sm:w-[342px] h-[130px] sm:h-[153px]
+              md:rounded-none md:rounded-r-full md:w-auto md:h-auto
+              md:min-w-[260px] lg:min-w-[380px] xl:min-w-[540px] 2xl:min-w-[680px]
+              md:py-14 lg:py-20 xl:py-28 2xl:py-32
+              md:pr-12 lg:pr-24 xl:pr-40 2xl:pr-56
+            "
+          >
+            <div className="md:pl-12 lg:pl-24 xl:pl-36 2xl:pl-48">
               <Image
                 src={logo}
-                alt="Company logo"
+                alt="MCNAB VENTURES"
                 width={175}
                 height={105}
-                className="w-[175px] h-[105px] object-contain"
+                className="w-[90px] sm:w-[100px] md:w-[100px] lg:w-[130px] xl:w-[160px] 2xl:w-[175px] h-auto object-contain"
               />
             </div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 text-right pr-8 sm:pr-12 lg:pr-16">
+        {/* ── Content ── */}
+        <div className="flex-1 min-w-0 text-center md:text-right px-6 md:px-0 md:pr-8 lg:pr-[10%] xl:pr-[10%]">
           {/* Badge */}
-          <span className="inline-block border border-navy/30 rounded-full px-4 py-1.5 font-work-sans-medium text-navy text-xs tracking-wider mb-6">
-            {badge}
-          </span>
+          <div
+            className={`
+              mb-3 md:mb-3 lg:mb-5
+              transition-all duration-700 ease-out
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+            `}
+            style={{ transitionDelay: '200ms' }}
+          >
+            <span className="inline-flex items-center justify-center border border-navy/30 rounded-full px-4 py-1.5 font-work-sans-medium text-navy text-xs tracking-wider uppercase">
+              {badge}
+            </span>
+          </div>
 
-          {/* Title (WYSIWYG HTML via ReactMarkdown + rehype-raw) - key forces remount on content change (fixes client nav) */}
-          {titlePart1 && (
-            <div className="font-fustat-medium text-navy text-[28px] sm:text-[32px] lg:text-[36px] leading-snug mb-6 max-w-2xl ml-auto">
-              <ReactMarkdown key={titlePart1} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+          {/* Title — same size as description on mobile, differentiated from md+ */}
+          {titlePart1 ? (
+            <div
+              className={`
+                font-fustat-medium text-navy
+                text-[24px] sm:text-[28px] md:text-[20px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]
+                leading-snug tracking-[-0.3px]
+                mb-3 sm:mb-4 lg:mb-5
+                max-w-[90%] mx-auto md:max-w-none md:mx-0
+                transition-all duration-700 ease-out
+                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+              `}
+              style={{ transitionDelay: '400ms' }}
+            >
+              <ReactMarkdown
+                key={titlePart1}
+                rehypePlugins={[rehypeRaw]}
+                components={markdownComponents}
+              >
                 {titlePart1}
               </ReactMarkdown>
             </div>
-          )}
+          ) : null}
 
-          {/* Description */}
-          <div className="font-fustat-medium text-navy/80 text-[20px] sm:text-[22px] lg:text-[24px] leading-relaxed max-w-2xl ml-auto">
-            <ReactMarkdown key={description ?? ''} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+          {/* Description — lighter color from md+ for visual hierarchy */}
+          <div
+            className={`
+              font-fustat-medium text-navy md:text-navy/80
+              text-[24px] sm:text-[28px] md:text-[15px] lg:text-[17px] xl:text-[20px] 2xl:text-[22px]
+              leading-relaxed
+              max-w-[90%] mx-auto md:max-w-none md:mx-0
+              transition-all duration-700 ease-out
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+            `}
+            style={{ transitionDelay: '600ms' }}
+          >
+            <ReactMarkdown
+              key={description ?? ''}
+              rehypePlugins={[rehypeRaw]}
+              components={markdownComponents}
+            >
               {description ?? ''}
             </ReactMarkdown>
           </div>
