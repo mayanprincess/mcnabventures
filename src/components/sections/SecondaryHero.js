@@ -90,7 +90,7 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
   return (
     <section
       ref={scrollRef}
-      className="relative w-full bg-white lg:py-12"
+      className="relative w-full bg-white lg:pt-6 lg:pb-12"
       role="banner"
       aria-label="Hero section"
     >
@@ -146,10 +146,10 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
           </div>
 
           {/* ── Text & Button Overlay — Unified Responsive ── */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center
+          <div className="absolute inset-0 z-10 flex flex-col justify-start
             pl-6 sm:pl-8 md:pl-14 lg:pl-[118px]
             pr-6 sm:pr-8 md:pr-14 lg:pr-0
-            pb-[45%] sm:pb-[40%] md:pb-[30%] lg:pb-[22%]"
+            pt-16 sm:pt-20 md:pt-24 lg:pt-20 xl:pt-24"
           >
             <div className="max-w-[90%] sm:max-w-[85%] md:max-w-lg lg:max-w-2xl space-y-4 sm:space-y-5 lg:space-y-6">
               {/* Heading */}

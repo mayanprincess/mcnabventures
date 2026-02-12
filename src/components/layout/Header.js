@@ -7,11 +7,11 @@ import { useHeader } from '@/context/HeaderContext';
 
 /**
  * Header Component - MCNAB VENTURES
- * 
+ *
  * Static navigation header with logo and menu items.
  * Responsive design with mobile hamburger menu.
  * Supports transparent mode for pages with PrimaryHero.
- * 
+ *
  * @component
  */
 export default function Header() {
@@ -29,44 +29,51 @@ export default function Header() {
 
   const navigationItems = [
     { label: 'About Us', href: '/about-us' },
-    { label: 'Group', href: '/group/mayan-princess' }, // href kept for key/back-compat; rendered as dropdown
+    { label: 'Group', href: '/group/mayan-princess' },
     { label: 'Experiences', href: '/experiences' },
     { label: 'Apply Now', href: '/apply-now' },
   ];
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const linkBaseClass = `
+    font-work-sans-medium text-sm xl:text-base uppercase tracking-wide
+    transition-colors duration-200 outline-none
+    px-3 py-2
+  `;
+
+  const linkColorClass = isTransparent
+    ? 'text-white hover:text-turquoise'
+    : 'text-navy hover:text-turquoise';
 
   return (
-    <header 
-      className={`w-full transition-all duration-300 bg-white border-b border-sand/20 ${
-        isTransparent 
-          ? 'lg:absolute lg:top-0 lg:left-0 lg:right-0 lg:z-50 lg:bg-transparent lg:border-transparent' 
+    <header
+      className={`w-full transition-all duration-300 bg-white ${
+        isTransparent
+          ? 'lg:absolute lg:top-0 lg:left-0 lg:right-0 lg:z-50 lg:bg-transparent'
           : ''
       }`}
-      role="banner"
-      aria-label="Main navigation"
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <nav
+        className="container mx-auto px-4 sm:px-6 lg:px-8"
+        aria-label="Main navigation"
+      >
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
-          <Link 
-            href="/" 
-            className="flex items-center outline-none"
+          <Link
+            href="/"
+            className="flex items-center flex-shrink-0 outline-none"
             aria-label="MCNAB VENTURES Home"
           >
             <Image
               src={isTransparent ? '/logos/mcnab_logo_white.svg' : '/logos/Logo.svg'}
-              alt="MCNAB VENTURES Logo"
+              alt="MCNAB VENTURES"
               width={120}
               height={52}
-              className="h-10 sm:h-12 lg:h-14 w-auto lg:block hidden"
+              className="h-10 sm:h-12 lg:h-14 w-auto hidden lg:block"
               priority
             />
             <Image
               src="/logos/Logo.svg"
-              alt="MCNAB VENTURES Logo"
+              alt="MCNAB VENTURES"
               width={120}
               height={52}
               className="h-10 sm:h-12 lg:h-14 w-auto lg:hidden"
@@ -75,67 +82,67 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8 xl:gap-10">
+          <ul className="hidden lg:flex items-center gap-6 xl:gap-8" role="list">
             {navigationItems.map((item) =>
               item.label === 'Group' ? (
-                <div key={item.label} className="relative group">
+                <li key={item.label} className="relative group">
                   <button
                     type="button"
-                    className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-1 ${
-                      isTransparent
-                        ? 'text-white hover:text-turquoise'
-                        : 'text-navy hover:text-turquoise'
-                    }`}
-                    aria-haspopup="menu"
-                    aria-label="Open Group menu"
+                    className={`${linkBaseClass} ${linkColorClass} inline-flex items-center gap-1`}
+                    aria-haspopup="true"
+                    aria-expanded="false"
                   >
                     Group
+                    <svg
+                      className="w-3.5 h-3.5 opacity-60 transition-transform duration-200 group-hover:rotate-180"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      aria-hidden="true"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
                   </button>
                   <div
-                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full pt-3 z-50"
+                    className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50"
                     role="menu"
-                    aria-label="Group links"
                   >
-                    <div className="min-w-[220px] rounded-2xl bg-white border border-sand/20 shadow-lg overflow-hidden">
+                    <div className="min-w-[220px] rounded-2xl bg-white shadow-lg shadow-black/8 ring-1 ring-black/5 overflow-hidden py-1">
                       {groupLinks.map((link) => (
                         <Link
                           key={link.href}
                           href={link.href}
-                          className="block px-5 py-3 font-work-sans-medium text-sm text-navy hover:text-turquoise hover:bg-sand/10 outline-none"
+                          className="block px-5 py-2.5 font-work-sans-medium text-sm text-navy hover:text-turquoise hover:bg-sand/10 transition-colors duration-150"
                           role="menuitem"
-                          aria-label={`Navigate to ${link.label}`}
                         >
                           {link.label}
                         </Link>
                       ))}
                     </div>
                   </div>
-                </div>
+                </li>
               ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`font-work-sans-medium text-sm xl:text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-1 ${
-                    isTransparent
-                      ? 'text-white hover:text-turquoise'
-                      : 'text-navy hover:text-turquoise'
-                  }`}
-                  aria-label={`Navigate to ${item.label}`}
-                >
-                  {item.label}
-                </Link>
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`${linkBaseClass} ${linkColorClass}`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
               )
             )}
-          </div>
+          </ul>
 
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="lg:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 text-navy hover:text-turquoise hover:bg-sand/10 focus:ring-navy"
-            aria-label="Toggle mobile menu"
+            className="lg:hidden p-2 -mr-2 rounded-lg text-navy hover:text-turquoise hover:bg-sand/10 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
-            onClick={toggleMobileMenu}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <svg
               className="h-6 w-6"
@@ -145,6 +152,7 @@ export default function Header() {
               strokeWidth="2"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               {isMobileMenuOpen ? (
                 <path d="M6 18L18 6M6 6l12 12" />
@@ -159,46 +167,46 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div
             id="mobile-menu"
-            className="lg:hidden pb-6 pt-4 border-t border-sand/20"
+            className="lg:hidden pb-6 pt-4 border-t border-sand/10"
             role="menu"
-            aria-label="Mobile navigation menu"
+            aria-label="Mobile navigation"
           >
-            <div className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-1" role="list">
               {navigationItems.map((item) =>
                 item.label === 'Group' ? (
-                  <div key={item.label} className="flex flex-col gap-3">
-                    <div className="font-work-sans-medium text-base uppercase tracking-wide px-2 py-2 text-navy">
+                  <li key={item.label} className="flex flex-col">
+                    <span className="font-work-sans-medium text-base uppercase tracking-wide px-3 py-2.5 text-navy">
                       Group
-                    </div>
-                    <div className="flex flex-col">
+                    </span>
+                    <ul className="flex flex-col" role="list">
                       {groupLinks.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          className="font-work-sans-medium text-base transition-colors duration-200 outline-none px-4 py-2 text-navy hover:text-turquoise"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          role="menuitem"
-                          aria-label={`Navigate to ${link.label}`}
-                        >
-                          {link.label}
-                        </Link>
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            className="block font-work-sans-medium text-base px-6 py-2.5 text-navy hover:text-turquoise transition-colors duration-150"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            role="menuitem"
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
                       ))}
-                    </div>
-                  </div>
+                    </ul>
+                  </li>
                 ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="font-work-sans-medium text-base uppercase tracking-wide transition-colors duration-200 outline-none px-2 py-2 text-navy hover:text-turquoise"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    role="menuitem"
-                    aria-label={`Navigate to ${item.label}`}
-                  >
-                    {item.label}
-                  </Link>
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="block font-work-sans-medium text-base uppercase tracking-wide px-3 py-2.5 text-navy hover:text-turquoise transition-colors duration-150"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      role="menuitem"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
                 )
               )}
-            </div>
+            </ul>
           </div>
         )}
       </nav>
