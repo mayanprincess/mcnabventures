@@ -146,12 +146,12 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
           </div>
 
           {/* ── Text Overlay — Mobile ── */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center pl-6 pr-6 pb-[35%] lg:hidden">
+          <div className="absolute inset-0 z-10 flex flex-col justify-center pl-6 pr-6 pb-[45%] lg:hidden">
             <div className="max-w-[85%] space-y-5">
               <h1
                 className={`
                   font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.15] tracking-[-0.01em]
-                  drop-shadow-[0_1px_8px_rgba(0,0,0,0.35)] [text-shadow:_0_2px_16px_rgba(0,0,0,0.2)]
+                  drop-shadow-[0_1px_6px_rgba(0,0,0,0.15)] [text-shadow:_0_1px_10px_rgba(0,0,0,0.1)]
                   transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[500ms]
                   ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                 `}
@@ -189,13 +189,13 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
 
           {/* ── Text and Button Overlay — Desktop ── */}
           <div className="absolute inset-0 z-10 hidden lg:flex items-center">
-            <div style={{ paddingLeft: '118px', paddingBottom: '14%' }}>
+            <div style={{ paddingLeft: '118px', paddingBottom: '22%' }}>
               <div className="max-w-2xl space-y-6">
                 {/* Heading */}
                 <h1
                   className={`
                     font-literata-light text-white text-[52px] xl:text-[60px] leading-[1.12] tracking-[-0.01em]
-                    drop-shadow-[0_1px_10px_rgba(0,0,0,0.35)] [text-shadow:_0_2px_20px_rgba(0,0,0,0.25)]
+                    drop-shadow-[0_1px_8px_rgba(0,0,0,0.15)] [text-shadow:_0_1px_12px_rgba(0,0,0,0.1)]
                     transition-all duration-[1.1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[600ms]
                     ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
                   `}
