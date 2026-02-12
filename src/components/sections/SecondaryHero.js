@@ -99,7 +99,7 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
           ref={containerRef}
           className={`
             relative w-full overflow-hidden
-            h-[500px] max-h-[70vh]
+            h-[450px] sm:h-[480px] md:h-[500px] max-h-[70vh]
             lg:h-auto lg:aspect-[1348/600] lg:max-h-[75vh]
             lg:w-[90%] lg:mx-auto lg:rounded-3xl
             transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)]
@@ -145,12 +145,20 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
             <div className="absolute inset-0 bg-gradient-to-br from-navy/5 via-transparent to-transparent" />
           </div>
 
-          {/* ── Text Overlay — Mobile ── */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center pl-6 pr-6 pb-[45%] lg:hidden">
-            <div className="max-w-[85%] space-y-5">
+          {/* ── Text & Button Overlay — Unified Responsive ── */}
+          <div className="absolute inset-0 z-10 flex flex-col justify-center
+            pl-6 sm:pl-8 md:pl-14 lg:pl-[118px]
+            pr-6 sm:pr-8 md:pr-14 lg:pr-0
+            pb-[45%] sm:pb-[40%] md:pb-[30%] lg:pb-[22%]"
+          >
+            <div className="max-w-[90%] sm:max-w-[85%] md:max-w-lg lg:max-w-2xl space-y-4 sm:space-y-5 lg:space-y-6">
+              {/* Heading */}
               <h1
                 className={`
-                  font-literata-light text-white text-[32px] sm:text-[40px] leading-[1.15] tracking-[-0.01em]
+                  font-literata-light text-white
+                  text-[28px] sm:text-[34px] md:text-[42px] lg:text-[52px] xl:text-[60px]
+                  leading-[1.18] md:leading-[1.14] lg:leading-[1.12]
+                  tracking-[-0.01em]
                   drop-shadow-[0_1px_6px_rgba(0,0,0,0.15)] [text-shadow:_0_1px_10px_rgba(0,0,0,0.1)]
                   transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[500ms]
                   ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
@@ -159,7 +167,7 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
                 {heading}
               </h1>
 
-              {/* CTA Button — Mobile */}
+              {/* CTA Button */}
               {linkLabel && linkUrl && (
                 <div
                   className={`
@@ -169,66 +177,25 @@ function DefaultDesignHero({ image, heading, linkLabel, linkUrl, scrollRef, isVi
                 >
                   <a
                     href={linkUrl}
-                    className="group inline-flex items-center gap-3 bg-navy/90 hover:bg-navy text-white font-work-sans-medium px-6 py-3 text-base transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
+                    className="group inline-flex items-center gap-3 bg-navy/90 hover:bg-navy text-white font-work-sans-medium
+                      px-5 sm:px-6 md:px-7 lg:px-8
+                      py-2.5 sm:py-3 md:py-3.5 lg:py-4
+                      text-sm sm:text-base md:text-[17px] lg:text-lg
+                      transition-all duration-300 rounded-full shadow-md hover:gap-4 hover:shadow-lg"
                     aria-label={linkLabel}
                   >
                     <span>{linkLabel}</span>
                     <Image
                       src="/btn_arrow.svg"
                       alt=""
-                      width={20}
-                      height={20}
-                      className="flex-shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
+                      width={24}
+                      height={24}
+                      className="w-5 h-5 md:w-[22px] md:h-[22px] lg:w-6 lg:h-6 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1"
                       aria-hidden="true"
                     />
                   </a>
                 </div>
               )}
-            </div>
-          </div>
-
-          {/* ── Text and Button Overlay — Desktop ── */}
-          <div className="absolute inset-0 z-10 hidden lg:flex items-center">
-            <div style={{ paddingLeft: '118px', paddingBottom: '22%' }}>
-              <div className="max-w-2xl space-y-6">
-                {/* Heading */}
-                <h1
-                  className={`
-                    font-literata-light text-white text-[52px] xl:text-[60px] leading-[1.12] tracking-[-0.01em]
-                    drop-shadow-[0_1px_8px_rgba(0,0,0,0.15)] [text-shadow:_0_1px_12px_rgba(0,0,0,0.1)]
-                    transition-all duration-[1.1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[600ms]
-                    ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                  `}
-                >
-                  {heading}
-                </h1>
-
-                {/* CTA Button */}
-                {linkLabel && linkUrl && (
-                  <div
-                    className={`
-                      transition-all duration-[1s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-[900ms]
-                      ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
-                    `}
-                  >
-                    <a
-                      href={linkUrl}
-                      className="group inline-flex items-center gap-3 bg-navy/90 hover:bg-navy text-white font-work-sans-medium px-8 py-4 text-lg transition-all duration-300 rounded-full shadow-md hover:gap-4 hover:shadow-lg"
-                      aria-label={linkLabel}
-                    >
-                      <span>{linkLabel}</span>
-                      <Image
-                        src="/btn_arrow.svg"
-                        alt=""
-                        width={24}
-                        height={24}
-                        className="flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
 
