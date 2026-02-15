@@ -23,6 +23,7 @@ import DrivenByProgress from '@/components/sections/DrivenByProgress';
 import TheExperiences from '@/components/sections/TheExperiences';
 import ExperiencesGallery from '@/components/sections/ExperiencesGallery';
 import SustainabilityInAction from '@/components/sections/SustainabilityInAction';
+import ApplyNow from '@/components/sections/ApplyNow';
 import { companyLogosData, ourPartnersData } from '@/data';
 
 const LAYOUT_TO_COMPONENT = {
@@ -90,6 +91,14 @@ function getUrl(v) {
 export function getSectionConfig(section) {
   if (!section || !section.acf_fc_layout) return null;
   const layout = section.acf_fc_layout;
+
+  if (layout === 'active-toggle') {
+    if (section.active === true) {
+      return { Component: ApplyNow, props: {} };
+    }
+    return null;
+  }
+
   const Component = LAYOUT_TO_COMPONENT[layout];
   if (!Component) return null;
 
