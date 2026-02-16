@@ -1,108 +1,89 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { missionStatementData } from '@/data';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const markdownComponents = {
   p: ({ children }) => <span className="text-navy">{children}</span>,
-  strong: ({ children }) => <span className="font-fustat-medium text-turquoise">{children}</span>,
+  strong: ({ children }) => (
+    <span className="font-fustat-medium text-turquoise">{children}</span>
+  ),
 };
 
+const VECTORS = {
+  vector1: '/vector3.svg',
+  vector2: '/vector.svg',
+};
+
+/**
+ * MissionStatement Component - MCNAB VENTURES
+ *
+ * Decorative wave vector + mission text.
+ * Mobile: left-aligned text below vector
+ * Desktop: right-aligned text, vertically centered
+ */
 export default function MissionStatement({
   text = missionStatementData.text,
-  vectorType = 'vector1', // 'vector1' | 'vector2'
+  vectorType = 'vector1',
 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
-
-  const vectors = {
-    vector1: '/vector3.svg',
-    vector2: '/vector.svg',
-  };
-
-  const vectorSrc = vectors[vectorType] || vectors.vector1;
-
-  // Intersection Observer para activar animación cuando el componente es visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect(); // Solo animar una vez
-        }
-      },
-      { threshold: 0.2 } // Activar cuando 20% del componente es visible
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const { ref: sectionRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
+  const vectorSrc = VECTORS[vectorType] || VECTORS.vector1;
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      className="relative bg-white overflow-visible" 
-      style={{ height: '552px' }}
+      className="relative bg-white overflow-visible
+        min-h-[360px] sm:min-h-[400px] md:min-h-[440px] lg:min-h-[500px] xl:min-h-[552px]"
     >
-      {/* Vector decorativo - entra desde la izquierda */}
-      <div 
-        className={`absolute -top-20 -left-1 sm:-top-8 sm:-left-2 xl:-top-12 xl:-left-2 transition-all duration-[1500ms] ease-out ${
-          isVisible 
-            ? 'opacity-100 translate-x-0' 
-            : 'opacity-0 -translate-x-16'
-        }`}
+      {/* Decorative wave vector — slides in from left */}
+      <div
+        className={`
+          absolute -top-16 -left-1 sm:-top-10 md:-top-12 xl:-top-12
+          transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)]
+          ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-16'}
+        `}
       >
         <Image
           src={vectorSrc}
           alt=""
           width={527}
           height={366}
-          className="w-[200px] sm:w-[240px] md:w-[280px] lg:w-[280px] xl:w-[527px] h-auto"
+          className="w-[180px] sm:w-[220px] md:w-[260px] lg:w-[320px] xl:w-[527px] h-auto"
+          aria-hidden="true"
         />
       </div>
 
-      {/* Mobile/Tablet - Texto entra desde la izquierda */}
-      <div className="relative z-10 container mx-auto px-6 sm:px-6 pt-[180px] sm:pt-[200px] xl:hidden">
-        <div 
-          className={`max-w-xl text-left transition-all duration-[1200ms] ease-out ${
-            isVisible 
-              ? 'opacity-100 translate-x-0' 
-              : 'opacity-0 -translate-x-12'
-          }`}
+      {/* Mission text — unified responsive block */}
+      <div
+        className="
+          relative z-10 container mx-auto
+          px-6 sm:px-8 md:px-10
+          pt-[140px] sm:pt-[160px] md:pt-[170px] lg:pt-[180px]
+          xl:pt-0 xl:absolute xl:inset-0 xl:flex xl:items-center xl:justify-end xl:pr-[6%] 2xl:pr-[8%]
+        "
+      >
+        <div
+          className={`
+            max-w-lg xl:max-w-2xl 2xl:max-w-3xl
+            text-left xl:text-right
+            transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)]
+            ${isVisible
+              ? 'opacity-100 translate-x-0 xl:translate-x-0'
+              : 'opacity-0 -translate-x-10 xl:translate-x-10'}
+          `}
           style={{ transitionDelay: '400ms' }}
         >
           <div
-            className="font-literata font-medium text-navy"
-            style={{
-              fontSize: '30px',
-              lineHeight: '36px',
-              letterSpacing: '-0.5px',
-            }}
+            className="
+              font-literata font-medium text-navy
+              text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[28px]
+              leading-[1.45] sm:leading-[1.5]
+              tracking-[-0.3px]
+            "
           >
-            <ReactMarkdown rehypePlugins={[rehypeRaw]} components={markdownComponents}>
-              {text}
-            </ReactMarkdown>
-          </div>
-        </div>
-      </div>
-
-      {/* Desktop - Texto entra desde la derecha */}
-      <div className="hidden xl:flex absolute inset-0 z-10 items-center justify-end pr-[10%] 2xl:pr-[12%]">
-        <div 
-          className={`max-w-xl text-right transition-all duration-[1200ms] ease-out ${
-            isVisible 
-              ? 'opacity-100 translate-x-0' 
-              : 'opacity-0 translate-x-12'
-          }`}
-          style={{ transitionDelay: '400ms' }}
-        >
-          <div className="font-literata font-medium text-navy text-[28px] leading-[1.5]">
             <ReactMarkdown rehypePlugins={[rehypeRaw]} components={markdownComponents}>
               {text}
             </ReactMarkdown>

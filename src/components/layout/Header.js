@@ -28,6 +28,7 @@ export default function Header() {
   ];
 
   const navigationItems = [
+    { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about-us' },
     { label: 'Group', href: '/group/mayan-princess' },
     { label: 'Experiences', href: '/experiences' },

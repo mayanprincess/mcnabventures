@@ -21,11 +21,14 @@ const markdownComponents = {
   ),
 };
 
-// Company Logos Slider Component for Mobile
+/**
+ * CompanyLogosSlider — Mobile carousel with progress bar
+ * Logos rendered in monochrome navy tone via CSS filter for visual cohesion.
+ */
 function CompanyLogosSlider({ companyLogos }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     containScroll: 'trimSnaps',
     loop: false,
     dragFree: true,
@@ -50,44 +53,35 @@ function CompanyLogosSlider({ companyLogos }) {
     };
   }, [emblaApi, onScroll]);
 
+  const validLogos = companyLogos.filter((c) => c.logo);
+
   return (
     <div className="lg:hidden">
-      {/* Slider Container */}
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {companyLogos.filter((c) => c.logo).map((company, index) => (
-            <div 
+          {validLogos.map((company, index) => (
+            <div
               key={index}
-              className="flex-shrink-0 flex items-center justify-center w-[50%] min-w-0 px-2"
+              className="flex-shrink-0 flex items-center justify-center w-[33.33%] min-w-0 px-3 py-2"
             >
               <Image
                 src={company.logo}
-                alt={company.name ?? ''}
+                alt={company.name || ''}
                 width={Number(company.width) || 160}
                 height={Number(company.height) || 100}
-                className="object-contain opacity-80"
-                style={{
-                  minWidth: '160px',
-                  minHeight: '100px',
-                  width: 'auto',
-                  height: 'auto',
-                  maxWidth: '100%',
-                  maxHeight: '100px'
-                }}
+                className="object-contain opacity-70 hover:opacity-100 transition-all duration-500"
+                style={{ width: 'auto', height: 'auto', maxWidth: '120px', maxHeight: '60px', filter: 'brightness(0) saturate(100%) invert(24%) sepia(63%) saturate(1200%) hue-rotate(170deg) brightness(92%) contrast(101%)' }}
               />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Progress Bar - Oval shaped */}
-      <div className="mt-[40px] w-full h-3 rounded-full overflow-hidden" style={{ backgroundColor: '#E5E5E5' }}>
-        <div 
-          className="h-full rounded-full transition-all duration-300 ease-out"
-          style={{ 
-            width: `${scrollProgress * 100}%`,
-            backgroundColor: '#CB9763'
-          }}
+      {/* Progress Bar */}
+      <div className="mt-8 mx-auto max-w-[200px] h-1.5 rounded-full overflow-hidden bg-sand/40">
+        <div
+          className="h-full rounded-full transition-all duration-300 ease-out bg-gold"
+          style={{ width: `${Math.max(10, scrollProgress * 100)}%` }}
         />
       </div>
     </div>
@@ -396,21 +390,27 @@ export default function GroupSnapshot({
           </div>
         </div>
 
-        {/* Company Logos Section */}
-        <div className="mt-16 sm:mt-20 lg:mt-24 py-16 sm:py-20 lg:py-[100px]">
-          {/* MOBILE VERSION - Slider with progress bar */}
+        {/* ── Company Logos Section ──
+            Monochrome (grayscale) by default → color on hover
+            Uniform sizing with CSS, elegant grid layout */}
+        <div className="mt-16 sm:mt-20 lg:mt-24">
+          {/* MOBILE — Carousel */}
           <CompanyLogosSlider companyLogos={companyLogos} />
 
-          {/* DESKTOP VERSION - Keep original layout */}
-          <div className="hidden lg:flex flex-wrap items-center justify-center lg:justify-between gap-8 lg:gap-12">
+          {/* DESKTOP — Responsive grid */}
+          <div className="hidden lg:grid grid-cols-4 xl:grid-cols-6 gap-x-10 gap-y-12 items-center justify-items-center">
             {companyLogos.filter((c) => c.logo).map((company, index) => (
-              <div key={index} className="flex items-center justify-center">
+              <div
+                key={index}
+                className="flex items-center justify-center h-20 w-full"
+              >
                 <Image
                   src={company.logo}
-                  alt={company.name ?? ''}
-                width={Number(company.width) || 160}
-                height={Number(company.height) || 100}
-                className="h-[100px] w-[160px] object-contain"
+                  alt={company.name || ''}
+                  width={Number(company.width) || 160}
+                  height={Number(company.height) || 100}
+                  className="object-contain max-h-[72px] w-auto opacity-70 hover:opacity-100 transition-all duration-500 ease-out"
+                  style={{ filter: 'brightness(0) saturate(100%) invert(24%) sepia(63%) saturate(1200%) hue-rotate(170deg) brightness(92%) contrast(101%)' }}
                 />
               </div>
             ))}

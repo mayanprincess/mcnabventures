@@ -153,11 +153,15 @@ export function getSectionConfig(section) {
         title: s.title ?? '',
         description: typeof s.description === 'string' ? s.description : '',
       }));
-      const companyLogos = Array.isArray(section.company_logos) && section.company_logos.length > 0
-        ? section.company_logos.map((c) => {
+      const rawLogos = Array.isArray(section.company_logos) ? section.company_logos : [];
+      const companyLogos = rawLogos.length > 0
+        ? rawLogos.map((c) => {
             const logoObj = c.logo && typeof c.logo === 'object' ? c.logo : c;
-            const url = getUrl(logoObj) ?? '';
-            return { name: c.name ?? logoObj?.title ?? '', logo: url, width: 160, height: 100 };
+            const url = getUrl(logoObj) || '';
+            const name = c.name || logoObj?.title || '';
+            const w = Number(c.width) || logoObj?.width || 160;
+            const h = Number(c.height) || logoObj?.height || 100;
+            return { name, logo: url, width: w, height: h };
           }).filter((c) => c.logo)
         : companyLogosData;
       return {
