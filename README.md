@@ -1,23 +1,34 @@
-# McNab Ventures - Next.js + PocketBase
+# McNab Ventures - Next.js + WordPress
 
-A modern full-stack web application built with Next.js 16 and PocketBase backend.
+A modern marketing/corporate website built with Next.js (App Router) consuming a **headless WordPress** backend via the WP REST API and **Advanced Custom Fields (ACF)**.
 
-## 🚀 Tech Stack
+---
 
-- **Frontend**: Next.js 16 (App Router), React 19
-- **Backend**: PocketBase (hosted on Railway)
-- **Styling**: Tailwind CSS 4
-- **Package Manager**: pnpm
+## Tech Stack
 
-## 📋 Prerequisites
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16 (App Router), React 19 |
+| CMS / API | WordPress REST API + ACF (hosted on Railway) |
+| Images CDN | Cloudinary |
+| Styling | Tailwind CSS 4 |
+| Package Manager | pnpm |
+| Sliders | Embla Carousel, Keen Slider |
+| Markdown | react-markdown + rehype-raw |
 
-- Node.js 18+ installed
-- pnpm installed (`npm install -g pnpm`)
-- Access to PocketBase instance
+---
 
-## 🛠️ Setup
+## Prerequisites
 
-### 1. Clone and Install
+- Node.js 18+
+- pnpm (`npm install -g pnpm`)
+- Access to the WordPress instance
+
+---
+
+## Setup
+
+### 1. Clone and install
 
 ```bash
 git clone <repository-url>
@@ -25,261 +36,190 @@ cd mcnabventures
 pnpm install
 ```
 
-### 2. Environment Configuration
-
-Copy the example environment file and configure it:
+### 2. Environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
-Edit `.env.local` and set your PocketBase URL:
+Edit `.env.local`:
 
 ```env
-NEXT_PUBLIC_POCKETBASE_URL=https://mcnabventuresapi.up.railway.app
+WP_API=https://mcnabventures.up.railway.app/wp-json/wp/v2
 ```
 
-### 3. Run Development Server
+If not set, the app falls back to that URL automatically (see `src/lib/wp.js`).
+
+### 3. Run the dev server
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application.
+Open [http://localhost:3000](http://localhost:3000).
 
-## 📁 Project Structure
+---
+
+## Project Structure
 
 ```
 mcnabventures/
 ├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── page.js            # Home page (Server Component)
-│   │   ├── layout.js          # Root layout
-│   │   └── globals.css        # Global styles
-│   ├── components/            # React components
-│   │   └── CollectionsList.js # Example client component
-│   └── lib/                   # Utilities and services
-│       ├── pocketbase.js      # PocketBase client configuration
-│       ├── hooks/             # Custom React hooks
-│       │   └── usePocketBase.js
-│       └── services/          # API service layers
-│           ├── collections.js # Collection operations
-│           └── auth.js        # Authentication services
-├── public/                    # Static assets
-├── .env.local                 # Local environment variables (gitignored)
-├── .env.example              # Example environment variables
-└── package.json              # Project dependencies
+│   ├── app/                        # Next.js App Router pages
+│   │   ├── page.js                 # Home page (slug: sample-page)
+│   │   ├── layout.js               # Root layout (fonts, Header, Footer)
+│   │   ├── globals.css             # Global styles & Tailwind directives
+│   │   ├── about-us/page.js        # /about-us static route
+│   │   ├── experiences/page.js     # /experiences static route
+│   │   ├── [slug]/page.js          # Dynamic root-level page
+│   │   └── group/[slug]/page.js    # Dynamic group child page
+│   │
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Header.js
+│   │   │   └── Footer.js
+│   │   └── sections/               # One component per ACF flex layout
+│   │       ├── PrimaryHero.js
+│   │       ├── SecondaryHero.js
+│   │       ├── WhoWeAre.js
+│   │       ├── MissionStatement.js
+│   │       ├── VideoPlayer.js
+│   │       ├── GroupSnapshot.js
+│   │       ├── GetHighlights.js
+│   │       ├── OurJourney.js
+│   │       ├── UsefulLinks.js
+│   │       ├── Multimedia.js
+│   │       ├── ContactCard.js
+│   │       ├── JoinOurTeam.js
+│   │       ├── OurPartners.js
+│   │       ├── Diversified.js
+│   │       ├── FeaturedExperiences.js
+│   │       ├── DrivenByProgress.js
+│   │       ├── TheExperiences.js
+│   │       ├── ExperiencesGallery.js
+│   │       ├── SustainabilityInAction.js
+│   │       └── ApplyNow.js
+│   │
+│   ├── context/
+│   │   └── HeaderContext.js        # Transparent/solid header state
+│   │
+│   ├── data/                       # Static fallback data (used when WP is empty)
+│   │
+│   ├── hooks/
+│   │   └── useScrollAnimation.js   # Intersection Observer scroll animations
+│   │
+│   └── lib/
+│       ├── wp.js                   # WordPress REST API helpers
+│       ├── getSectionComponent.js  # ACF flex-layout → React component mapper
+│       └── imageLoader.js          # Custom Next.js image loader (Cloudinary-aware)
+│
+├── public/                         # Static assets (SVGs, local images)
+├── next.config.mjs                 # Next.js config (custom image loader)
+├── postcss.config.mjs
+├── jsconfig.json                   # Path aliases (@/* → src/*)
+└── package.json
 ```
 
-## 🔌 PocketBase Integration
+---
 
-### Client Configuration
+## How Pages Work
 
-The PocketBase client is configured in `src/lib/pocketbase.js`:
+Every page fetches its content from WordPress via `getPageBySlug(slug)` in `src/lib/wp.js`. The response includes an `acf.page_components` array — each item has an `acf_fc_layout` field that names a Flexible Content block.
 
-```javascript
-import { pb } from '@/lib/pocketbase';
+`getSectionComponent()` in `src/lib/getSectionComponent.js` maps each layout name to its React component and transforms the raw ACF data into typed props.
 
-// Use the client in your components
-const records = await pb.collection('posts').getList(1, 50);
+```
+WordPress page (ACF)
+  └── acf.page_components[]
+        └── { acf_fc_layout: 'primary-hero', heading: '...', video_src: '...' }
+              └── getSectionComponent() → <PrimaryHero content={...} />
 ```
 
-### Service Layer
+### Adding a new ACF section
 
-Use the service layer for organized API calls:
+1. Create the Flexible Content layout in WordPress (ACF plugin).
+2. Create `src/components/sections/MySectionName.js`.
+3. Add the mapping in `LAYOUT_TO_COMPONENT` and the `switch` case in `getSectionComponent.js`.
 
-```javascript
-import { getRecords, createRecord } from '@/lib/services/collections';
+---
 
-// Fetch records
-const result = await getRecords('posts', {
-  filter: 'status = "published"',
-  sort: '-created',
-});
+## WordPress API helpers (`src/lib/wp.js`)
 
-// Create a record
-const newPost = await createRecord('posts', {
-  title: 'Hello World',
-  content: 'This is my first post',
-});
-```
+| Function | Description |
+|----------|-------------|
+| `getPageBySlug(slug)` | Fetches a single WP page by slug with ACF data (`acf_format=standard`) |
+| `getRootPageSlugs()` | All root-level pages (parent=0) for `generateStaticParams` |
+| `getGroupPageSlugs()` | All child pages of the "Group" parent (id=76) |
 
-### Custom Hooks
+All fetches use `next: { revalidate: 60 }` — pages revalidate every 60 seconds (ISR).
 
-For client components, use the provided React hooks:
+---
 
-```javascript
-import { useCollection } from '@/lib/hooks/usePocketBase';
+## Image Optimization
 
-function MyComponent() {
-  const { data, loading, error, refresh } = useCollection('posts', {
-    page: 1,
-    perPage: 10,
-    sort: '-created',
-  });
+Images are served from **Cloudinary** (`res.cloudinary.com`). A custom Next.js loader (`src/lib/imageLoader.js`) intercepts every `<Image>` call:
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+- **Cloudinary URLs** → transformed using Cloudinary's own API (`f_auto,q_auto,c_limit,w_{width}`). No double-compression by Next.js.
+- **All other URLs** (WordPress server, local public files) → processed by Next.js `/_next/image` at quality 85.
 
-  return (
-    <div>
-      {data?.items.map((post) => (
-        <div key={post.id}>{post.title}</div>
-      ))}
-    </div>
-  );
-}
-```
+This ensures Cloudinary images are served at maximum quality with automatic format selection (WebP/AVIF) handled by Cloudinary itself.
 
-## 📚 Available Services
+---
 
-### Collections Service
+## Routing
 
-- `getRecords(collection, options)` - Fetch paginated records
-- `getFullList(collection, options)` - Fetch all records
-- `getRecord(collection, id, options)` - Fetch single record
-- `createRecord(collection, data)` - Create new record
-- `updateRecord(collection, id, data)` - Update existing record
-- `deleteRecord(collection, id)` - Delete record
-- `subscribeToCollection(collection, callback, recordId)` - Real-time updates
+| URL pattern | File | WP slug |
+|-------------|------|---------|
+| `/` | `app/page.js` | `sample-page` |
+| `/about-us` | `app/about-us/page.js` | `about-us` |
+| `/experiences` | `app/experiences/page.js` | `experiences` |
+| `/[slug]` | `app/[slug]/page.js` | any root page |
+| `/group/[slug]` | `app/group/[slug]/page.js` | child of page id 76 |
 
-### Authentication Service
+Reserved slugs (`sample-page`, `about-us`, `experiences`, `group`) are excluded from the dynamic `[slug]` catch-all.
 
-- `loginWithPassword(email, password)` - User login
-- `register(userData)` - User registration
-- `logout()` - User logout
-- `isAuthenticated()` - Check auth status
-- `getCurrentUser()` - Get current user
-- `requestPasswordReset(email)` - Request password reset
-- `confirmPasswordReset(token, password, passwordConfirm)` - Confirm reset
-- `updateProfile(userId, data)` - Update user profile
+---
 
-### Custom Hooks
+## Deployment
 
-- `useCollection(collection, options)` - Fetch collection with state management
-- `useRecord(collection, id, options)` - Fetch single record
-- `useRealtimeCollection(collection, recordId, callback)` - Real-time subscriptions
-- `useAuth()` - Authentication state management
+### Vercel (recommended)
 
-## 🎨 Features
+1. Push to GitHub.
+2. Import in Vercel.
+3. Add environment variables:
+   ```
+   WP_API=https://mcnabventures.up.railway.app/wp-json/wp/v2
+   ```
+4. Deploy.
 
-- ✅ Server-side rendering with Next.js App Router
-- ✅ Client-side data fetching with React hooks
-- ✅ Real-time updates with WebSocket subscriptions
-- ✅ Complete authentication flow
-- ✅ File upload support
-- ✅ Type-safe API calls with error handling
-- ✅ Responsive design with Tailwind CSS
-- ✅ Dark mode support
+---
 
-## 🔐 Authentication Example
+## Troubleshooting
 
-```javascript
-import { loginWithPassword, getCurrentUser } from '@/lib/services/auth';
+### Images look blurry or low quality
+- Confirm images are uploaded to Cloudinary (URL starts with `https://res.cloudinary.com/`).
+- The custom loader only applies Cloudinary transformations to that domain. WP-hosted images use Next.js at q=85.
 
-async function handleLogin(email, password) {
-  const result = await loginWithPassword(email, password);
-  
-  if (result.success) {
-    const user = getCurrentUser();
-    console.log('Logged in as:', user.email);
-  } else {
-    console.error('Login failed:', result.error);
-  }
-}
-```
+### WP page returns empty sections
+- Verify the ACF Flexible Content field is named `page_components` in the WP dashboard.
+- Check that `acf_format=standard` is enabled (requires ACF PRO ≥ 5.11 or the REST API format option).
+- Visit `https://mcnabventures.up.railway.app/wp-json/wp/v2/pages?acf_format=standard&slug=your-slug` directly to inspect the raw response.
 
-## 📡 Real-time Updates Example
-
-```javascript
-'use client';
-
-import { useRealtimeCollection } from '@/lib/hooks/usePocketBase';
-
-function RealtimeComponent() {
-  const [items, setItems] = useState([]);
-
-  useRealtimeCollection('posts', '*', (e) => {
-    console.log('Real-time event:', e.action);
-    
-    if (e.action === 'create') {
-      setItems((prev) => [e.record, ...prev]);
-    } else if (e.action === 'update') {
-      setItems((prev) =>
-        prev.map((item) => (item.id === e.record.id ? e.record : item))
-      );
-    } else if (e.action === 'delete') {
-      setItems((prev) => prev.filter((item) => item.id !== e.record.id));
-    }
-  });
-
-  return <div>{/* Render items */}</div>;
-}
-```
-
-## 🚀 Deployment
-
-### Vercel (Recommended for Next.js)
-
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy!
-
-### Environment Variables in Production
-
-Make sure to set these in your hosting platform:
-
-```env
-NEXT_PUBLIC_POCKETBASE_URL=https://your-pocketbase-url.com
-```
-
-## 📖 Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [PocketBase Documentation](https://pocketbase.io/docs/)
-- [PocketBase JavaScript SDK](https://github.com/pocketbase/js-sdk)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🐛 Troubleshooting
-
-### Connection Issues
-
-If you can't connect to PocketBase:
-
-1. Check that your PocketBase instance is running
-2. Verify the `NEXT_PUBLIC_POCKETBASE_URL` in `.env.local`
-3. Check CORS settings in PocketBase admin dashboard
-4. Ensure your collections have proper API rules set
-
-### Authentication Issues
-
-1. Make sure email/password auth is enabled in PocketBase
-2. Check that your auth collection name matches (default: 'users')
-3. Verify API rules allow record creation for registration
-
-### Build Issues
-
+### Build errors after adding a new section
 ```bash
-# Clear Next.js cache
 rm -rf .next
-
-# Reinstall dependencies
-rm -rf node_modules pnpm-lock.yaml
-pnpm install
-
-# Rebuild
 pnpm build
 ```
 
-## 📧 Support
+### CORS issues in development
+Add the localhost origin to WordPress → Settings → (any CORS plugin) or configure it in `wp-config.php`.
 
-For issues and questions, please open an issue on GitHub or contact the maintainers.
+---
+
+## Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [WordPress REST API Handbook](https://developer.wordpress.org/rest-api/)
+- [ACF REST API](https://www.advancedcustomfields.com/resources/wp-rest-api-integration/)
+- [Cloudinary Transformation Reference](https://cloudinary.com/documentation/transformation_reference)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
