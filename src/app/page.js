@@ -6,21 +6,13 @@
 
 import { getPageBySlug } from '@/lib/wp';
 import { getSectionComponent } from '@/lib/getSectionComponent';
+import { buildMetadata } from '@/lib/meta';
 
 const PAGE_SLUG = 'sample-page';
 
 export async function generateMetadata() {
   const page = await getPageBySlug(PAGE_SLUG);
-  if (!page) {
-    return { title: 'McNab Ventures', description: 'McNab Ventures' };
-  }
-  const title = page.title?.rendered ?? 'McNab Ventures';
-  const description =
-    page.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || 'McNab Ventures';
-  return {
-    title: `${title} - McNab Ventures`,
-    description,
-  };
+  return buildMetadata(page, { canonicalPath: '/', fallbackTitle: 'McNab Ventures' });
 }
 
 export default async function Home() {

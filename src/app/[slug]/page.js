@@ -9,6 +9,7 @@
 import { notFound } from 'next/navigation';
 import { getRootPageSlugs, getPageBySlug } from '@/lib/wp';
 import { getSectionComponent } from '@/lib/getSectionComponent';
+import { buildMetadata } from '@/lib/meta';
 
 /**
  * Generate static paths for all root-level pages (parent = 0),
@@ -30,16 +31,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const page = await getPageBySlug(slug);
-  if (!page) {
-    return { title: `${slug} - McNab Ventures`, description: `Explore ${slug}` };
-  }
-  const title = page.title?.rendered ?? slug;
-  const description =
-    page.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || `Explore ${title}`;
-  return {
-    title: `${title} - McNab Ventures`,
-    description,
-  };
+  return buildMetadata(page, { canonicalPath: `/${slug}`, fallbackTitle: slug });
 }
 
 /**

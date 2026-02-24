@@ -49,23 +49,21 @@ export default function ExperiencesGallery({
             </div>
           ))}
 
-          {/* Text Overlay */}
-          <div className="absolute inset-0 z-10 flex flex-col lg:flex-row items-center justify-center">
-            {/* Left Text - Top in mobile, Left in desktop */}
-            <h2 
+          {/* Text Overlay — decorative display text, not semantic headings */}
+          <div className="absolute inset-0 z-10 flex flex-col lg:flex-row items-center justify-center" aria-hidden="true">
+            <p
               className="absolute top-8 lg:top-auto lg:left-8 sm:left-16 lg:left-24 font-fustat-extrabold lg:font-literata-light text-white text-[101.96px] leading-[100%] tracking-[-0.8px] lg:text-[96px] xl:text-[120px] lg:tracking-wider uppercase"
               style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
             >
               {currentSlide.leftText}
-            </h2>
+            </p>
 
-            {/* Right Text - Bottom in mobile, Right in desktop */}
-            <h2 
+            <p
               className="absolute bottom-8 lg:bottom-auto lg:right-8 sm:right-16 lg:right-24 font-fustat-extrabold lg:font-literata-light text-white text-[101.96px] leading-[100%] tracking-[-0.8px] lg:text-[96px] xl:text-[120px] lg:tracking-wider uppercase"
               style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
             >
               {currentSlide.rightText}
-            </h2>
+            </p>
           </div>
 
           {/* Center Dots - On top of image at bottom - Desktop Only */}

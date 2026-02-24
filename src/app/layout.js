@@ -25,9 +25,32 @@ const workSans = Work_Sans({
   weight: ["500", "800"], // Medium (500), ExtraBold (800)
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
+  'https://mcnabventures.com';
+
+const DEFAULT_DESCRIPTION =
+  'McNab Ventures — Building a legacy of sustainable growth and regional development through strategic diversification and commitment to excellence.';
+
 export const metadata = {
-  title: "McNab Ventures",
-  description: "A modern web application built with Next.js 16",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'McNab Ventures',
+    template: '%s | McNab Ventures',
+  },
+  description: DEFAULT_DESCRIPTION,
+  openGraph: {
+    siteName: 'McNab Ventures',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
