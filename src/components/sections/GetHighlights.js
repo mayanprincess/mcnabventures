@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import useEmblaCarousel from 'embla-carousel-react';
 import { getHighlightsData } from '@/data';
 import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
@@ -95,7 +97,7 @@ export default function GetHighlights({
                   >
                     {/* Title */}
                     <h3 className="font-fustat-medium text-navy text-xl lg:text-xl mb-6">
-                      {item.title}
+                      {decodeHtml(item.title)}
                     </h3>
                     
                     {/* Circular Image */}
@@ -103,7 +105,7 @@ export default function GetHighlights({
                       {item.image ? (
                         <Image
                           src={item.image}
-                          alt={item.title}
+                          alt={decodeHtml(item.title)}
                           fill
                           className="object-cover"
                           sizes="(max-width: 1023px) 320px, 180px"
@@ -112,9 +114,11 @@ export default function GetHighlights({
                     </div>
                     
                     {/* Description */}
-                    <p className="font-fustat-medium text-[#1E1C1AE0] text-lg leading-relaxed mb-6 flex-grow max-w-[90%]">
-                      {item.description}
-                    </p>
+                    <div className="font-fustat-medium text-[#1E1C1AE0] text-lg leading-relaxed mb-6 flex-grow max-w-[90%] [&_p]:inline [&_p]:m-0">
+                      <ReactMarkdown rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+                        {item.description ?? ''}
+                      </ReactMarkdown>
+                    </div>
                     
                     {/* Explore Button */}
                     {item.href && (
@@ -144,9 +148,11 @@ export default function GetHighlights({
                     
                     {/* Content */}
                     <div className="max-w-md">
-                      <p className="font-work-sans text-navy text-base lg:text-lg leading-relaxed">
-                        <span className="font-work-sans-semibold">{item.title}.</span>{' '}
-                        {item.description}
+                      <p className="font-work-sans text-navy text-base lg:text-lg leading-relaxed [&_p]:inline [&_p]:m-0">
+                        <span className="font-work-sans-semibold">{decodeHtml(item.title)}.</span>{' '}
+                        <ReactMarkdown rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+                          {item.description ?? ''}
+                        </ReactMarkdown>
                       </p>
                     </div>
                   </>
