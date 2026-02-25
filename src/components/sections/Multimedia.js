@@ -14,7 +14,11 @@ export default function Multimedia({
   photos = multimediaData.photos, 
   videos = multimediaData.videos 
 }) {
-  const [activeTab, setActiveTab] = useState('photos');
+  const hasPhotos = (photos || []).filter(hasValidSrc).length > 0;
+  const hasVideos = (videos || []).filter(hasValidSrc).length > 0;
+  const showTabs = hasPhotos && hasVideos;
+
+  const [activeTab, setActiveTab] = useState(() => hasPhotos ? 'photos' : 'videos');
   const currentData = activeTab === 'photos' ? photos : videos;
   const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.15 });
 
@@ -34,31 +38,33 @@ export default function Multimedia({
             Multimedia
           </h2>
           
-          {/* Tabs */}
-          <div className="flex items-center w-full lg:w-auto bg-[#F6F4EF] lg:bg-gray-100 rounded-full p-1.5 lg:p-1">
-            <button
-              onClick={() => setActiveTab('photos')}
-              className={`flex-1 lg:flex-none lg:px-8 py-2.5 rounded-full font-work-sans-medium text-sm transition-all duration-300 ${
-                activeTab === 'photos'
-                  ? 'bg-white text-navy shadow-sm'
-                  : 'text-navy hover:text-navy/80 lg:text-gray-500 lg:hover:text-navy'
-              }`}
-              aria-pressed={activeTab === 'photos'}
-            >
-              Photos
-            </button>
-            <button
-              onClick={() => setActiveTab('videos')}
-              className={`flex-1 lg:flex-none lg:px-8 py-2.5 rounded-full font-work-sans-medium text-sm transition-all duration-300 ${
-                activeTab === 'videos'
-                  ? 'bg-white text-navy shadow-sm'
-                  : 'text-navy hover:text-navy/80 lg:text-gray-500 lg:hover:text-navy'
-              }`}
-              aria-pressed={activeTab === 'videos'}
-            >
-              Videos
-            </button>
-          </div>
+          {/* Tabs — only rendered when both types have content */}
+          {showTabs && (
+            <div className="flex items-center w-full lg:w-auto bg-cream lg:bg-gray-100 rounded-full p-1.5 lg:p-1">
+              <button
+                onClick={() => setActiveTab('photos')}
+                className={`flex-1 lg:flex-none lg:px-8 py-2.5 rounded-full font-work-sans-medium text-sm transition-all duration-300 ${
+                  activeTab === 'photos'
+                    ? 'bg-white text-navy shadow-sm'
+                    : 'text-navy hover:text-navy/80 lg:text-gray-500 lg:hover:text-navy'
+                }`}
+                aria-pressed={activeTab === 'photos'}
+              >
+                Photos
+              </button>
+              <button
+                onClick={() => setActiveTab('videos')}
+                className={`flex-1 lg:flex-none lg:px-8 py-2.5 rounded-full font-work-sans-medium text-sm transition-all duration-300 ${
+                  activeTab === 'videos'
+                    ? 'bg-white text-navy shadow-sm'
+                    : 'text-navy hover:text-navy/80 lg:text-gray-500 lg:hover:text-navy'
+                }`}
+                aria-pressed={activeTab === 'videos'}
+              >
+                Videos
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Mobile Layout - Single Column Masonry (same logic as desktop) */}

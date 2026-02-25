@@ -5,13 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { missionStatementData } from '@/data';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-
-const markdownComponents = {
-  p: ({ children }) => <span className="text-navy">{children}</span>,
-  strong: ({ children }) => (
-    <span className="font-fustat-medium text-turquoise">{children}</span>
-  ),
-};
+import { markdownComponentsNavy as markdownComponents } from '@/lib/markdown';
 
 const VECTORS = {
   vector1: '/vector3.svg',

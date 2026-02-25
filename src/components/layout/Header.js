@@ -25,6 +25,7 @@ export default function Header() {
     { label: 'Turquoise Bay', href: '/group/turquoise-bay' },
     { label: 'Acqua Di Mare', href: '/group/acqua-di-mare-resort' },
     { label: 'PetroGas', href: '/group/petrogas' },
+    { label: 'San Simon', href: '/san-simon' },
   ];
 
   const navigationItems = [

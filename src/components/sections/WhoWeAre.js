@@ -5,17 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { whoWeAreData } from '@/data';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-
-/**
- * Module-level constant — avoids re-creation on every render
- * (per rerender-memo: hoist non-primitive defaults)
- */
-const markdownComponents = {
-  p: ({ children }) => <span>{children}</span>,
-  strong: ({ children }) => (
-    <span className="font-fustat-medium text-turquoise">{children}</span>
-  ),
-};
+import { markdownComponents } from '@/lib/markdown';
 
 /**
  * WhoWeAre Component - MCNAB VENTURES
@@ -53,7 +43,7 @@ export default function WhoWeAre({
         >
           <div
             className="
-              bg-[#F6F4EF] flex items-center justify-center
+              bg-cream flex items-center justify-center
               rounded-full w-[280px] sm:w-[342px] h-[130px] sm:h-[153px]
               md:rounded-none md:rounded-r-full md:w-auto md:h-auto
               md:min-w-[260px] lg:min-w-[380px] xl:min-w-[540px] 2xl:min-w-[680px]

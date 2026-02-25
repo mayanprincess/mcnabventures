@@ -20,7 +20,7 @@ export default function OurJourney({
   return (
     <section 
       ref={scrollRef}
-      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-[#F6F4EF] ${animations.fadeUp(isVisible)}`}
+      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-cream ${animations.fadeUp(isVisible)}`}
       aria-labelledby="journey-heading"
     >
       <div className="w-[90%] max-w-[1400px] mx-auto">

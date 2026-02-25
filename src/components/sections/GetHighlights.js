@@ -8,6 +8,7 @@ import rehypeRaw from 'rehype-raw';
 import useEmblaCarousel from 'embla-carousel-react';
 import { getHighlightsData } from '@/data';
 import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
+import { decodeHtml, markdownComponents } from '@/lib/markdown';
 
 export default function GetHighlights({ 
   title = getHighlightsData.title,
@@ -65,7 +66,7 @@ export default function GetHighlights({
   return (
     <section 
       ref={scrollRef}
-      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-[#F6F4EF] ${animations.fadeUp(isVisible)}`}
+      className={`w-full py-16 sm:py-20 lg:py-[100px] bg-cream ${animations.fadeUp(isVisible)}`}
       aria-labelledby="highlights-heading"
     >
       <div className="w-full lg:w-[90%] max-w-[1400px] mx-auto px-6 lg:px-0">

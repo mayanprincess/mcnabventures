@@ -24,6 +24,7 @@ import TheExperiences from '@/components/sections/TheExperiences';
 import ExperiencesGallery from '@/components/sections/ExperiencesGallery';
 import SustainabilityInAction from '@/components/sections/SustainabilityInAction';
 import ApplyNow from '@/components/sections/ApplyNow';
+import NormalContent from '@/components/sections/NormalContent';
 import { companyLogosData, ourPartnersData } from '@/data';
 
 const LAYOUT_TO_COMPONENT = {
@@ -43,6 +44,7 @@ const LAYOUT_TO_COMPONENT = {
   'the-experiences': TheExperiences,
   'experiences-gallery': ExperiencesGallery,
   'sustainability-in-action': SustainabilityInAction,
+  'normal-content': NormalContent,
   'useful-links': UsefulLinks,
   multimedia: Multimedia,
   'contact-card': ContactCard,
@@ -401,6 +403,15 @@ export function getSectionConfig(section) {
             leftText: slide.left_text ?? slide.leftText ?? '',
             rightText: slide.right_text ?? slide.rightText ?? '',
           })).filter((s) => s.backgroundImage),
+        },
+      };
+
+    case 'normal-content':
+      return {
+        Component,
+        props: {
+          heading: section.heading ?? undefined,
+          content: section.content ?? undefined,
         },
       };
 

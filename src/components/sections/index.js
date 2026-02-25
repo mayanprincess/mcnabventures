@@ -25,3 +25,4 @@ export { default as SustainabilityInAction } from './SustainabilityInAction';
 export { default as ExperiencesGallery } from './ExperiencesGallery';
 export { default as TheExperiences } from './TheExperiences';
 export { default as ApplyNow } from './ApplyNow';
+export { default as NormalContent } from './NormalContent';

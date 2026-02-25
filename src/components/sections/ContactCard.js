@@ -25,7 +25,7 @@ export default function ContactCard({
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Content Side */}
-            <div className="p-8 sm:p-10 lg:p-12 bg-[#F6F4EF]">
+            <div className="p-8 sm:p-10 lg:p-12 bg-cream">
               {/* Title */}
               <h2 className="font-literata-light text-navy text-[32px] sm:text-[36px] lg:text-[40px] mb-8">
                 {title}

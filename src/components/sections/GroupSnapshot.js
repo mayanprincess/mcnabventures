@@ -7,19 +7,7 @@ import rehypeRaw from 'rehype-raw';
 import useEmblaCarousel from 'embla-carousel-react';
 import { groupSnapshotData, companyLogosData } from '@/data';
 import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
-
-const markdownComponents = {
-  p: ({ children }) => <span className="text-navy/70">{children}</span>,
-  strong: ({ children }) => <span className="font-fustat-medium text-turquoise">{children}</span>,
-  ul: ({ children }) => <ul className="mt-4 space-y-2">{children}</ul>,
-  ol: ({ children }) => <ol className="mt-4 space-y-2">{children}</ol>,
-  li: ({ children }) => (
-    <li className="flex items-start gap-3 ml-2">
-      <span className="text-turquoise flex-shrink-0" style={{ marginTop: '-2px' }}>→</span>
-      <span className="text-navy/70">{children}</span>
-    </li>
-  ),
-};
+import { markdownComponentsRich as markdownComponents } from '@/lib/markdown';
 
 /**
  * CompanyLogosSlider — Mobile carousel with progress bar

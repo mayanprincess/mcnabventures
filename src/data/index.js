@@ -29,3 +29,4 @@ export { ourIndustriesData } from './ourIndustries';
 export { sustainabilityData } from './sustainability';
 export { experiencesGalleryData } from './experiencesGallery';
 export { theExperiencesData } from './theExperiences';
+export { normalContentData } from './normalContent';

@@ -9,6 +9,7 @@
   --turquoise: #00BFB3;
   --sand: #D6D2C4;
   --gold: #CB9763;
+  --cream: #F6F4EF;
   
   /* Gold Gradient Colors */
   --gold-start: #C58427;
@@ -31,6 +32,7 @@
   --color-turquoise: #00BFB3;
   --color-sand: #D6D2C4;
   --color-gold: #CB9763;
+  --color-cream: var(--cream);
   
   /* Gold Gradient Stops */
   --color-gold-start: #C58427;

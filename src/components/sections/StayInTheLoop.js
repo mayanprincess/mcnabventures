@@ -126,7 +126,7 @@ export default function StayInTheLoop({
                     <Link 
                       href={item.href} 
                       className="block group rounded-2xl p-4 h-full transition-shadow duration-300 shadow-[0px_8px_16px_-8px_rgba(0,0,0,0.14),0px_13px_27px_-5px_rgba(50,50,93,0.09)]"
-                      style={{ backgroundColor: '#F6F4EF' }}
+                      style={{ backgroundColor: 'var(--cream)' }}
                     >
                       {/* Image */}
                       <div className="relative w-[calc(100%+32px)] h-[220px] rounded-2xl overflow-hidden mb-4 bg-gray-100 -mx-4 -mt-4">

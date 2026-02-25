@@ -12,7 +12,7 @@ export default function TheExperiences({
   const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.1 });
 
   return (
-    <section ref={scrollRef} className={`w-full py-16 sm:py-20 lg:py-[100px] bg-[#F6F4EF] ${animations.fadeUp(isVisible)}`}>
+    <section ref={scrollRef} className={`w-full py-16 sm:py-20 lg:py-[100px] bg-cream ${animations.fadeUp(isVisible)}`}>
       <div className="container mx-auto px-6 lg:px-8 max-w-[1110px]">
         {/* Section Title */}
         <h2 className="font-literata-light text-navy text-[36px] lg:text-[48px] mb-12 lg:mb-20">
