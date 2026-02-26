@@ -335,8 +335,6 @@ export function getSectionConfig(section) {
         props: {
           title: section.title ?? undefined,
           description: section.description ?? undefined,
-          buttonText: section.button_text ?? undefined,
-          buttonHref: section.button_href ?? undefined,
           image: getUrl(section.image),
         },
       };

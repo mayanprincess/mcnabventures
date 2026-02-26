@@ -47,22 +47,26 @@ const DEPARTMENTS = [
   'Other',
 ];
 
+const EMPTY_FORM = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  department: '',
+  position: '',
+  linkedin: '',
+  portfolio: '',
+  resume: null,
+  coverLetter: '',
+  agreeTerms: false,
+};
+
 export default function ApplyNow() {
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    department: '',
-    position: '',
-    linkedin: '',
-    portfolio: '',
-    resume: null,
-    coverLetter: '',
-    agreeTerms: false,
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
   const [coverLength, setCoverLength] = useState(0);
   const [resumeError, setResumeError] = useState(null);
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [serverError, setServerError] = useState(null);
   const resumeInputRef = useRef(null);
   const MAX_COVER = 1000;
 
@@ -108,29 +112,76 @@ export default function ApplyNow() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: connect to API or form service
+    if (status === 'loading') return;
+
+    setStatus('loading');
+    setServerError(null);
+
+    const data = new FormData();
+    data.append('firstName',   form.firstName);
+    data.append('lastName',    form.lastName);
+    data.append('email',       form.email);
+    data.append('phone',       form.phone);
+    data.append('department',  form.department);
+    data.append('position',    form.position);
+    data.append('linkedin',    form.linkedin);
+    data.append('portfolio',   form.portfolio);
+    data.append('coverLetter', form.coverLetter);
+    data.append('agreeTerms',  form.agreeTerms ? 'true' : 'false');
+    if (form.resume) data.append('resume', form.resume);
+
+    try {
+      const res  = await fetch('/api/apply', { method: 'POST', body: data });
+      const json = await res.json();
+
+      if (!res.ok) {
+        setServerError(json.error ?? 'Something went wrong. Please try again.');
+        setStatus('error');
+      } else {
+        setStatus('success');
+      }
+    } catch {
+      setServerError('Network error. Please check your connection and try again.');
+      setStatus('error');
+    }
   };
 
   const handleClear = () => {
-    setForm({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      department: '',
-      position: '',
-      linkedin: '',
-      portfolio: '',
-      resume: null,
-      coverLetter: '',
-      agreeTerms: false,
-    });
+    setForm(EMPTY_FORM);
     setCoverLength(0);
     setResumeError(null);
+    setServerError(null);
+    setStatus('idle');
     if (resumeInputRef.current) resumeInputRef.current.value = '';
   };
+
+  if (status === 'success') {
+    return (
+      <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[720px] text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-turquoise/10 mb-6">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-turquoise">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <h2 className="font-literata-light text-navy text-[28px] sm:text-[32px] lg:text-[36px] mb-3">
+            Application Submitted!
+          </h2>
+          <p className="text-[#6B7280] text-sm sm:text-base mb-8 max-w-md mx-auto">
+            Thank you for applying. We&apos;ve sent a confirmation to your email and our team will be in touch soon.
+          </p>
+          <button
+            onClick={handleClear}
+            className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-turquoise text-turquoise font-fustat-medium text-sm px-6 py-3 hover:bg-turquoise/10 transition-colors"
+          >
+            Submit Another Application
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="w-full py-16 sm:py-20 lg:py-[100px] bg-white">
@@ -143,6 +194,15 @@ export default function ApplyNow() {
             Fill out the form below to apply for a position at our company. All fields marked with{' '}
             <span className="text-red-500">*</span> are required.
           </p>
+
+          {serverError && (
+            <div role="alert" className="flex items-start gap-3 rounded-xl bg-red-50 border border-red-200 px-4 py-3 mb-6 text-red-700 text-sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5">
+                <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              {serverError}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Personal Information */}
@@ -375,13 +435,26 @@ export default function ApplyNow() {
               </button>
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-navy text-white font-fustat-medium text-sm px-6 py-3 hover:bg-navy/90 transition-colors"
+                disabled={status === 'loading'}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-navy text-white font-fustat-medium text-sm px-6 py-3 hover:bg-navy/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Submit Application
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
+                {status === 'loading' ? (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="animate-spin">
+                      <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                      <path d="M12 2a10 10 0 0 1 10 10" />
+                    </svg>
+                    Sending…
+                  </>
+                ) : (
+                  <>
+                    Submit Application
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </>
+                )}
               </button>
             </div>
           </form>

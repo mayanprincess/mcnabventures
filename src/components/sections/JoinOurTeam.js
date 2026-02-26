@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { joinOurTeamData } from '@/data';
 import { useScrollAnimation, animations } from '@/hooks/useScrollAnimation';
 
+const APPLY_NOW_HREF = '/apply-now';
+const APPLY_NOW_LABEL = 'Explore Our Positions';
+
 export default function JoinOurTeam({
   title = joinOurTeamData.title,
   description = joinOurTeamData.description,
-  buttonText = joinOurTeamData.buttonText,
-  buttonHref = joinOurTeamData.buttonHref,
   image = joinOurTeamData.image,
 }) {
   const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
@@ -49,10 +50,10 @@ export default function JoinOurTeam({
 
               {/* CTA Button */}
               <Link
-                href={buttonHref}
+                href={APPLY_NOW_HREF}
                 className="mt-auto inline-flex items-center justify-center gap-2 bg-gold text-white w-[263px] h-[56px] px-[23px] py-[15px] rounded-[24px] font-fustat-extrabold text-[16px] leading-[24px] tracking-[0px] hover:bg-gold/90 transition-colors duration-300"
               >
-                {buttonText}
+                {APPLY_NOW_LABEL}
                 <Image
                   src="/btn_arrow_white.svg"
                   alt=""
@@ -96,10 +97,10 @@ export default function JoinOurTeam({
 
                 {/* CTA Button */}
                 <Link
-                  href={buttonHref}
+                  href={APPLY_NOW_HREF}
                   className="inline-flex items-center justify-center gap-3 bg-gold text-white px-6 py-3.5 rounded-full font-bold text-[16px] leading-[26px] tracking-[-0.36px] text-center hover:bg-gold/90 transition-colors duration-300 w-fit"
                 >
-                  {buttonText}
+                  {APPLY_NOW_LABEL}
                   <Image
                     src="/btn_arrow_white.svg"
                     alt=""
