@@ -22,10 +22,13 @@ export default function Footer() {
   ];
 
   const companyLinks = [
-    { label: 'Tourism', url: '/industries/tourism' },
-    { label: 'Aviation', url: '/industries/aviation' },
-    { label: 'Energy', url: '/industries/energy' },
-    { label: 'Real Estate', url: '/industries/real-estate' },
+    { label: 'CM Airlines', url: '/group/cm-airlines' },
+    { label: 'Galaxy Wave', url: '/group/galaxy-wave' },
+    { label: 'Mayan Princess', url: '/group/mayan-princess' },
+    { label: 'Turquoise Bay', url: '/group/turquoise-bay' },
+    { label: 'Acqua Di Mare', url: '/group/acqua-di-mare-resort' },
+    { label: 'PetroGas', url: '/group/petrogas' },
+    { label: 'San Simon', url: '/san-simon' },
   ];
 
   const careersLinks = [
