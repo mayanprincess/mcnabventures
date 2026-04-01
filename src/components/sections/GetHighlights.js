@@ -28,6 +28,7 @@ export default function GetHighlights({
   const [scrollSnaps, setScrollSnaps] = useState([]);
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(false);
+  const shouldShowArrows = scrollSnaps.length > 1;
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -182,45 +183,47 @@ export default function GetHighlights({
           </div>
 
           {/* Navigation Arrows */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={scrollPrev}
-              disabled={prevBtnDisabled}
-              className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
-                prevBtnDisabled
-                  ? 'bg-[#D2D2D7] cursor-not-allowed opacity-50'
-                  : 'bg-sand/70 hover:bg-sand lg:bg-sand/70'
-              }`}
-              aria-label="Previous slide"
-            >
-              <Image
-                src="/iconos/chevron_left.svg"
-                alt=""
-                width={14}
-                height={28}
-                className="w-[10px] h-[20px]"
-              />
-            </button>
-            
-            <button
-              onClick={scrollNext}
-              disabled={nextBtnDisabled}
-              className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
-                nextBtnDisabled
-                  ? 'bg-[#D2D2D7] cursor-not-allowed opacity-50'
-                  : 'bg-sand/70 hover:bg-sand lg:bg-sand/70'
-              }`}
-              aria-label="Next slide"
-            >
-              <Image
-                src="/iconos/chevron_right.svg"
-                alt=""
-                width={14}
-                height={28}
-                className="w-[10px] h-[20px]"
-              />
-            </button>
-          </div>
+          {shouldShowArrows ? (
+            <div className="flex items-center gap-3">
+              <button
+                onClick={scrollPrev}
+                disabled={prevBtnDisabled}
+                className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
+                  prevBtnDisabled
+                    ? 'bg-[#D2D2D7] cursor-not-allowed opacity-50'
+                    : 'bg-sand/70 hover:bg-sand lg:bg-sand/70'
+                }`}
+                aria-label="Previous slide"
+              >
+                <Image
+                  src="/iconos/chevron_left.svg"
+                  alt=""
+                  width={14}
+                  height={28}
+                  className="w-[10px] h-[20px]"
+                />
+              </button>
+              
+              <button
+                onClick={scrollNext}
+                disabled={nextBtnDisabled}
+                className={`w-[35px] h-[35px] rounded-full flex items-center justify-center transition-all duration-300 ${
+                  nextBtnDisabled
+                    ? 'bg-[#D2D2D7] cursor-not-allowed opacity-50'
+                    : 'bg-sand/70 hover:bg-sand lg:bg-sand/70'
+                }`}
+                aria-label="Next slide"
+              >
+                <Image
+                  src="/iconos/chevron_right.svg"
+                  alt=""
+                  width={14}
+                  height={28}
+                  className="w-[10px] h-[20px]"
+                />
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
